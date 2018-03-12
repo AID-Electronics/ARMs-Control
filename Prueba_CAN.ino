@@ -1,4 +1,5 @@
-//Send CAN data
+//Send and Read CAN data
+//Se debe especificar en el loop la función deseada
  
 #include <mcp_can.h>
 #include <SPI.h>
