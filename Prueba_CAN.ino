@@ -39,6 +39,10 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
 const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
 
+const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00};
+const char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};
+const char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
+
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 int pot=0;
@@ -47,10 +51,12 @@ void sending() {
     // send data:  id = 0x00, standrad flame, data len = 8, stmp: data buf
     unsigned char stmp[8] = {pot, 1, 2, 3, 4, 5, 6, 7};
     for(int i=0; i<8;i++){
-      Serial.print(SetcurrentUSE[i],HEX);
+      Serial.print(CadPos1[i],HEX);
     }
     Serial.print("\n");
-    CAN.sendMsgBuf(0x610, 0, 8, SetcurrentUSE);
+    CAN.sendMsgBuf(0x610, 0, 8, CadPos1);
+    CAN.sendMsgBuf(0x610, 0, 8, CadPos2);
+    CAN.sendMsgBuf(0x610, 0, 8, CadPos3);
     delay(100);                       // send data per 100ms
 }
 
