@@ -45,16 +45,12 @@ int pot=0;
 
 void sending() {
     // send data:  id = 0x00, standrad flame, data len = 8, stmp: data buf
-   
-    Serial.print(pot);
-    Serial.println("%");
     unsigned char stmp[8] = {pot, 1, 2, 3, 4, 5, 6, 7};
     for(int i=0; i<8;i++){
-      Serial.print(stmp[i]);
+      Serial.print(SetcurrentUSE[i],HEX);
     }
-   Serial.println("");
-    
-    CAN.sendMsgBuf(0x10, 0, 8, SetcurrentUSE);
+    Serial.print("\n");
+    CAN.sendMsgBuf(0x610, 0, 8, SetcurrentUSE);
     delay(100);                       // send data per 100ms
 }
 
@@ -65,13 +61,13 @@ void receive(){
 
         Serial.print("ID: ");
 
-        Serial.print(CAN.getCanId());
+        Serial.print(CAN.getCanId(),HEX);
 
        Serial.print(" / ");
 
         for(int i = 0; i<len; i++)    // print the data
         {
-            Serial.print(buf[i]);
+            Serial.print(buf[i],HEX);
             Serial.print(",");
         }
         Serial.println();
@@ -80,6 +76,7 @@ void receive(){
 
 void setup()
 {
+  
     Serial.begin(115200);
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS))              // init can bus : baudrate = 500k
@@ -89,9 +86,9 @@ void setup()
         delay(500);
     }
     Serial.println("CAN BUS Shield init ok!");
-     sending();
 
-  
+     sending();
+   
 }
 
 void loop(){
