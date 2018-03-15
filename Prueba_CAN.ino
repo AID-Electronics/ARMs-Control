@@ -34,7 +34,7 @@ void receive(){
 
         Serial.print("ID: ");
 
-        Serial.print(CAN.getCanId());
+        Serial.print(CAN.getCanId(),HEX);
 
        Serial.print(" / ");
 
