@@ -33,7 +33,7 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
 const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
 
-const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00};  //Indica la posición a la que ha de moverse
+const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00}; //Indica la posición a la que ha de moverse
 const char CadPos2[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00}; // son cadenas complementarias para el movimiento que indican el tipo de este: 
 const char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00}; //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
 
@@ -42,9 +42,13 @@ MCP_CAN CAN(53);                                      // Set CS to pin 53
 int pot=0;
 
 void sending( char buff[], long ID) {
-  
+        Serial.print("(SENT)ID: ");
+        Serial.print(ID,HEX);
+        Serial.print(" / ");
+
     for(int i=0; i<8;i++){
-      Serial.print(CadPos1[i],HEX);
+      Serial.print(buff[i],HEX);
+      Serial.print(",");
     }
     Serial.print("\n");
     CAN.sendMsgBuf(ID, 0, 8, buff);
@@ -52,11 +56,11 @@ void sending( char buff[], long ID) {
 }
 
 bool receive(){
-    if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
-    {
+    if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
+    
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
 
-        Serial.print("ID: ");
+        Serial.print("(RECEIVED)ID: ");
 
         Serial.print(CAN.getCanId(),HEX);
 
@@ -70,8 +74,8 @@ bool receive(){
         Serial.println();
 
         return true;
-    }
-    else
+    }else
+    
     return false;
 }
 
@@ -98,16 +102,14 @@ bool comprobarRespuesta(){
 void EnviarMSG(char buff[], long ID){
   
   sending(buff,ID);
-
-  if(comprobarRespuesta())
-  {
-    Serial.println("");
+   if(comprobarRespuesta()){
     Serial.println("MSG RECIBIDO CORRECTAMENTE");
+    Serial.println("");
   }
   else
   {
+    Serial.println("ERROR EN MSG");    
     Serial.println("");
-    Serial.println("ERROR EN MSG");
   }
   
 }
@@ -137,13 +139,12 @@ void mover (int pasos,long ID){
   
 }
 
-void setup()
-{
+void setup(){
   
     Serial.begin(115200);
 
-    while (CAN_OK != CAN.begin(CAN_1000KBPS))              // init can bus : baudrate = 500k
-    {
+    while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 500k
+    
         Serial.println("CAN BUS Shield init fail");
         Serial.println(" Init CAN BUS Shield again");
         delay(500);
