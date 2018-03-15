@@ -114,6 +114,18 @@ void EnviarMSG(char buff[], long ID)
   
 }
 
+void mover (int pasos,long ID){ 
+
+  paquet.pasos=pasos;
+
+  char buffe[]={0x2B/*27*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
+
+  EnviarMSG(buffe,ID);
+  EnviarMSG(CadPos2,ID);
+  EnviarMSG(CadPos3,ID);
+  
+}
+
 void setup()
 {
   
@@ -153,36 +165,10 @@ void setup()
 }
 
 void loop(){
- 
-
-<<<<<<< HEAD
   mover(10000,0x610);
 
   delay(1000);
-
 }
 
 
-
-
-=======
-  //receive();
->>>>>>> b2bc6cfdcc096f7003d800b2ab81e4c9fee2970e
-
-
-
-
-
-void mover (int pasos,long ID)
-{ 
-
-  paquet.pasos=pasos;
-
-  char buffe[]={0x2B/*27*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
-
-  EnviarMSG(buffe,ID);
-  EnviarMSG(CadPos2,ID);
-  EnviarMSG(CadPos3,ID);
-  
-}
 
