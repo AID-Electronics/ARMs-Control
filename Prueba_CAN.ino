@@ -25,7 +25,7 @@
  
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
-unsigned char buf[8];
+unsigned char buffRespuesta[8];
 char str[20];
 
 const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
@@ -60,7 +60,7 @@ void sending( char buff[], long ID) {
 bool receive(){
     if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
     {
-        CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
+        CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
 
         Serial.print("ID: ");
 
@@ -70,11 +70,52 @@ bool receive(){
 
         for(int i = 0; i<len; i++)    // print the data
         {
-            Serial.print(buf[i],HEX);
+            Serial.print(buffRespuesta[i],HEX);
             Serial.print(",");
         }
         Serial.println();
+
+        return true;
     }
+    else
+    return false;
+}
+
+bool comprobarRespuesta()
+{
+  int flag_receive=0;
+  int i=0;
+  
+  while(!flag_receive)
+  {
+    flag_receive=receive();
+    Serial.print(" ");
+    Serial.print(i);
+    i++;
+  }
+
+ if(buffRespuesta[0]==0x80)
+ return false;
+
+ return true;
+  
+}
+
+void EnviarMSG(char buff[], long ID)
+{
+  sending(buff,ID);
+
+  if(comprobarRespuesta())
+  {
+    Serial.println("");
+    Serial.print("MSG RECIBIDO CORRECTAMENTE  \n  JE");
+  }
+  else
+  {
+    Serial.println("");
+    Serial.print("ERROR EN MSG  \n  JE");
+  }
+  
 }
 
 void setup()
@@ -90,10 +131,26 @@ void setup()
     }
     Serial.println("CAN BUS Shield init ok!");
 
+    //AHORA Procederemos a enviar las instrucciones de configuración
 
     
+    EnviarMSG(SetcurrentUSE,0x610);
+    EnviarMSG(SetAccel,0x610);
+    EnviarMSG(SetDecel,0x610);
+    EnviarMSG(Maxvel,0x610);
 
-     sending();
+    
+//ahora se envían las instrucciones de cambio de estado
+
+
+    EnviarMSG(ReadytoSwitch,0x610);
+    EnviarMSG(SwitchON,0x610);
+    EnviarMSG(OpEnable,0x610);
+    EnviarMSG(PositionProfileSet,0x610);
+
+
+
+
    
 }
 
