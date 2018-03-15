@@ -8,9 +8,9 @@
 #define ID_MOTOR_2 0x611
   union
 {
-    byte pasosB[2];
+    byte pasosB[4];
     
-    uint16_t pasos;
+    uint32_t pasos;
 
     
 }paquet;
@@ -121,7 +121,12 @@ void mover (int pasos,long ID){
   Serial.println(paquet.pasos);
   Serial.println(pasos);
 
-  char buffe[]={0x23/*2B*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
+  char buffe[]={0x23,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],paquet.pasosB[2],paquet.pasosB[3]};
+
+  Serial.println(paquet.pasosB[0],HEX);
+  Serial.println(paquet.pasosB[1],HEX);
+  Serial.println(paquet.pasosB[2],HEX);
+  Serial.println(paquet.pasosB[3],HEX);
   
   if(pasos<0)
    polarity[4]=0xFF;
