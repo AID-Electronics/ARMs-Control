@@ -47,20 +47,17 @@ const char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 int pot=0;
 
-void sending() {
-    // send data:  id = 0x00, standrad flame, data len = 8, stmp: data buf
-    unsigned char stmp[8] = {pot, 1, 2, 3, 4, 5, 6, 7};
+void sending( char buff[], long ID) {
+  
     for(int i=0; i<8;i++){
       Serial.print(CadPos1[i],HEX);
     }
     Serial.print("\n");
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos1);
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos2);
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos3);
-    delay(100);                       // send data per 100ms
+    CAN.sendMsgBuf(ID, 0, 8, buff);
+    
 }
 
-void receive(){
+bool receive(){
     if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
     {
         CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
@@ -92,6 +89,9 @@ void setup()
         delay(500);
     }
     Serial.println("CAN BUS Shield init ok!");
+
+
+    
 
      sending();
    
