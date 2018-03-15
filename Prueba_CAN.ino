@@ -75,15 +75,13 @@ bool receive(){
     return false;
 }
 
-bool comprobarRespuesta()
-{
+bool comprobarRespuesta(){
   int flag_receive=0;
   int i=0;
   
-  while(!flag_receive)
-  {
-    Serial.print(" ");
-    Serial.print(i);
+  while(!flag_receive){
+    //Serial.print(" ");
+   // Serial.print(i);
     flag_receive=receive();
     i++;
   }
@@ -95,11 +93,10 @@ bool comprobarRespuesta()
     return true;
   }
   //return true; 
-  
-}
+ }
 
-void EnviarMSG(char buff[], long ID)
-{
+void EnviarMSG(char buff[], long ID){
+  
   sending(buff,ID);
 
   if(comprobarRespuesta())
@@ -188,20 +185,21 @@ void loop()
 {
   
   mover(51000,ID_MOTOR_1);
-
-  delay(1000);
+  while(Serial.read()==-1){}
+ // delay(1000);
 
   mover(51200,ID_MOTOR_2);
-
-  delay(1000);
+  while(Serial.read()==-1){}
+  //delay(1000);
 
   mover(-51200,ID_MOTOR_1);
-
-  delay(1000);
+  while(Serial.read()==-1){}
+//  delay(1000);
 
   mover(-51200,ID_MOTOR_2);
+  while(Serial.read()==-1){}
+  //delay(1000);
 
-  delay(1000);
 }
 
 
