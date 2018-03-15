@@ -116,9 +116,10 @@ void EnviarMSG(char buff[], long ID){
 
 void mover (int pasos,long ID){ 
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
+  Serial.println(pasos);
   paquet.pasos=abs(pasos);
   Serial.println(paquet.pasos);
-  Serial.println(pasos);
+  
 
   char buffe[]={0x23,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],paquet.pasosB[2],paquet.pasosB[3]};
 
@@ -186,18 +187,22 @@ void loop()
 {
   
   mover(51000,ID_MOTOR_1);
+    Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
  // delay(1000);
 
   mover(51200,ID_MOTOR_2);
+    Serial.println("Motor 2 positivo");
   while(Serial.read()==-1){}
   //delay(1000);
 
   mover(-51200,ID_MOTOR_1);
+    Serial.println("Motor 1 negativo");
   while(Serial.read()==-1){}
 //  delay(1000);
 
   mover(-51200,ID_MOTOR_2);
+  Serial.println("Motor 2 negativo");
   while(Serial.read()==-1){}
   //delay(1000);
 
