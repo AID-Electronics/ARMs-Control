@@ -118,6 +118,8 @@ void EnviarMSG(char buff[], long ID)
 void mover (int pasos,long ID){ 
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   paquet.pasos=abs(pasos);
+  Serial.println(paquet.pasos);
+  Serial.println(pasos);
 
   char buffe[]={0x23/*2B*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
   
@@ -165,20 +167,34 @@ void setup()
     EnviarMSG(OpEnable,ID_MOTOR_1);
     EnviarMSG(PositionProfileSet,ID_MOTOR_1);
 
+//-----------------------------------------
+    EnviarMSG(SetcurrentUSE,ID_MOTOR_2);
+    EnviarMSG(SetAccel,ID_MOTOR_2);
+    EnviarMSG(SetDecel,ID_MOTOR_2);
+    EnviarMSG(Maxvel,ID_MOTOR_2);
 
-
-
-   
+    EnviarMSG(ReadytoSwitch,ID_MOTOR_2);
+    EnviarMSG(SwitchON,ID_MOTOR_2);
+    EnviarMSG(OpEnable,ID_MOTOR_2);
+    EnviarMSG(PositionProfileSet,ID_MOTOR_2);
 }
 
 void loop()
 {
   
-  mover(10000,ID_MOTOR_1);
+  mover(51000,ID_MOTOR_1);
 
   delay(1000);
 
-  mover(-10000,ID_MOTOR_1);
+  mover(51200,ID_MOTOR_2);
+
+  delay(1000);
+
+  mover(-51200,ID_MOTOR_1);
+
+  delay(1000);
+
+  mover(-51200,ID_MOTOR_2);
 
   delay(1000);
 }
