@@ -114,9 +114,10 @@ void EnviarMSG(char buff[], long ID){
   
 }
 
-void mover (int pasos,long ID){ 
+void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
-  Serial.println(pasos);
+  Serial.print(pasos);
+  Serial.println(" pasos");
   paquet.pasos=abs(pasos);
   Serial.println(paquet.pasos);
   
@@ -186,7 +187,7 @@ void setup(){
 void loop()
 {
   
-  mover(51000,ID_MOTOR_1);
+  mover(51200,ID_MOTOR_1);
     Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
  // delay(1000);
