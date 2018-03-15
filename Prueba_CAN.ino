@@ -93,11 +93,14 @@ bool comprobarRespuesta()
     flag_receive=receive();
     i++;
   }
-
- if(buffRespuesta[0]==0x80)
- return false;
-
- return true;
+  
+  if(buffRespuesta[0]==0x80){
+    return false;
+  }
+  else if(buffRespuesta[0]==0x60){
+    return true;
+  }
+  //return true; 
   
 }
 
