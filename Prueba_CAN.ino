@@ -88,9 +88,9 @@ bool comprobarRespuesta()
   
   while(!flag_receive)
   {
-    flag_receive=receive();
     Serial.print(" ");
     Serial.print(i);
+    flag_receive=receive();
     i++;
   }
 
@@ -108,12 +108,12 @@ void EnviarMSG(char buff[], long ID)
   if(comprobarRespuesta())
   {
     Serial.println("");
-    Serial.print("MSG RECIBIDO CORRECTAMENTE  \n  JE");
+    Serial.println("MSG RECIBIDO CORRECTAMENTE");
   }
   else
   {
     Serial.println("");
-    Serial.print("ERROR EN MSG  \n  JE");
+    Serial.println("ERROR EN MSG");
   }
   
 }
@@ -130,6 +130,8 @@ void setup()
         delay(500);
     }
     Serial.println("CAN BUS Shield init ok!");
+
+    delay(200);
 
     //AHORA Procederemos a enviar las instrucciones de configuración
 
@@ -157,7 +159,7 @@ void setup()
 void loop(){
  
 
-  receive();
+  //receive();
 
 }
 
