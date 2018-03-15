@@ -116,18 +116,18 @@ void EnviarMSG(char buff[], long ID)
 }
 
 void mover (int pasos,long ID){ 
-  char polarity[8]={0x2B,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
-  paquet.pasos=pasos;
+  char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
+  paquet.pasos=abs(pasos);
 
   char buffe[]={0x23/*2B*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
   
   if(pasos<0)
-   polarity[4]=0xC0;
+   polarity[4]=0xFF;
   else
-   polarity[4]=0x40;
-  
-  EnviarMSG(buffe,ID);
+   polarity[4]=0x7F;
+
   EnviarMSG(polarity,ID);
+  EnviarMSG(buffe,ID);
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
   
