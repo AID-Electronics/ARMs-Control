@@ -4,6 +4,8 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
+#define ID_MOTOR_1 0x610
+#define ID_MOTOR_2 0x611
   union
 {
     byte pasosB[2];
@@ -33,7 +35,7 @@ const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
 
 const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00};  //Indica la posición a la que ha de moverse
 const char CadPos2[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00}; // son cadenas complementarias para el movimiento que indican el tipo de este: 
-const char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00}; //Absoluto, relativo, etc etc
+const char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00}; //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
 
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
@@ -114,12 +116,18 @@ void EnviarMSG(char buff[], long ID)
 }
 
 void mover (int pasos,long ID){ 
-
+  char polarity[8]={0x2B,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   paquet.pasos=pasos;
 
   char buffe[]={0x23/*2B*/,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],0x00,0x00};
-
+  
+  if(pasos<0)
+   polarity[4]=0xC0;
+  else
+   polarity[4]=0x40;
+  
   EnviarMSG(buffe,ID);
+  EnviarMSG(polarity,ID);
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
   
@@ -143,19 +151,19 @@ void setup()
     //AHORA Procederemos a enviar las instrucciones de configuración
 
     
-    EnviarMSG(SetcurrentUSE,0x610);
-    EnviarMSG(SetAccel,0x610);
-    EnviarMSG(SetDecel,0x610);
-    EnviarMSG(Maxvel,0x610);
+    EnviarMSG(SetcurrentUSE,ID_MOTOR_1);
+    EnviarMSG(SetAccel,ID_MOTOR_1);
+    EnviarMSG(SetDecel,ID_MOTOR_1);
+    EnviarMSG(Maxvel,ID_MOTOR_1);
 
     
 //ahora se envían las instrucciones de cambio de estado
 
 
-    EnviarMSG(ReadytoSwitch,0x610);
-    EnviarMSG(SwitchON,0x610);
-    EnviarMSG(OpEnable,0x610);
-    EnviarMSG(PositionProfileSet,0x610);
+    EnviarMSG(ReadytoSwitch,ID_MOTOR_1);
+    EnviarMSG(SwitchON,ID_MOTOR_1);
+    EnviarMSG(OpEnable,ID_MOTOR_1);
+    EnviarMSG(PositionProfileSet,ID_MOTOR_1);
 
 
 
@@ -163,8 +171,16 @@ void setup()
    
 }
 
-void loop(){
-  mover(10000,0x610);
+void loop()
+{
+  
+  mover(10000,ID_MOTOR_1);
+
+  delay(1000);
+
+  mover(-10000,ID_MOTOR_1);
+
+  delay(1000);
 }
 
 
