@@ -83,35 +83,46 @@ bool comprobarRespuesta(){
   int flag_receive=0;
   int i=0;
   
-  while(!flag_receive){
+  while(!flag_receive && i<10){
     //Serial.print(" ");
    // Serial.print(i);
     flag_receive=receive();
     i++;
   }
   
-  if(buffRespuesta[0]==0x80){
+  if (flag_receive == 1){
+    if(buffRespuesta[0]==0x80){
+      return false;
+    }
+    else if(buffRespuesta[0]==0x60){
+      return true;
+    }
+  }
+  else{
     return false;
   }
-  else if(buffRespuesta[0]==0x60){
-    return true;
-  }
-  //return true; 
- }
+}
 
 void EnviarMSG(char buff[], long ID){
+  bool rec_OK = 0; 
   
-  sending(buff,ID);
-   if(comprobarRespuesta()){
-    Serial.println("MSG RECIBIDO CORRECTAMENTE");
-    Serial.println("");
+  for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
+    sending(buff,ID);
+    
+    if(comprobarRespuesta() == 1){
+      rec_OK = 1;
+      Serial.println("MSG RECIBIDO CORRECTAMENTE");
+      Serial.println("");
+    }
+    else {
+      Serial.println("ERROR EN MSG");
+      Serial.println("");
+    }
   }
-  else
-  {
-    Serial.println("ERROR EN MSG");    
-    Serial.println("");
+
+  if (rec_OK == 0){
+    Serial.println ("Mensaje erroneo");
   }
-  
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
