@@ -83,7 +83,7 @@ bool comprobarRespuesta(){
   int flag_receive=0;
   int i=0;
   
-  while(!flag_receive){
+  while(!flag_receive && i<10){
     //Serial.print(" ");
    // Serial.print(i);
     flag_receive=receive();
