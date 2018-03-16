@@ -90,14 +90,18 @@ bool comprobarRespuesta(){
     i++;
   }
   
-  if(buffRespuesta[0]==0x80){
+  if (flag_receive == 1){
+    if(buffRespuesta[0]==0x80){
+      return false;
+    }
+    else if(buffRespuesta[0]==0x60){
+      return true;
+    }
+  }
+  else{
     return false;
   }
-  else if(buffRespuesta[0]==0x60){
-    return true;
-  }
-  //return true; 
- }
+}
 
 void EnviarMSG(char buff[], long ID){
   
