@@ -62,36 +62,22 @@ void setup(){
         delay(500);
     }
     Serial.println("CAN BUS Shield init ok!");
+    Serial.println();
 
     delay(200);
 
-    //AHORA Procederemos a enviar las instrucciones de configuración
-
-    
-    EnviarMSG(SetcurrentUSE,ID_MOTOR_1);
-    EnviarMSG(SetAccel,ID_MOTOR_1);
-    EnviarMSG(SetDecel,ID_MOTOR_1);
-    EnviarMSG(Maxvel,ID_MOTOR_1);
-
-    
-//ahora se envían las instrucciones de cambio de estado
-
-
-    EnviarMSG(ReadytoSwitch,ID_MOTOR_1);
-    EnviarMSG(SwitchON,ID_MOTOR_1);
-    EnviarMSG(OpEnable,ID_MOTOR_1);
-    EnviarMSG(PositionProfileSet,ID_MOTOR_1);
+    setupMotor1();
 
 //-----------------------------------------
-    EnviarMSG(SetcurrentUSE,ID_MOTOR_2);
-    EnviarMSG(SetAccel,ID_MOTOR_2);
-    EnviarMSG(SetDecel,ID_MOTOR_2);
-    EnviarMSG(Maxvel,ID_MOTOR_2);
-
-    EnviarMSG(ReadytoSwitch,ID_MOTOR_2);
-    EnviarMSG(SwitchON,ID_MOTOR_2);
-    EnviarMSG(OpEnable,ID_MOTOR_2);
-    EnviarMSG(PositionProfileSet,ID_MOTOR_2);
+//    EnviarMSG(SetcurrentUSE,ID_MOTOR_2);
+//    EnviarMSG(SetAccel,ID_MOTOR_2);
+//    EnviarMSG(SetDecel,ID_MOTOR_2);
+//    EnviarMSG(Maxvel,ID_MOTOR_2);
+//
+//    EnviarMSG(ReadytoSwitch,ID_MOTOR_2);
+//    EnviarMSG(SwitchON,ID_MOTOR_2);
+//    EnviarMSG(OpEnable,ID_MOTOR_2);
+//    EnviarMSG(PositionProfileSet,ID_MOTOR_2);
 }
 
 void loop()

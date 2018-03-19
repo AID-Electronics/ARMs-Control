@@ -68,12 +68,12 @@ bool comprobarRespuesta(){
   int flag_receive=0;
   int i=0;
   
-  while(!flag_receive && i<10){
-    //Serial.print(" ");
-   // Serial.print(i);
+  while(!flag_receive && i<50){
     flag_receive=receive();
     i++;
   }
+  
+  Serial.println(i);
   
   if (flag_receive == 1){
     if(buffRespuesta[0]==0x80){
