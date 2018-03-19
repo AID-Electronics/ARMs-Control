@@ -1,106 +1,58 @@
-//Send and Read CAN data
-//Se debe especificar en el loop la función deseada
+//Programa con las funciones preparadas para configurar y mover los motores
  
 #include <mcp_can.h>
 #include <SPI.h>
+#include "Schneider_LMD_P84.h"
 
-  union
-{
-    byte buff[10];
-    
-    struct
-    {
-      byte ID[2];
-      byte MODO;
-      byte CMD[2];
-      byte blanco;
-      byte data[4];
-      
-    }paquete;
+#define ID_MOTOR_1 0x610
+#define ID_MOTOR_2 0x611
 
-    
-}paquet;
-
-
- 
-unsigned char Flag_Recv = 0;
-unsigned char len = 0;
-unsigned char buf[8];
-char str[20];
-
-const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
-const char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
-const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
-const char Maxvel[]={0x23,0x81,0x60,0x00,0x00,0xD0,0x07,0x00};
-
-const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
-const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
-const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
-
-const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
-
-const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00};
-const char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};
-const char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
-
-
-MCP_CAN CAN(53);                                      // Set CS to pin 53
-int pot=0;
-
-void sending() {
-    // send data:  id = 0x00, standrad flame, data len = 8, stmp: data buf
-    unsigned char stmp[8] = {pot, 1, 2, 3, 4, 5, 6, 7};
-    for(int i=0; i<8;i++){
-      Serial.print(CadPos1[i],HEX);
-    }
-    Serial.print("\n");
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos1);
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos2);
-    CAN.sendMsgBuf(0x610, 0, 8, CadPos3);
-    delay(100);                       // send data per 100ms
-}
-
-void receive(){
-    if(CAN_MSGAVAIL == CAN.checkReceive())            // check if data coming
-    {
-        CAN.readMsgBuf(&len, buf);    // read data,  len: data length, buf: data buf
-
-        Serial.print("ID: ");
-
-        Serial.print(CAN.getCanId(),HEX);
-
-       Serial.print(" / ");
-
-        for(int i = 0; i<len; i++)    // print the data
-        {
-            Serial.print(buf[i],HEX);
-            Serial.print(",");
-        }
-        Serial.println();
-    }
-}
-
-void setup()
-{
+void setup(){
   
     Serial.begin(115200);
 
-    while (CAN_OK != CAN.begin(CAN_1000KBPS))              // init can bus : baudrate = 500k
-    {
+    while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 500k
+    
         Serial.println("CAN BUS Shield init fail");
         Serial.println(" Init CAN BUS Shield again");
         delay(500);
     }
     Serial.println("CAN BUS Shield init ok!");
+    Serial.println();
 
-     sending();
-   
+    delay(200);
+
+
+    setupMotor(ID_MOTOR_1,1000000,1000000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
+
+
 }
 
 void loop(){
- 
+   
+  Serial.println("Motor 1 positivo");
+  while(Serial.read()==-1){}
+    mover(51200,ID_MOTOR_1);//una vuelta
+    //mover(25600,ID_MOTOR_1);//Media vuelta
+    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
+    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
+    
 
-  receive();
+// delay(1000);
+  //mover(51200,ID_MOTOR_2);
+    //Serial.println("Motor 2 positivo");
+  //while(Serial.read()==-1){}
+  //delay(1000);
 
+  //mover(-51200,ID_MOTOR_1);
+    //Serial.println("Motor 1 negativo");
+  //while(Serial.read()==-1){}
+//  delay(1000);
+
+  //mover(-51200,ID_MOTOR_2);
+  //Serial.println("Motor 2 negativo");
+  //while(Serial.read()==-1){}
+  //delay(1000);
 }
 
