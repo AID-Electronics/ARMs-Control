@@ -150,8 +150,7 @@ bool SetAccel (long accel, long ID){
   char SetAccel[]={0x2F,0x04,0x22,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
   EnviarMSG(SetAccel,ID);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 bool SetProfile(int profile, long ID ){
   byte pro;
   switch(profile){
@@ -176,23 +175,12 @@ bool SetProfile(int profile, long ID ){
   char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
   EnviarMSG(ProfileSet,ID);
 }
+
 void setupMotor(long ID_motor){
-=======
->>>>>>> eb7162f1076693817b3e867815201e00294e0768
-=======
->>>>>>> eb7162f1076693817b3e867815201e00294e0768
-
-
-void setupMotor(long ID_motor)
-{
     //instrucciones de configuración
     SetCurrent(5, ID_motor);
-
-       SetAccel(1000000,ID_motor);
+    SetAccel(1000000,ID_motor);
     setDeccel(1000000,ID_motor);
-
-
-
     maxVelocity(51200, ID_motor);
 
     //instrucciones de cambio de estado
