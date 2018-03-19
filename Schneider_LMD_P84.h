@@ -25,7 +25,6 @@ const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
 const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
-const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
@@ -152,10 +151,36 @@ bool SetAccel (long accel, long ID){
   EnviarMSG(SetAccel,ID);
 }
 
+bool SetProfile(int profile, long ID ){
+  byte pro;
+  switch(profile){
+    case 1:
+     pro=0x01;
+     break;
+    case 2:
+     pro=0x03;
+     break;
+    case 3:
+     pro=0x06;
+     break;
+    case 4:
+     pro=0x04;
+     break;
+    default:
+      pro=0x00;
+      break;
+     
+  }
+   
+  char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
+  EnviarMSG(ProfileSet,ID);
+}
 
 void setupMotor(long ID_motor){
+
   
     int cuenta=0;
+
     //instrucciones de configuración
     SetCurrent(5, ID_motor);
     SetAccel(1000000,ID_motor);
@@ -225,7 +250,32 @@ void setupMotor(long ID_motor){
     EnviarMSG(ReadytoSwitch,ID_motor);
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
-    EnviarMSG(PositionProfileSet,ID_motor);
+    SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
+
+void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+  char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
+  if (pasos<0){
+    polarity[4]=0xFF;
+  }
+  else {
+    polarity[4]=0x7F;
+  }
+
+  Paquete p;
+  p.i=abs(pasos);
+  
+  char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
+  char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
+  char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
+
+  EnviarMSG(polarity,ID);
+  EnviarMSG(CadPos1,ID);
+  EnviarMSG(CadPos2,ID);
+  EnviarMSG(CadPos3,ID);
+  
+}
+
+
 
 #endif
