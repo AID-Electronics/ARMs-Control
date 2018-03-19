@@ -182,10 +182,7 @@ void setupMotor(long ID_motor){
     int cuenta=0;
 
     //instrucciones de configuración
-    SetCurrent(5, ID_motor);
-    SetAccel(1000000,ID_motor);
-    setDeccel(1000000,ID_motor);
-    maxVelocity(51200, ID_motor);
+    
 
     cuenta=   SetAccel(1000000,ID_motor)*3 + setDeccel(1000000,ID_motor)*5 +  maxVelocity(51200, ID_motor)* 7 + SetCurrent(5, ID_motor)*11;
 
@@ -243,6 +240,9 @@ void setupMotor(long ID_motor){
                                       break;
        case 3:
                    Serial.println("    ERROR SET DECCEL Y SET CURRENT Y MAX VEL         ");
+                                      break;
+       default:
+                  Serial.println("   ALGO VA MAL       ");
                                       break;
     }
 
