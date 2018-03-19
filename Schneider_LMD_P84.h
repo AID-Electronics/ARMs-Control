@@ -6,7 +6,6 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
-#define ID_MOTOR_1 0x610
 
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
