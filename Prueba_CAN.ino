@@ -7,16 +7,9 @@
 
 #define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
-  union
-{
-    byte pasosB[4];
-    
-    uint32_t pasos;
-
-    
-}paquet;
 
 
+Paquete paquet;
 
 const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00}; //Indica la posición a la que ha de moverse
 const char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00}; // son cadenas complementarias para el movimiento que indican el tipo de este: 
