@@ -151,6 +151,7 @@ bool SetAccel (long accel, long ID){
   EnviarMSG(SetAccel,ID);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 bool SetProfile(int profile, long ID ){
   byte pro;
   switch(profile){
@@ -176,6 +177,8 @@ bool SetProfile(int profile, long ID ){
   EnviarMSG(ProfileSet,ID);
 }
 void setupMotor(long ID_motor){
+=======
+>>>>>>> eb7162f1076693817b3e867815201e00294e0768
 =======
 >>>>>>> eb7162f1076693817b3e867815201e00294e0768
 
