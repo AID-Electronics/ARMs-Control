@@ -67,17 +67,8 @@ void setup(){
     delay(200);
 
     setupMotor(ID_MOTOR_1);
+    setupMotor(ID_MOTOR_2);
 
-//-----------------------------------------
-//    EnviarMSG(SetcurrentUSE,ID_MOTOR_2);
-//    EnviarMSG(SetAccel,ID_MOTOR_2);
-//    EnviarMSG(SetDecel,ID_MOTOR_2);
-//    EnviarMSG(Maxvel,ID_MOTOR_2);
-//
-//    EnviarMSG(ReadytoSwitch,ID_MOTOR_2);
-//    EnviarMSG(SwitchON,ID_MOTOR_2);
-//    EnviarMSG(OpEnable,ID_MOTOR_2);
-//    EnviarMSG(PositionProfileSet,ID_MOTOR_2);
 }
 
 void loop()
