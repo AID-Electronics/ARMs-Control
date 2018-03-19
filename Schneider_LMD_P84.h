@@ -6,7 +6,6 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
-
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
 unsigned char buffRespuesta[8];
@@ -16,11 +15,6 @@ union Paquete{
   byte b[4];
   uint32_t i;
 };
-
-
-const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
-
-
 const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
 const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
@@ -115,12 +109,10 @@ bool EnviarMSG(char buff[], long ID){
 
 bool SetCurrent (int porcentaje, long ID){
   //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
-  
-  Paquete p;
+    Paquete p;
   p.i = porcentaje;
   char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],0x00,0x00,0x00};
-  
-  return EnviarMSG(SetcurrentUSE,ID);
+    return EnviarMSG(SetcurrentUSE,ID);
 }
 
 bool maxVelocity (long velocity, long ID){
@@ -128,19 +120,16 @@ bool maxVelocity (long velocity, long ID){
   Paquete p;
   p.i = velocity;
   char Maxvel[]={0x23,0x81,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-  
-  return EnviarMSG(Maxvel,ID);
+    return EnviarMSG(Maxvel,ID);
 }
 
 
 bool setDeccel (uint32_t decel, long ID){
-  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
-  
+  //const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete p;
   p.i = decel;
   char SetDecel[]={0x23,0x83,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-  
-  return EnviarMSG(SetDecel,ID);
+    return EnviarMSG(SetDecel,ID);
 }
 
 bool SetAccel (long accel, long ID){
@@ -175,9 +164,6 @@ bool SetProfile(int profile, long ID ){
   char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
   EnviarMSG(ProfileSet,ID);
 }
-
-
-
 
 void mostrarError(int cuenta){
    switch (cuenta){
@@ -284,9 +270,5 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   EnviarMSG(CadPos1,ID);
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
-  
-}
-
-
-
+ }
 #endif
