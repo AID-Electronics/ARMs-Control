@@ -17,32 +17,7 @@ const char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00}; //El movimiento 
 
 int pot=0;
 
-void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
-  char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
-  Serial.print(pasos);
-  Serial.println(" pasos");
-  paquet.i=abs(pasos);
-  Serial.println(paquet.i);
-  
 
-  char buffe[]={0x23,0x7A,0x60,0x00,paquet.b[0],paquet.b[1],paquet.b[2],paquet.b[3]};
-
-  Serial.println(paquet.b[0],HEX);
-  Serial.println(paquet.b[1],HEX);
-  Serial.println(paquet.b[2],HEX);
-  Serial.println(paquet.b[3],HEX);
-  
-  if(pasos<0)
-   polarity[4]=0xFF;
-  else
-   polarity[4]=0x7F;
-
-  EnviarMSG(polarity,ID);
-  EnviarMSG(buffe,ID);
-  EnviarMSG(CadPos2,ID);
-  EnviarMSG(CadPos3,ID);
-  
-}
 
 void setup(){
   

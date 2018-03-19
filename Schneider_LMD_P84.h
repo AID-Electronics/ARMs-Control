@@ -153,6 +153,27 @@ void setupMotor(long ID_motor){
     EnviarMSG(PositionProfileSet,ID_motor);
 }
 
+void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+  char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
+  if (pasos<0){
+    polarity[4]=0xFF;
+  }
+  else {
+    polarity[4]=0x7F;
+  }
+  
+  paquet.i=abs(pasos);
+  char mueve[]={0x23,0x7A,0x60,0x00,paquet.b[0],paquet.b[1],paquet.b[2],paquet.b[3]};
+  
+
+
+  EnviarMSG(polarity,ID);
+  EnviarMSG(mueve,ID);
+  EnviarMSG(CadPos2,ID);
+  EnviarMSG(CadPos3,ID);
+  
+}
+
 bool setDeccel (uint32_t decel, long ID){
   //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
   
