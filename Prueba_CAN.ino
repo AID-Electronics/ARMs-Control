@@ -19,8 +19,8 @@
 
 
 const char CadPos1[]={0x23,0x7A,0x60,0x00,0xA0,0x86,0x01,0x00}; //Indica la posición a la que ha de moverse
-const char CadPos2[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00}; // son cadenas complementarias para el movimiento que indican el tipo de este: 
-const char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00}; //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
+const char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00}; // son cadenas complementarias para el movimiento que indican el tipo de este: 
+const char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00}; //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
 
 int pot=0;
 
@@ -83,24 +83,29 @@ void setup(){
 void loop()
 {
   
-  mover(51200,ID_MOTOR_1);
-    Serial.println("Motor 1 positivo");
+  
+  Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
- // delay(1000);
+    mover(51200,ID_MOTOR_1);//una vuelta
+    //mover(25600,ID_MOTOR_1);//Media vuelta
+    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
+    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
+    
 
-  mover(51200,ID_MOTOR_2);
-    Serial.println("Motor 2 positivo");
-  while(Serial.read()==-1){}
+// delay(1000);
+  //mover(51200,ID_MOTOR_2);
+    //Serial.println("Motor 2 positivo");
+  //while(Serial.read()==-1){}
   //delay(1000);
 
-  mover(-51200,ID_MOTOR_1);
-    Serial.println("Motor 1 negativo");
-  while(Serial.read()==-1){}
+  //mover(-51200,ID_MOTOR_1);
+    //Serial.println("Motor 1 negativo");
+  //while(Serial.read()==-1){}
 //  delay(1000);
 
-  mover(-51200,ID_MOTOR_2);
-  Serial.println("Motor 2 negativo");
-  while(Serial.read()==-1){}
+  //mover(-51200,ID_MOTOR_2);
+  //Serial.println("Motor 2 negativo");
+  //while(Serial.read()==-1){}
   //delay(1000);
 
 }
