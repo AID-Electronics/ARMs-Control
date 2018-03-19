@@ -118,7 +118,7 @@ bool SetCurrent (int porcentaje, long ID){
   
   Paquete p;
   p.i = porcentaje;
-  char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],0x00,0x00,0x00};
   
   EnviarMSG(SetcurrentUSE,ID);
 }
@@ -138,4 +138,13 @@ void setupMotor(long ID_motor){
     EnviarMSG(PositionProfileSet,ID_motor);
 }
 
+bool setDeccel (uint32_t decel, long ID){
+  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
+  
+  Paquete p;
+  p.i = decel;
+  char SetDecel[]={0x23,0x83,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  
+  EnviarMSG(SetDecel,ID);
+}
 #endif
