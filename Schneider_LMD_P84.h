@@ -12,10 +12,9 @@ unsigned char len = 0;
 unsigned char buffRespuesta[8];
 char str[20];
 
-const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
 union Paquete{
-  byte pasosB[4];
-  uint32_t pasos;  
+  byte b[4];
+  uint32_t i;
 };
 
 const char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
@@ -114,10 +113,20 @@ void EnviarMSG(char buff[], long ID){
   }
 }
 
+bool SetCurrent (int porcentaje, long ID){
+  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
+  
+  Paquete p;
+  p.i = porcentaje;
+  char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  
+  EnviarMSG(SetcurrentUSE,ID);
+}
+
 void setupMotor(long ID_motor){
 
     //instrucciones de configuración
-    EnviarMSG(SetcurrentUSE,ID_motor);
+    SetCurrent(80, ID_motor);
     EnviarMSG(SetAccel,ID_motor);
     EnviarMSG(SetDecel,ID_motor);
     EnviarMSG(Maxvel,ID_motor);

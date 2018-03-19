@@ -21,16 +21,16 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   Serial.print(pasos);
   Serial.println(" pasos");
-  paquet.pasos=abs(pasos);
-  Serial.println(paquet.pasos);
+  paquet.i=abs(pasos);
+  Serial.println(paquet.i);
   
 
-  char buffe[]={0x23,0x7A,0x60,0x00,paquet.pasosB[0],paquet.pasosB[1],paquet.pasosB[2],paquet.pasosB[3]};
+  char buffe[]={0x23,0x7A,0x60,0x00,paquet.b[0],paquet.b[1],paquet.b[2],paquet.b[3]};
 
-  Serial.println(paquet.pasosB[0],HEX);
-  Serial.println(paquet.pasosB[1],HEX);
-  Serial.println(paquet.pasosB[2],HEX);
-  Serial.println(paquet.pasosB[3],HEX);
+  Serial.println(paquet.b[0],HEX);
+  Serial.println(paquet.b[1],HEX);
+  Serial.println(paquet.b[2],HEX);
+  Serial.println(paquet.b[3],HEX);
   
   if(pasos<0)
    polarity[4]=0xFF;
