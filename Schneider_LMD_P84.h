@@ -91,7 +91,7 @@ bool comprobarRespuesta(){
   }
 }
 
-void EnviarMSG(char buff[], long ID){
+bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
   for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
@@ -111,6 +111,7 @@ void EnviarMSG(char buff[], long ID){
   if (rec_OK == 0){
     Serial.println ("Mensaje erroneo");
   }
+  return rec_OK;
 }
 
 bool SetCurrent (int porcentaje, long ID){
@@ -120,7 +121,7 @@ bool SetCurrent (int porcentaje, long ID){
   p.i = porcentaje;
   char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],0x00,0x00,0x00};
   
-  EnviarMSG(SetcurrentUSE,ID);
+  return EnviarMSG(SetcurrentUSE,ID);
 }
 
 bool maxVelocity (long velocity, long ID){
@@ -128,7 +129,8 @@ bool maxVelocity (long velocity, long ID){
   Paquete p;
   p.i = velocity;
   char Maxvel[]={0x23,0x81,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-  EnviarMSG(Maxvel,ID);
+  
+  return EnviarMSG(Maxvel,ID);
 }
 
 void setupMotor(long ID_motor){
@@ -136,7 +138,7 @@ void setupMotor(long ID_motor){
     //instrucciones de configuración
     SetCurrent(5, ID_motor);
     EnviarMSG(SetAccel,ID_motor);
-    EnviarMSG(SetDecel,ID_motor);
+    
     maxVelocity(51200, ID_motor);
 
     //instrucciones de cambio de estado
@@ -153,6 +155,6 @@ bool setDeccel (uint32_t decel, long ID){
   p.i = decel;
   char SetDecel[]={0x23,0x83,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
   
-  EnviarMSG(SetDecel,ID);
+  return EnviarMSG(SetDecel,ID);
 }
 #endif
