@@ -66,7 +66,7 @@ void setup(){
 
     delay(200);
 
-    setupMotor1();
+    setupMotor(ID_MOTOR_1);
 
 //-----------------------------------------
 //    EnviarMSG(SetcurrentUSE,ID_MOTOR_2);
