@@ -25,7 +25,6 @@ const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
 const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
-const char PositionProfileSet[]={0x2F,0x60,0x60,0x00,0x01,0x00,0x00,0x00};
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
@@ -132,6 +131,18 @@ bool maxVelocity (long velocity, long ID){
   
   return EnviarMSG(Maxvel,ID);
 }
+
+
+bool setDeccel (uint32_t decel, long ID){
+  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
+  
+  Paquete p;
+  p.i = decel;
+  char SetDecel[]={0x23,0x83,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  
+  return EnviarMSG(SetDecel,ID);
+}
+
 bool SetAccel (long accel, long ID){
   //char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete a;
@@ -139,18 +150,44 @@ bool SetAccel (long accel, long ID){
   char SetAccel[]={0x2F,0x04,0x22,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
   EnviarMSG(SetAccel,ID);
 }
-void setupMotor(long ID_motor){
 
+bool SetProfile(int profile, long ID ){
+  byte pro;
+  switch(profile){
+    case 1:
+     pro=0x01;
+     break;
+    case 2:
+     pro=0x03;
+     break;
+    case 3:
+     pro=0x06;
+     break;
+    case 4:
+     pro=0x04;
+     break;
+    default:
+      pro=0x00;
+      break;
+     
+  }
+   
+  char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
+  EnviarMSG(ProfileSet,ID);
+}
+
+void setupMotor(long ID_motor){
     //instrucciones de configuración
     SetCurrent(5, ID_motor);
     SetAccel(1000000,ID_motor);
+    setDeccel(1000000,ID_motor);
     maxVelocity(51200, ID_motor);
 
     //instrucciones de cambio de estado
     EnviarMSG(ReadytoSwitch,ID_motor);
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
-    EnviarMSG(PositionProfileSet,ID_motor);
+    SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
@@ -185,4 +222,5 @@ bool setDeccel (uint32_t decel, long ID){
   
   return EnviarMSG(SetDecel,ID);
 }
+
 #endif
