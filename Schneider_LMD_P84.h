@@ -176,17 +176,11 @@ bool SetProfile(int profile, long ID ){
   EnviarMSG(ProfileSet,ID);
 }
 
-void setupMotor(long ID_motor){
 
-  
-    int cuenta=0;
 
-    //instrucciones de configuración
-    
 
-    cuenta=   SetAccel(1000000,ID_motor)*3 + setDeccel(1000000,ID_motor)*5 +  maxVelocity(51200, ID_motor)* 7 + SetCurrent(5, ID_motor)*11;
-
-    switch (cuenta){
+void mostrarError(int cuenta){
+   switch (cuenta){
       
       case 26:
                   Serial.println("    TODO CORRECTO          ");
@@ -245,6 +239,23 @@ void setupMotor(long ID_motor){
                   Serial.println("   ALGO VA MAL       ");
                                       break;
     }
+  
+}
+
+
+
+void setupMotor(long ID_motor){
+
+  
+    int cuenta=0;
+
+    //instrucciones de configuración
+    
+
+    cuenta=   SetAccel(1000000,ID_motor)*3 + setDeccel(1000000,ID_motor)*5 +  maxVelocity(51200, ID_motor)* 7 + SetCurrent(5, ID_motor)*11;
+
+    mostrarError(cuenta);
+   
 
     //instrucciones de cambio de estado
     EnviarMSG(ReadytoSwitch,ID_motor);
