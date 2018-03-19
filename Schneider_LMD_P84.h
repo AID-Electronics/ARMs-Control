@@ -110,19 +110,19 @@ void EnviarMSG(char buff[], long ID){
   }
 }
 
-void setupMotor1(){
+void setupMotor(long ID_motor){
 
     //instrucciones de configuración
-    EnviarMSG(SetcurrentUSE,ID_MOTOR_1);
-    EnviarMSG(SetAccel,ID_MOTOR_1);
-    EnviarMSG(SetDecel,ID_MOTOR_1);
-    EnviarMSG(Maxvel,ID_MOTOR_1);
+    EnviarMSG(SetcurrentUSE,ID_motor);
+    EnviarMSG(SetAccel,ID_motor);
+    EnviarMSG(SetDecel,ID_motor);
+    EnviarMSG(Maxvel,ID_motor);
 
     //instrucciones de cambio de estado
-    EnviarMSG(ReadytoSwitch,ID_MOTOR_1);
-    EnviarMSG(SwitchON,ID_MOTOR_1);
-    EnviarMSG(OpEnable,ID_MOTOR_1);
-    EnviarMSG(PositionProfileSet,ID_MOTOR_1);
+    EnviarMSG(ReadytoSwitch,ID_motor);
+    EnviarMSG(SwitchON,ID_motor);
+    EnviarMSG(OpEnable,ID_motor);
+    EnviarMSG(PositionProfileSet,ID_motor);
 }
 
 #endif
