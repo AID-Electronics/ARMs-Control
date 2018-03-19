@@ -11,8 +11,7 @@ void setup(){
   
     Serial.begin(115200);
 
-    while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 500k
-    
+    while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
         Serial.println("CAN BUS Shield init fail");
         Serial.println(" Init CAN BUS Shield again");
         delay(500);
@@ -21,16 +20,13 @@ void setup(){
     Serial.println();
 
     delay(200);
-
-
+  
     setupMotor(ID_MOTOR_1,1000000,1000000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
-
-
 }
 
 void loop(){
-   
+  
   Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
     mover(51200,ID_MOTOR_1);//una vuelta
