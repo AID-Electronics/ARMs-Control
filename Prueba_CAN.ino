@@ -1,5 +1,4 @@
-//Send and Read CAN data
-//Se debe especificar en el loop la función deseada
+//Programa con las funciones preparadas para configurar y mover los motores
  
 #include <mcp_can.h>
 #include <SPI.h>
@@ -7,11 +6,6 @@
 
 #define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
-
-
-int pot=0;
-
-
 
 void setup(){
   
@@ -30,13 +24,10 @@ void setup(){
 
     setupMotor(ID_MOTOR_1);
     setupMotor(ID_MOTOR_2);
-
 }
 
-void loop()
-{
-  
-  
+void loop(){
+   
   Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
     mover(51200,ID_MOTOR_1);//una vuelta
@@ -60,8 +51,5 @@ void loop()
   //Serial.println("Motor 2 negativo");
   //while(Serial.read()==-1){}
   //delay(1000);
-
 }
-
-
 
