@@ -28,8 +28,8 @@ void setup(){
 
     delay(200);
 
-    setupMotor(ID_MOTOR_1);
-    setupMotor(ID_MOTOR_2);
+    setupMotor(ID_MOTOR_1,1000000,1000000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
 
 }
 
