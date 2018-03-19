@@ -133,21 +133,6 @@ bool maxVelocity (long velocity, long ID){
   return EnviarMSG(Maxvel,ID);
 }
 
-void setupMotor(long ID_motor){
-
-    //instrucciones de configuración
-    SetCurrent(5, ID_motor);
-    EnviarMSG(SetAccel,ID_motor);
-    
-    maxVelocity(51200, ID_motor);
-
-    //instrucciones de cambio de estado
-    EnviarMSG(ReadytoSwitch,ID_motor);
-    EnviarMSG(SwitchON,ID_motor);
-    EnviarMSG(OpEnable,ID_motor);
-    EnviarMSG(PositionProfileSet,ID_motor);
-}
-
 bool setDeccel (uint32_t decel, long ID){
   //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
   
@@ -157,4 +142,20 @@ bool setDeccel (uint32_t decel, long ID){
   
   return EnviarMSG(SetDecel,ID);
 }
+
+void setupMotor(long ID_motor)
+{
+    //instrucciones de configuración
+    SetCurrent(5, ID_motor);
+    EnviarMSG(SetAccel,ID_motor);
+    setDeccel(1000000,ID_motor);
+    maxVelocity(51200, ID_motor);
+
+    //instrucciones de cambio de estado
+    EnviarMSG(ReadytoSwitch,ID_motor);
+    EnviarMSG(SwitchON,ID_motor);
+    EnviarMSG(OpEnable,ID_motor);
+    EnviarMSG(PositionProfileSet,ID_motor);
+}
+
 #endif
