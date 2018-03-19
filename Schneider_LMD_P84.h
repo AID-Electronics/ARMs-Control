@@ -19,7 +19,7 @@ union Paquete{
 
 const char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
 const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
-const char Maxvel[]={0x23,0x81,0x60,0x00,0x00,0xC8,0x00,0x00};
+
 
 const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
@@ -123,13 +123,21 @@ bool SetCurrent (int porcentaje, long ID){
   EnviarMSG(SetcurrentUSE,ID);
 }
 
+bool maxVelocity (long velocity, long ID){
+  //const char Maxvel[]={0x23,0x81,0x60,0x00,0x00,0xC8,0x00,0x00};
+  Paquete p;
+  p.i = velocity;
+  char Maxvel[]={0x23,0x81,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  EnviarMSG(Maxvel,ID);
+}
+
 void setupMotor(long ID_motor){
 
     //instrucciones de configuración
-    SetCurrent(80, ID_motor);
+    SetCurrent(5, ID_motor);
     EnviarMSG(SetAccel,ID_motor);
     EnviarMSG(SetDecel,ID_motor);
-    EnviarMSG(Maxvel,ID_motor);
+    maxVelocity(51200, ID_motor);
 
     //instrucciones de cambio de estado
     EnviarMSG(ReadytoSwitch,ID_motor);
