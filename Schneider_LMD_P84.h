@@ -153,17 +153,73 @@ bool SetAccel (long accel, long ID){
 }
 
 
-void setupMotor(long ID_motor)
-{
+void setupMotor(long ID_motor){
+  
+    int cuenta=0;
     //instrucciones de configuración
     SetCurrent(5, ID_motor);
-
-       SetAccel(1000000,ID_motor);
+    SetAccel(1000000,ID_motor);
     setDeccel(1000000,ID_motor);
-
-
-
     maxVelocity(51200, ID_motor);
+
+    cuenta=   SetAccel(1000000,ID_motor)*3 + setDeccel(1000000,ID_motor)*5 +  maxVelocity(51200, ID_motor)* 7 + SetCurrent(5, ID_motor)*11;
+
+    switch (cuenta){
+      
+      case 26:
+                  Serial.println("    TODO CORRECTO          ");
+                  break;
+
+      case 23:
+                  Serial.println("    ERROR SET ACCEL          ");
+                  break;
+     
+
+      case 21:
+                  Serial.println("    ERROR SET DECCEL          ");
+                  break;
+      
+                   
+      case 19:
+                   Serial.println("    ERROR SET MAX VEL         "); 
+                   break;
+                   
+      case 18:
+                   Serial.println("    ERROR SET DECCEL Y SET ACCEL     ");
+                   break;
+
+      case 16:
+                   Serial.println("    ERROR MAX VEL Y SET ACCEL     ");
+                   break;
+                                      
+      case 15:
+                   Serial.println("    Error SET CURRENT         ");    
+                                      break;        
+      case 14:
+                  Serial.println("    ERROR MAX VEL Y SET DECCEL     ");
+                                      break;
+      case 12:
+                   Serial.println("    ERROR SET ACCEL Y SET CURRENT          ");
+                   break;
+      case 11:
+                   Serial.println("    ERROR SET ACCEL , SET CURRENT Y SET DECCEL          ");
+                   break;
+       case 10:
+                   Serial.println("    ERROR SET DECCEL Y SET CURRENT          "); 
+                   break;
+       case 8:
+                   Serial.println("    ERROR MAX VEL Y SET CURRENT          "); 
+                                            break;          
+       case 7:
+                   Serial.println("    ERROR SET DECCEL , SET CURRENT Y SET ACCEL         "); 
+                                      break;
+       case 5:
+                   Serial.println("    ERROR MAX VEL , SET CURRENT Y SET ACCEL         ");
+                                      break;
+       case 3:
+                   Serial.println("    ERROR SET DECCEL Y SET CURRENT Y MAX VEL         ");
+                                      break;
+    }
 
     //instrucciones de cambio de estado
     EnviarMSG(ReadytoSwitch,ID_motor);
