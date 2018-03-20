@@ -61,8 +61,52 @@ void displayCalStatus ()
 }
 
 
+int calcularPasos1D(double cabeceo,double resolucion,double radioPolea,double distCentro)
+{ 
+  double PASOS;
+  double tangente= tan(cabeceo);
+  //PASOS=(((tangente*distCentro)/(2*pi*radioPolea))*(360/resolucion)) ;
+  PASOS=51200*cabeceo/(2*pi);
+  
+  int aux=int(PASOS);
+  double aux2=abs(PASOS)-abs(aux);
+    
+  if(abs(aux2)>0.5)
+    {
+      if (aux>0)
+      aux++;
+      else
+      aux--;
+    }
+   
+  return aux;
+  
+}
 
+int calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radioPolea,double h,double posX, double posY,double Dref)
+{
+    double PASOS;
+  double tangenteCAB= tan(cabeceo);  //ES EL ANGULO RESPECTO EL EJE X
+  double tangenteAL= tan(alabeo); //ES EL ANGULO RESPECTO EL EJE Y
+  double numerador= (sqrt((tangenteCAB*h-posY)*(tangenteCAB*h-posY)+(tangenteAL*h-posX)*(tangenteAL*h-posX))-Dref);
+  
+  PASOS=((numerador/(2*pi*radioPolea))*(360/resolucion)) ;
 
+  
+  int aux=(int)PASOS;
+  double aux2=PASOS-aux;
+
+    if(abs(aux2)>0.5)
+    {
+      if (aux>0)
+      aux++;
+      else
+      aux--;
+    }
+    
+  return aux;
+   
+}
 void setup(){
 
   ////////////////////////////////////////////////////////////////////IMU
@@ -146,86 +190,5 @@ pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_PO
   Serial.println(" ");
   delay (200);
 
-
-
-
-<<<<<<< HEAD
-=======
-  ////////////////////////
-  //Serial.println("Motor 1 positivo");
-  //while(Serial.read()==-1){}
-    //mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-    //mover(pasosMotor3,ID_MOTOR_2);//Media vuelta
-    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
-    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
-    
-
-
->>>>>>> 1e39fd4f0d04ded1052d484b570dd8a78a6cb431
-}
-
-
-int calcularPasos1D(double cabeceo,double resolucion,double radioPolea,double distCentro)
-{ 
-  double PASOS;
-  double tangente= tan(cabeceo);
-  //PASOS=(((tangente*distCentro)/(2*pi*radioPolea))*(360/resolucion)) ;
-  PASOS=51200*cabeceo/(2*pi);
-  
-  int aux=int(PASOS);
-  
-  
-  double aux2=abs(PASOS)-abs(aux);
-  
-
-  
-  if(abs(aux2)>0.5)
-    {
-      if (aux>0)
-      aux++;
-      else
-      aux--;
-    }
-  
-
-  
-  return aux;
-  
-}
-
-
-int calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radioPolea,double h,double posX, double posY,double Dref)
-{
-    double PASOS;
-  double tangenteCAB= tan(cabeceo);  //ES EL ANGULO RESPECTO EL EJE X
-  double tangenteAL= tan(alabeo); //ES EL ANGULO RESPECTO EL EJE Y
-  double numerador= (sqrt((tangenteCAB*h-posY)*(tangenteCAB*h-posY)+(tangenteAL*h-posX)*(tangenteAL*h-posX))-Dref);
-  
-  PASOS=((numerador/(2*pi*radioPolea))*(360/resolucion)) ;
-
-  
-  int aux=(int)PASOS;
-  double aux2=PASOS-aux;
-
-    if(abs(aux2)>0.5)
-    {
-      if (aux>0)
-      aux++;
-      else
-      aux--;
-    }
-  
-  
-  
-  return aux;
-  
-  
-}
-
-
-int enviar_datos(int pasos)
-{
-
-  
 }
 
