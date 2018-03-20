@@ -28,7 +28,7 @@ double cabeceoAnterior=0;
   int pasosMotor2;
   int pasosMotor3;
   int pasosMotor4;
-  
+  unsigned long t=0;
   
  const double pi=3.141592;
  double deg2rad= pi/180;
@@ -135,8 +135,8 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,1000000,100000,90,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,100000,90,51200);
+    setupMotor(ID_MOTOR_1,100000,100000,80,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,100000,100000,80,51200);
 }
 
 void loop(){
@@ -157,21 +157,25 @@ void loop(){
   if(abs(cabeceoPosterior-cabeceoAnterior)>TOL || abs(alabeoPosterior-alabeoAnterior)>TOL ) //Esta sentencia se puede omitir
   {
   
-pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
-pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
-pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
-pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+//pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
+//pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
+//pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
+//pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
 
 pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
+pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
+
   
   //AQUI iría la accion de movimiento
   mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-    mover(pasosMotor3,ID_MOTOR_2);
-
+  mover(pasosMotor3,ID_MOTOR_2);
   
   cabeceoAnterior=cabeceoPosterior;
   alabeoAnterior=alabeoPosterior;
   }
+  Serial.print("Millis: ");
+  Serial.println(millis()-t);
+  t=millis();
       
   Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
