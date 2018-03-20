@@ -23,20 +23,32 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
 void traduce(byte *leng, byte *buf, unsigned long ID){
+  
+  // Check IDs
   if (ID == 0x610){
-    Serial.println("Mensaje a motor 1");
+    Serial.println("\t Mensaje a motor 1");
   }
   else if (ID == 0x611){
-    Serial.println("Mensaje a motor 2");
+    Serial.println("\t Mensaje a motor 2");
   }
   else if (ID == 0x590){
-    Serial.println("Respuesta de motor 1");
+    Serial.println("\t Respuesta motor 1");
   }
   else if (ID == 0x591){
-    Serial.println("Respuesta de motor 2");
+    Serial.println("\t Respuesta motor 2");
   }
   else{
-    Serial.println("ID recibida incorrecta");
+    Serial.println("\t ID recibida incorrecta");
+  }
+
+  // Check response OK
+  if (ID == 0x590 || ID == 0x591){
+    if (buffRespuesta[0]==0x60){
+      Serial.println("\t Correcto");
+    }
+    else if (buffRespuesta[0]==0x80){
+      Serial.println("\t Erroneo");
+    }
   }
 }
 
@@ -54,7 +66,7 @@ void sending( char buff[], long ID) {
     
 }
 
-bool receive(bool observador){
+bool receive(bool observador = 0){
     if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
     
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
@@ -91,7 +103,7 @@ bool comprobarRespuesta(){
   int i=0;
   
   while(!flag_receive && i<50){
-    flag_receive=receive(0);
+    flag_receive=receive();
     i++;
   }
   
