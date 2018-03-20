@@ -74,16 +74,11 @@ bool comprobarRespuesta(){
   if (flag_receive == 1){
     if(buffRespuesta[0]==0x80){
       return false;
-    }
-    else if(buffRespuesta[0]==0x60){
-      return true;
-    }
-  }
-  else{
-    return false;
+    }else{
+    return true;
   }
 }
-
+}
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   

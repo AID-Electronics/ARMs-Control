@@ -11,7 +11,7 @@
 #include <Wire.h>
 #include <utility/imumaths.h>
                                                         // DATOS FIJOS DEL SISTEMAS DE POLEAS Y ACTUADORES
-#define RESOLUCION 1.8  //GRADOS POR PASO
+#define RESOLUCION 0.007  //GRADOS POR PASO
 #define RADIO_POLEA 25 //mm
 #define ALTURA_POLEAS 360 //mm
 #define D_REF 333//mm
@@ -170,13 +170,12 @@ void moverMotores() {
   
   if(abs(cabeceoPosterior-cabeceoAnterior)>TOL || abs(alabeoPosterior-alabeoAnterior)>TOL ) //Esta sentencia se puede omitir
   {
-      //  t=micros();
+      
       pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
       pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
       pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
       pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
-      //Serial.print("Micros: ");
-      //Serial.println(micros()-t);
+      
       //pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
       //pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
 
@@ -193,16 +192,17 @@ void moverMotores() {
 }
 
 void loop(){
-
+      Serial.print("Micros: ");
+      Serial.println(micros()-t);
   sensors_event_t event;
   bno.getEvent (&event);
 
-  imprimirDatos(event);
+  //imprimirDatos(event);
 
   cabeceoPosterior=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeoPosterior=event.orientation.z*deg2rad;
   
   moverMotores();  
-
+  t=micros();
 }
 
