@@ -137,7 +137,7 @@ bool SetAccel (long accel, long ID){
   Paquete a;
   a.i = accel;
   char SetAccel[]={0x2F,0x04,0x22,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
-  EnviarMSG(SetAccel,ID);
+  return EnviarMSG(SetAccel,ID);
 }
 
 bool SetProfile(int profile, long ID ){
