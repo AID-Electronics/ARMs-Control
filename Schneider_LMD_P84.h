@@ -32,8 +32,11 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   else if (ID == 0x590){
     Serial.println("Respuesta de motor 1");
   }
-  else if (ID == 0x611){
+  else if (ID == 0x591){
     Serial.println("Respuesta de motor 2");
+  }
+  else{
+    Serial.println("ID recibida incorrecta");
   }
 }
 
