@@ -156,16 +156,16 @@ void loop(){
   
   if(abs(cabeceoPosterior-cabeceoAnterior)>TOL || abs(alabeoPosterior-alabeoAnterior)>TOL ) //Esta sentencia se puede omitir
   {
-  
-//pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
-//pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
-//pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
-//pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+ //  t=micros();
+pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
+pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
+pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
+pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+ //Serial.print("Micros: ");
+  //Serial.println(micros()-t);
+//pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
+//pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
 
-pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
-pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
-
-  
   //AQUI iría la accion de movimiento
   mover(pasosMotor1,ID_MOTOR_1);//una vuelta
   mover(pasosMotor3,ID_MOTOR_2);
@@ -173,9 +173,8 @@ pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLE
   cabeceoAnterior=cabeceoPosterior;
   alabeoAnterior=alabeoPosterior;
   }
-  Serial.print("Millis: ");
-  Serial.println(millis()-t);
-  t=millis();
+  
+  
       
   Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
