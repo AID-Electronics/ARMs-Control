@@ -22,6 +22,10 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
+void traduce(byte *leng, byte *buf){
+  
+}
+
 void sending( char buff[], long ID) {
         Serial.print("(SENT)ID: ");
         Serial.print(ID,HEX);
@@ -36,14 +40,14 @@ void sending( char buff[], long ID) {
     
 }
 
-bool receive(){
+bool receive(bool observador){
     if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
     
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
-
-        Serial.print("(RECEIVED)ID: ");
-
-        Serial.print(CAN.getCanId(),HEX);
+        unsigned long ID = CAN.getCanId();
+        
+        Serial.print("(RECEIVED)ID: ");        
+        Serial.print(ID,HEX);
 
        Serial.print(" / ");
 
@@ -53,7 +57,9 @@ bool receive(){
             Serial.print(",");
         }
         Serial.println();
-
+        if(observador == 1){
+          traduce(&len, buffRespuesta);
+        }
         return true;
     }else
     
@@ -65,7 +71,7 @@ bool comprobarRespuesta(){
   int i=0;
   
   while(!flag_receive && i<50){
-    flag_receive=receive();
+    flag_receive=receive(0);
     i++;
   }
   
