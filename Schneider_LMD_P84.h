@@ -22,8 +22,19 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
-void traduce(byte *leng, byte *buf){
-  
+void traduce(byte *leng, byte *buf, unsigned long ID){
+  if (ID == 0x610){
+    Serial.println("Mensaje a motor 1");
+  }
+  else if (ID == 0x611){
+    Serial.println("Mensaje a motor 2");
+  }
+  else if (ID == 0x590){
+    Serial.println("Respuesta de motor 1");
+  }
+  else if (ID == 0x611){
+    Serial.println("Respuesta de motor 2");
+  }
 }
 
 void sending( char buff[], long ID) {
@@ -51,14 +62,20 @@ bool receive(bool observador){
 
        Serial.print(" / ");
 
-        for(int i = 0; i<len; i++)    // print the data
-        {
+        for(int i = 0; i<len; i++){    // print the data
+        
+          if(buffRespuesta[i]==0){
+            Serial.print("00");
+          }
+          else{
             Serial.print(buffRespuesta[i],HEX);
-            Serial.print(",");
+          }
+          Serial.print(",");
         }
         Serial.println();
+        
         if(observador == 1){
-          traduce(&len, buffRespuesta);
+          traduce(&len, buffRespuesta, ID);
         }
         return true;
     }else
@@ -277,4 +294,7 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
  }
+
+
+
 #endif
