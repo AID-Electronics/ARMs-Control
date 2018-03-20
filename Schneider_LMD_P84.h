@@ -137,7 +137,7 @@ bool SetAccel (long accel, long ID){
   Paquete a;
   a.i = accel;
   char SetAccel[]={0x2F,0x04,0x22,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
-  EnviarMSG(SetAccel,ID);
+  return EnviarMSG(SetAccel,ID);
 }
 
 bool SetProfile(int profile, long ID ){
@@ -180,7 +180,6 @@ void mostrarError(int cuenta){
       case 21:
                   Serial.println("    ERROR SET DECCEL          ");
                   break;
-      
                    
       case 19:
                    Serial.println("    ERROR SET MAX VEL         "); 
@@ -201,13 +200,13 @@ void mostrarError(int cuenta){
                   Serial.println("    ERROR MAX VEL Y SET DECCEL     ");
                                       break;
       case 12:
-                   Serial.println("    ERROR SET ACCEL Y SET CURRENT          ");
+                   Serial.println("    ERROR SET ACCEL Y SET CURRENT");
                    break;
       case 11:
-                   Serial.println("    ERROR SET ACCEL , SET CURRENT Y SET DECCEL          ");
+                   Serial.println("    ERROR SET ACCEL , SET CURRENT Y SET DECCEL");
                    break;
       case 10:
-                   Serial.println("    ERROR SET DECCEL Y SET CURRENT          "); 
+                   Serial.println("    ERROR SET DECCEL Y SET CURRENT"); 
                    break;
       case 8:
                    Serial.println("    ERROR MAX VEL Y SET CURRENT          "); 
@@ -251,6 +250,7 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
     polarity[4]=0xFF;
@@ -271,4 +271,17 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif
