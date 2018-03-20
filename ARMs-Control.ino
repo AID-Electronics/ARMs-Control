@@ -17,7 +17,7 @@
 #define D_REF 333//mm
 #define DIST 50
 #define H 360
-#define TOL 2 
+#define TOL 0.035 
 
 double cabeceoAnterior=0;
   double cabeceoPosterior=0;
@@ -91,19 +91,12 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,1000000,1000000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
+    setupMotor(ID_MOTOR_1,1000000,100000,90,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,1000000,100000,90,51200);
 }
 
 void loop(){
 
-
-  
-  
-  
-  
- 
-  
   sensors_event_t event;
   bno.getEvent (&event);
 
@@ -113,9 +106,6 @@ void loop(){
   Serial.print (event.orientation.y,4);
   Serial.print ("\tZ: ");
   Serial.println (event.orientation.z,4);
-
-  
-
 
   cabeceoPosterior=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeoPosterior=event.orientation.z*deg2rad;
@@ -136,9 +126,9 @@ pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-ala
   alabeoAnterior=alabeoPosterior;
   }
 
-    Serial.print ("Pasos motor 1: ");
+  Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
-      Serial.print ("        Pasos motor 2: ");
+  Serial.print ("        Pasos motor 2: ");
   Serial.print (pasosMotor2);
   Serial.print ("      Pasos motor 3: ");
   Serial.print (pasosMotor3);
@@ -153,8 +143,8 @@ pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-ala
   ////////////////////////
   //Serial.println("Motor 1 positivo");
   //while(Serial.read()==-1){}
-    mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-    mover(pasosMotor3,ID_MOTOR_2);//Media vuelta
+    //mover(pasosMotor1,ID_MOTOR_1);//una vuelta
+    //mover(pasosMotor3,ID_MOTOR_2);//Media vuelta
     //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
     //mover(34133,ID_MOTOR_1);//2/3 de vuelta
     
