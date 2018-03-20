@@ -17,7 +17,7 @@
 #define D_REF 333//mm
 #define DIST 50
 #define H 360
-#define TOL 2 
+#define TOL 0.035 
 
 double cabeceoAnterior=0;
   double cabeceoPosterior=0;
@@ -127,7 +127,8 @@ pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-ala
 pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
 pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
 pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
-  
+
+pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
   
   //AQUI iría la accion de movimiento
   
@@ -167,8 +168,8 @@ int calcularPasos1D(double cabeceo,double resolucion,double radioPolea,double di
 { 
   double PASOS;
   double tangente= tan(cabeceo);
-  PASOS=(((tangente*distCentro)/(2*pi*radioPolea))*(360/resolucion)) ;
-
+  //PASOS=(((tangente*distCentro)/(2*pi*radioPolea))*(360/resolucion)) ;
+  PASOS=51200*cabeceo/(2*pi);
   
   int aux=int(PASOS);
   
