@@ -165,20 +165,14 @@ pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-ala
 pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
   
   //AQUI iría la accion de movimiento
-  
+  mover(pasosMotor1,ID_MOTOR_1);//una vuelta
+    mover(pasosMotor3,ID_MOTOR_2);
+
   
   cabeceoAnterior=cabeceoPosterior;
   alabeoAnterior=alabeoPosterior;
   }
-  else{
-    pasosMotor1=0;
-    pasosMotor2=0;
-    pasosMotor3=0;
-    pasosMotor4=0;
-  }
-    mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-    mover(pasosMotor3,ID_MOTOR_2);
-
+      
   Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
   Serial.print ("        Pasos motor 2: ");
@@ -188,7 +182,7 @@ pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_PO
   Serial.print ("    Pasos motor 4: ");
   Serial.print (pasosMotor4);
   Serial.println(" ");
-  delay (200);
+  //delay (2);
 
 }
 
