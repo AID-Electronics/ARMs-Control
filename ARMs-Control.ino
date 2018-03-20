@@ -136,6 +136,14 @@ pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_PO
   cabeceoAnterior=cabeceoPosterior;
   alabeoAnterior=alabeoPosterior;
   }
+  else{
+    pasosMotor1=0;
+    pasosMotor2=0;
+    pasosMotor3=0;
+    pasosMotor4=0;
+  }
+    mover(pasosMotor1,ID_MOTOR_1);//una vuelta
+    mover(pasosMotor3,ID_MOTOR_2);
 
     Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
@@ -149,16 +157,6 @@ pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_PO
   delay (200);
 
 
-
-
-  ////////////////////////
-  //Serial.println("Motor 1 positivo");
-  //while(Serial.read()==-1){}
-    mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-    mover(pasosMotor3,ID_MOTOR_2);//Media vuelta
-    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
-    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
-    
 
 
 }
