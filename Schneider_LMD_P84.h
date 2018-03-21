@@ -41,7 +41,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println("\t ID recibida incorrecta");
   }
 
-  // Check msg type
+  // Check msg type - buf[0]
   if (buf[0]==0x2F||buf[0]==0x2B||buf[0]==0x27|buf[0]==0x23){
     Serial.println("\t Write request");
   }
@@ -58,9 +58,15 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println("\t Response: ERROR");
   }
 
-  // Check comand
+  // Check comand - buf[1] & buf[2]
   if (buf[1]==0x83 && buf[2]==0x60){
     Serial.println("\t Profile acceleracion");
+    Paquete p;
+    p.b[0] = buf[4];
+    p.b[1] = buf[5];
+    p.b[2] = buf[6];
+    p.b[3] = buf[7];
+    Serial.println(p.i);
   }
   else if (buf[1]==0x84 && buf[2]==0x60){
     Serial.println("\t Profile deceleration");
@@ -80,6 +86,9 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   else if (buf[1]==0x7A && buf[2]==0x60){
     Serial.println("\t Target position");
   }
+
+  // buf[3] is allways empty
+
 }
 
 void sending( char buff[], long ID) {
