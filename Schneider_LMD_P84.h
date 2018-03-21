@@ -57,10 +57,13 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   else if (buf[0]==0x80){
     Serial.println("\t Response: ERROR");
   }
+  else{
+    Serial.println("UNKNOWN MSG TYPE");
+  }
 
   // Check comand - buf[1] & buf[2]
   if (buf[1]==0x83 && buf[2]==0x60){
-    Serial.println("\t Profile acceleracion");
+    Serial.print("\t Profile acceleracion: ");
     Paquete p;
     p.b[0] = buf[4];
     p.b[1] = buf[5];
@@ -70,7 +73,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println(" step/sec^2");
   }
   else if (buf[1]==0x84 && buf[2]==0x60){
-    Serial.println("\t Profile deceleration");
+    Serial.print("\t Profile deceleration: ");
     Paquete p;
     p.b[0] = buf[4];
     p.b[1] = buf[5];
@@ -80,7 +83,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println(" step/sec^2");
   }
   else if (buf[1]==0x81 && buf[2]==0x60){
-    Serial.println("\t Profile velocity");
+    Serial.print("\t Profile velocity: ");
     Paquete p;
     p.b[0] = buf[4];
     p.b[1] = buf[5];
@@ -90,7 +93,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println(" step/sec");
   }
   else if (buf[1]==0x04 && buf[2]==0x22){
-    Serial.println("\t Run current");
+    Serial.print("\t Run current: ");
     Paquete p;
     p.b[0] = buf[4];
     p.b[1] = buf[5];
@@ -112,10 +115,25 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     }
   }
   else if (buf[1]==0x60 && buf[2]==0x60){
-    Serial.println("\t Modes of operation");
+    Serial.print("\t Mode of operation: ");
+    if (buf[4]==0x01 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Profile position");
+    }
+    else if (buf[4]==0x02 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Profile velocity");
+    }
+    else if (buf[4]==0x03 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Homing");
+    }
+    else{
+      Serial.println("UNKNOWN");
+    }
   }
   else if (buf[1]==0x7A && buf[2]==0x60){
     Serial.println("\t Target position");
+  }
+  else{
+    Serial.println("UNKNOWN COMMAND");
   }
 
   // buf[3] is allways empty
