@@ -21,15 +21,15 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,1000000,1000000,80,5120); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    //setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
 }
 
 void loop(){
   Serial.println("Modo relativo sin espera");
   //Serial.println("Motor 1 positivo");
   while(Serial.read()==-1){}
-    mover(51200/2,ID_MOTOR_1);//una vuelta
+    mover(512000,ID_MOTOR_1);//una vuelta
     //while(Serial.read()==-1){}
     //mover(-51200,ID_MOTOR_1);//Media vuelta
     //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
