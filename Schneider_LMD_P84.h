@@ -66,16 +66,38 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     p.b[1] = buf[5];
     p.b[2] = buf[6];
     p.b[3] = buf[7];
-    Serial.println(p.i);
+    Serial.print(p.i);
+    Serial.println(" step/sec^2");
   }
   else if (buf[1]==0x84 && buf[2]==0x60){
     Serial.println("\t Profile deceleration");
+    Paquete p;
+    p.b[0] = buf[4];
+    p.b[1] = buf[5];
+    p.b[2] = buf[6];
+    p.b[3] = buf[7];
+    Serial.print(p.i);
+    Serial.println(" step/sec^2");
   }
   else if (buf[1]==0x81 && buf[2]==0x60){
     Serial.println("\t Profile velocity");
+    Paquete p;
+    p.b[0] = buf[4];
+    p.b[1] = buf[5];
+    p.b[2] = buf[6];
+    p.b[3] = buf[7];
+    Serial.print(p.i);
+    Serial.println(" step/sec");
   }
   else if (buf[1]==0x04 && buf[2]==0x22){
     Serial.println("\t Run current");
+    Paquete p;
+    p.b[0] = buf[4];
+    p.b[1] = buf[5];
+    p.b[2] = buf[6];
+    p.b[3] = buf[7];
+    Serial.print(p.i);
+    Serial.println(" %");
   }
   else if (buf[1]==0x40 && buf[2]==0x60){
     Serial.println("\t Control word (state machine)");
