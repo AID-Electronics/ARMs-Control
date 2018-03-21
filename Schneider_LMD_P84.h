@@ -164,6 +164,15 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.print(p.i);
     Serial.println(" steps");
   }
+  else if (buf[1]==0x7E && buf[2]==0x60){   //Polarity
+    Serial.print("\t Polarity: ");
+    if (buf[4]==0xFF && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Reverse");
+    }
+    if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Forward");
+    }
+  }
   else{
     Serial.println("UNKNOWN COMMAND");
   }
