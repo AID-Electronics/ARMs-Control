@@ -113,6 +113,31 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     else if (buf[4]==0x0F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
       Serial.println("Operation enable");
     }
+    // Perform move
+    else if (buf[4]==0x1F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 1 (absolute mode/finish)");
+    }
+    else if (buf[4]==0x0F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 0 (absolute mode/finish)");
+    }
+    else if (buf[4]==0x3F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 1 (absolute mode/immediate)");
+    }
+    else if (buf[4]==0x2F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 0 (absolute mode/immediate)");
+    }
+    else if (buf[4]==0x5F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 1 (relative mode/finish)");
+    }
+    else if (buf[4]==0x4F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 0 (relative mode/finish)");
+    }
+    else if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 1 (relative mode/immediate)");
+    }
+    else if (buf[4]==0x6F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Set bit 4 to 0 (relative mode/immediate)");
+    }
   }
   else if (buf[1]==0x60 && buf[2]==0x60){
     Serial.print("\t Mode of operation: ");
