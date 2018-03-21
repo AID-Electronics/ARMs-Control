@@ -43,12 +43,23 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
 
   // Check response OK
   if (ID == 0x590 || ID == 0x591){
-    if (buffRespuesta[0]==0x60){
+    if (buf[0]==0x60){
       Serial.println("\t Correcto");
     }
-    else if (buffRespuesta[0]==0x80){
+    else if (buf[0]==0x80){
       Serial.println("\t Erroneo");
     }
+  }
+
+  // Check msg type
+  if (buf[0]==0x2F||buf[0]==0x2B||buf[0]==0x27|buf[0]==0x23){
+    Serial.println("\t Write request");
+  }
+  else if (buf[0]==0x60){
+    Serial.println("\t Write response: OK");
+  }
+  else if (buf[0]==0x80){
+    Serial.println("\t Write response: ERROR");
   }
 }
 
