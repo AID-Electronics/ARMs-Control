@@ -57,6 +57,29 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   else if (buf[0]==0x80){
     Serial.println("\t Response: ERROR");
   }
+
+  // Check comand
+  if (buf[1]==0x83 && buf[2]==0x60){
+    Serial.println("\t Profile acceleracion");
+  }
+  else if (buf[1]==0x84 && buf[2]==0x60){
+    Serial.println("\t Profile deceleration");
+  }
+  else if (buf[1]==0x81 && buf[2]==0x60){
+    Serial.println("\t Profile velocity");
+  }
+  else if (buf[1]==0x04 && buf[2]==0x22){
+    Serial.println("\t Run current");
+  }
+  else if (buf[1]==0x40 && buf[2]==0x60){
+    Serial.println("\t Control word (state machine)");
+  }
+  else if (buf[1]==0x60 && buf[2]==0x60){
+    Serial.println("\t Modes of operation");
+  }
+  else if (buf[1]==0x7A && buf[2]==0x60){
+    Serial.println("\t Target position");
+  }
 }
 
 void sending( char buff[], long ID) {
