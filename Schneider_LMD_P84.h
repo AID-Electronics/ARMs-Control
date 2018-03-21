@@ -100,7 +100,16 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println(" %");
   }
   else if (buf[1]==0x40 && buf[2]==0x60){
-    Serial.println("\t Control word (state machine)");
+    Serial.print("\t Control word (state machine) - ");
+    if (buf[4]==0x06 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Ready to switch on");
+    }
+    else if (buf[4]==0x07 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Swiched on");
+    }
+    else if (buf[4]==0x0F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      Serial.println("Operation enable");
+    }
   }
   else if (buf[1]==0x60 && buf[2]==0x60){
     Serial.println("\t Modes of operation");
