@@ -139,8 +139,8 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,100000,100000,80,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,100000,100000,80,51200);
+    setupMotor(ID_MOTOR_1,100000,100000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,100000,100000,80,512000);
 
     
 }
@@ -742,8 +742,8 @@ long matrix[][3]={
   
   
 void loop(){
-      Serial.print("Micros: ");
-      Serial.println(micros()-t);
+      //Serial.print("Micros: ");
+      //Serial.println(micros()-t);
   sensors_event_t event;
   bno.getEvent (&event);
 
@@ -755,10 +755,10 @@ void loop(){
   alabeoPosterior=matrix[i][0];
   moverMotores(); 
 
-  delay(1);
-  
-  t=micros();
+  delay(50);
   }
+  //t=micros();
+  
   exit(0);
 }
 
