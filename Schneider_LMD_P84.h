@@ -258,8 +258,8 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   p.i=abs(pasos);
   
   char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
-  char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
-  char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
+  char CadPos2[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
+  char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
 
   EnviarMSG(polarity,ID);
   EnviarMSG(CadPos1,ID);
