@@ -42,7 +42,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   }
 
   // Check msg type - buf[0]
-  if (buf[0]==0x2F||buf[0]==0x2B||buf[0]==0x27|buf[0]==0x23){
+  if      (buf[0]==0x2F||buf[0]==0x2B||buf[0]==0x27|buf[0]==0x23){
     Serial.println("\t Write request");
   }
   else if (buf[0]==0x4F||buf[0]==0x4B||buf[0]==0x47|buf[0]==0x43){
@@ -62,7 +62,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
   }
 
   // Check comand - buf[1] & buf[2]
-  if (buf[1]==0x83 && buf[2]==0x60){
+  if      (buf[1]==0x83 && buf[2]==0x60){   //Profile
     Serial.print("\t Profile acceleracion: ");
     Paquete p;
     p.b[0] = buf[4];
@@ -72,7 +72,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.print(p.i);
     Serial.println(" step/sec^2");
   }
-  else if (buf[1]==0x84 && buf[2]==0x60){
+  else if (buf[1]==0x84 && buf[2]==0x60){   //Profile deceleration
     Serial.print("\t Profile deceleration: ");
     Paquete p;
     p.b[0] = buf[4];
@@ -82,7 +82,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.print(p.i);
     Serial.println(" step/sec^2");
   }
-  else if (buf[1]==0x81 && buf[2]==0x60){
+  else if (buf[1]==0x81 && buf[2]==0x60){   //Profile velocity
     Serial.print("\t Profile velocity: ");
     Paquete p;
     p.b[0] = buf[4];
@@ -92,7 +92,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.print(p.i);
     Serial.println(" step/sec");
   }
-  else if (buf[1]==0x04 && buf[2]==0x22){
+  else if (buf[1]==0x04 && buf[2]==0x22){   //Run current
     Serial.print("\t Run current: ");
     Paquete p;
     p.b[0] = buf[4];
@@ -102,7 +102,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.print(p.i);
     Serial.println(" %");
   }
-  else if (buf[1]==0x40 && buf[2]==0x60){
+  else if (buf[1]==0x40 && buf[2]==0x60){   //State machine
     Serial.print("\t Control word (state machine) - ");
     if (buf[4]==0x06 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
       Serial.println("Ready to switch on");
@@ -139,7 +139,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
       Serial.println("Set bit 4 to 0 (relative mode/immediate)");
     }
   }
-  else if (buf[1]==0x60 && buf[2]==0x60){
+  else if (buf[1]==0x60 && buf[2]==0x60){   //Operation mode
     Serial.print("\t Mode of operation: ");
     if (buf[4]==0x01 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
       Serial.println("Profile position");
