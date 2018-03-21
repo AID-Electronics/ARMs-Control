@@ -154,8 +154,15 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
       Serial.println("UNKNOWN");
     }
   }
-  else if (buf[1]==0x7A && buf[2]==0x60){
-    Serial.println("\t Target position");
+  else if (buf[1]==0x7A && buf[2]==0x60){   //Target position
+    Serial.print("\t Target position: ");
+    Paquete p;
+    p.b[0] = buf[4];
+    p.b[1] = buf[5];
+    p.b[2] = buf[6];
+    p.b[3] = buf[7];
+    Serial.print(p.i);
+    Serial.println(" steps");
   }
   else{
     Serial.println("UNKNOWN COMMAND");
