@@ -22,7 +22,7 @@ void setup(){
     delay(200);
   
     setupMotor(ID_MOTOR_1,1000000,1000000,100,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    //setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
+    setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
 }
 
 char a;
@@ -40,10 +40,12 @@ void loop(){
     {
       case '1':
               mover(0L,ID_MOTOR_1);
+              mover(0L,ID_MOTOR_2);
               break;
               
       case '2':
                mover(25600L,ID_MOTOR_1);
+               mover(25600L,ID_MOTOR_2);
                 break;
 
       case '3':
