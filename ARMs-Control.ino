@@ -9,7 +9,7 @@
 
 void setup(){
   
-    Serial.begin(115200);
+    Serial.begin(1000000);
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
         Serial.println("CAN BUS Shield init fail");
