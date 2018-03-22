@@ -19,10 +19,8 @@
 #define H 360
 #define TOL 0.035 
 
-double cabeceoAnterior=0;
-  double cabeceoPosterior=0;
-  double alabeoAnterior=0;
-  double alabeoPosterior=0;
+double cabeceo;
+double alabeo;
 
   int pasosMotor1;
   int pasosMotor2;
@@ -168,24 +166,22 @@ void moverMotores() {
 
 
   
-  if(abs(cabeceoPosterior-cabeceoAnterior)>TOL || abs(alabeoPosterior-alabeoAnterior)>TOL ) //Esta sentencia se puede omitir
-  {
-      
-//      pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
-//      pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
-//      pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
-//      pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
  
-      pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
-      pasosMotor2=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
+      
+      pasosMotor1=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
+      pasosMotor2=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
+      pasosMotor3=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
+      pasosMotor4=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+ 
+      pasosMotor1=calcularPasos1D(cabeceo,RESOLUCION,RADIO_POLEA,H);
+      pasosMotor2=calcularPasos1D(alabeo,RESOLUCION,RADIO_POLEA,H);
 
       //AQUI iría la accion de movimiento
       mover(pasosMotor1,ID_MOTOR_1);//una vuelta
       mover(pasosMotor2,ID_MOTOR_2);
   
-      cabeceoAnterior=cabeceoPosterior;
-      alabeoAnterior=alabeoPosterior;
-  }
+    
+
 
       
   
@@ -199,8 +195,8 @@ void loop(){
 
   //imprimirDatos(event);
 
-  cabeceoPosterior=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
-  alabeoPosterior=event.orientation.z*deg2rad;
+  cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
+  alabeo=event.orientation.z*deg2rad;
   
   moverMotores();  
   t=micros();
