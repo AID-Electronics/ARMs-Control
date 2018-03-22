@@ -13,7 +13,7 @@ char str[20];
 
 union Paquete{
   byte b[4];
-  uint32_t i;
+  int32_t i;
 };
 const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
@@ -210,8 +210,11 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
       if (buf[4]==0xFF && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
         Serial.println("Reverse");
       }
-      if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+      else if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
         Serial.println("Forward");
+      }
+      else{
+        Serial.println("UNKNOWN");
       }
     }
     else{
