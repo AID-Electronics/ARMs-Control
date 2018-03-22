@@ -13,7 +13,7 @@ char str[20];
 
 union Paquete{
   byte b[4];
-  uint32_t i;
+  long i;
 };
 const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
 const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
@@ -254,23 +254,24 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
-    polarity[4]=0xFF;
+    //polarity[4]=0xFF;
   }
   else {
-    polarity[4]=0x7F;
+    //polarity[4]=0x7F;
   }
 
   Paquete p;
-  p.i=abs(pasos);
+  //p.i=abs(pasos);
+  p.i=pasos;
   
   char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
-  char CadPos2[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
-  char CadPos3[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
+  char CadPos2[]={0x2B,0x40,0x60,0x00,0x3F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
+  char CadPos3[]={0x2B,0x40,0x60,0x00,0x2F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
 //5F,4F-->movi relativo con espera
 //7F,6F-->movi relativo sin espera
 //3F,2F-->movi absoluto sin espera
 //1F,0F-->movi absluto con espera
-  EnviarMSG(polarity,ID);
+  //EnviarMSG(polarity,ID);
   EnviarMSG(CadPos1,ID);
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);

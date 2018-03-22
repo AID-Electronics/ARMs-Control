@@ -25,11 +25,49 @@ void setup(){
     //setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
 }
 
+char a;
+
 void loop(){
   Serial.println("Modo relativo sin espera");
   //Serial.println("Motor 1 positivo");
-  while(Serial.read()==-1){}
-    mover(512000,ID_MOTOR_1);//una vuelta
+
+  a=Serial.read();
+  while(a==-1){
+    a=Serial.read();
+    }
+
+    switch(a)
+    {
+      case '1':
+              mover(0L,ID_MOTOR_1);
+              break;
+              
+      case '2':
+               mover(25600L,ID_MOTOR_1);
+                break;
+
+      case '3':
+               mover(-25600L,ID_MOTOR_1);
+               break;
+
+      case '4':
+               mover(6400L+25600L,ID_MOTOR_1);
+               break;
+
+      case '5':
+               mover(-51200,ID_MOTOR_1);
+               break;
+
+      case '6':
+          mover(-25600,ID_MOTOR_1);
+          break;
+               
+      default:
+               mover(256000,ID_MOTOR_1);
+               break;
+               
+    }
+  
     //while(Serial.read()==-1){}
     //mover(-51200,ID_MOTOR_1);//Media vuelta
     //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
