@@ -108,7 +108,7 @@ int calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radio
 void setup(){
 
   ////////////////////////////////////////////////////////////////////IMU
-    Serial.begin(2000000);
+    Serial.begin(1000000);
 
     if(!bno.begin())
   {
@@ -173,8 +173,8 @@ void moverMotores() {
       pasosMotor3=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
       pasosMotor4=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
  
-      pasosMotor1=calcularPasos1D(cabeceo,RESOLUCION,RADIO_POLEA,H);
-      pasosMotor2=calcularPasos1D(alabeo,RESOLUCION,RADIO_POLEA,H);
+     // pasosMotor1=calcularPasos1D(cabeceo,RESOLUCION,RADIO_POLEA,H);
+     // pasosMotor2=calcularPasos1D(alabeo,RESOLUCION,RADIO_POLEA,H);
 
       //AQUI iría la accion de movimiento
       mover(pasosMotor1,ID_MOTOR_1);//una vuelta
