@@ -22,9 +22,9 @@
 #define TOL 0.035 
 #define MAX 1492
 
-double cabeceoAnterior=0;
+
   double cabeceoPosterior=0;
-  double alabeoAnterior=0;
+
   double alabeoPosterior=0;
 
   int cont=0;
@@ -174,24 +174,22 @@ void moverMotores() {
 
 
   
-  if(abs(cabeceoPosterior-cabeceoAnterior)>TOL || abs(alabeoPosterior-alabeoAnterior)>TOL ) //Esta sentencia se puede omitir
-  {
+  
       
-      pasosMotor1=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
-      pasosMotor2=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
-      pasosMotor3=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
-      pasosMotor4=calcularPasos2D(cabeceoPosterior-cabeceoAnterior,alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+      pasosMotor1=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
+      pasosMotor2=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
+      pasosMotor3=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
+      pasosMotor4=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
       
       //pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
       //pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
 
       //AQUI iría la accion de movimiento
-      mover(pasosMotor1,ID_MOTOR_1);//una vuelta
-      mover(pasosMotor2,ID_MOTOR_2);
+     // mover(pasosMotor1,ID_MOTOR_1);//una vuelta
+      //mover(pasosMotor2,ID_MOTOR_2);
   
-      cabeceoAnterior=cabeceoPosterior;
-      alabeoAnterior=alabeoPosterior;
-  }
+      
+ 
 
       
   
@@ -747,7 +745,7 @@ void loop(){
   sensors_event_t event;
   bno.getEvent (&event);
 
-  //imprimirDatos(event);
+  imprimirDatos(event);
 
    for(int i=0;i<MAX;i++)
   {
