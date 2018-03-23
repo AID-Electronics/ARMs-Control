@@ -202,6 +202,8 @@ void setPolarity (long pasos, long ID){
 }
 
 void moverAbsEspera(long pos,long ID){
+  Serial.print("Movimiento absoluto con espera \tPosicion: ");
+  Serial.println(pos);
   Paquete p;
   p.i = pos;
   
@@ -215,6 +217,8 @@ void moverAbsEspera(long pos,long ID){
 }
 
 void moverAbsInmediato(long pos,long ID){
+  Serial.print("Movimiento absoluto sin espera \tPosicion: ");
+  Serial.println(pos);
   Paquete p;
   p.i = pos;
   
@@ -228,6 +232,8 @@ void moverAbsInmediato(long pos,long ID){
 }
 
 void moverRelatEspera(long pasos,long ID){
+  Serial.print("Movimiento relativo con espera \tPasos: ");
+  Serial.println(pasos);
   Paquete p;
   p.i = pasos;
   
@@ -235,12 +241,14 @@ void moverRelatEspera(long pasos,long ID){
   char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};
   char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
   
-  EnviarMSG(pasos,ID);
+  EnviarMSG(nPasos,ID);
   EnviarMSG(tipo_mov1,ID);
   EnviarMSG(tipo_mov2,ID);
 }
 
 void moverRelatInmediato(long pasos,long ID){
+  Serial.print("Movimiento relativo sin espera \tPasos: ");
+  Serial.println(pasos);
   Paquete p;
   p.i = pasos;
   
@@ -248,7 +256,7 @@ void moverRelatInmediato(long pasos,long ID){
   char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00};
   char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00};
   
-  EnviarMSG(pasos,ID);
+  EnviarMSG(nPasos,ID);
   EnviarMSG(tipo_mov1,ID);
   EnviarMSG(tipo_mov2,ID);
 }
