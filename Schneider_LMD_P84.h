@@ -190,31 +190,75 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
-
-
-void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+void setPolarity (long pasos, long ID){
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
-    //polarity[4]=0xFF;
+    polarity[4]=0xFF;
   }
   else {
-    //polarity[4]=0x7F;
+    polarity[4]=0x7F;
   }
+  EnviarMSG(polarity,ID);
+}
 
+void moverAbsEspera(long pos,long ID){
+  Serial.print("Movimiento absoluto con espera \t- Posicion: ");
+  Serial.println(pos);
   Paquete p;
-  //p.i=abs(pasos);
-  p.i=pasos;
+  p.i = pos;
   
-  char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
-  char CadPos2[]={0x2B,0x40,0x60,0x00,0x3F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
-  char CadPos3[]={0x2B,0x40,0x60,0x00,0x2F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
-//5F,4F-->movi relativo con espera
-//7F,6F-->movi relativo sin espera
-//3F,2F-->movi absoluto sin espera
-//1F,0F-->movi absluto con espera
-  //EnviarMSG(polarity,ID);
-  EnviarMSG(CadPos1,ID);
-  EnviarMSG(CadPos2,ID);
-  EnviarMSG(CadPos3,ID);
- }
+  char posicion[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x1F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
+  
+  EnviarMSG(posicion,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
+void moverAbsInmediato(long pos,long ID){
+  Serial.print("Movimiento absoluto sin espera \t- Posicion: ");
+  Serial.println(pos);
+  Paquete p;
+  p.i = pos;
+  
+  char posicion[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x3F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x2F,0x00,0x00,0x00};
+  
+  EnviarMSG(posicion,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
+void moverRelatEspera(long pasos,long ID){
+  Serial.print("Movimiento relativo con espera \t- Pasos: ");
+  Serial.println(pasos);
+  Paquete p;
+  p.i = pasos;
+  
+  char nPasos[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
+  
+  EnviarMSG(nPasos,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
+void moverRelatInmediato(long pasos,long ID){
+  Serial.print("Movimiento relativo sin espera \t- Pasos: ");
+  Serial.println(pasos);
+  Paquete p;
+  p.i = pasos;
+  
+  char nPasos[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00};
+  
+  EnviarMSG(nPasos,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
 #endif
