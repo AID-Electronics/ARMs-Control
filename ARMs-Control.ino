@@ -20,8 +20,9 @@
 #define DIST 50
 #define H 360
 #define TOL 0.035 
-#define MAX 1492
+#define MAX 533
 
+sensors_event_t event;
 
   double cabeceoPosterior=0;
 
@@ -147,22 +148,22 @@ void setup(){
 
 
 void imprimirDatos(sensors_event_t event){
-
+/*
   Serial.print ("X: ");
   Serial.print (event.orientation.x,4);
   Serial.print ("\tY: ");
   Serial.print (event.orientation.y,4);
   Serial.print ("\tZ: ");
   Serial.println (event.orientation.z,4);
+*/
 
-
-  Serial.print ("Pasos motor 1: ");
+  Serial.print ("  ");
   Serial.print (pasosMotor1);
-  Serial.print ("        Pasos motor 2: ");
+  Serial.print ("  ");
   Serial.print (pasosMotor2);
-  Serial.print ("      Pasos motor 3: ");
+  Serial.print ("  ");
   Serial.print (pasosMotor3);
-  Serial.print ("    Pasos motor 4: ");
+  Serial.print ("  ");
   Serial.print (pasosMotor4);
   Serial.println(" ");
   //delay (2);
@@ -176,11 +177,11 @@ void moverMotores() {
   
   
       
-      pasosMotor1=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
-      pasosMotor2=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
-      pasosMotor3=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
-      pasosMotor4=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
-      
+      pasosMotor2=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
+      pasosMotor1=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
+      pasosMotor4=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
+      pasosMotor3=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
+     // imprimirDatos(event);
       //pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
       //pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
 
@@ -742,15 +743,19 @@ double matrix[][3]={
 void loop(){
       //Serial.print("Micros: ");
       //Serial.println(micros()-t);
-  sensors_event_t event;
+  
   bno.getEvent (&event);
 
-  imprimirDatos(event);
-
+  
+Serial.println ("  ");
    for(int i=0;i<MAX;i++)
   {
   cabeceoPosterior=matrix[i][1]; //No estoy demasiado seguro de que sea el eje correcto
   alabeoPosterior=matrix[i][0];
+ //   Serial.println ("  ");
+    Serial.println ((matrix[i][1]/deg2rad));
+ // Serial.print ("  ");
+  //Serial.print ((matrix[i][0]/deg2rad));
   moverMotores(); 
   delay(10);
   }
