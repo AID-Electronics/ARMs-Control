@@ -253,22 +253,4 @@ void moverRelatInmediato(long pasos,long ID){
   EnviarMSG(tipo_mov2,ID);
 }
 
-void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
-  
-  Paquete p;
-  //p.i=abs(pasos);
-  p.i=pasos;
-  
-  char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
-  char CadPos2[]={0x2B,0x40,0x60,0x00,0x3F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
-  char CadPos3[]={0x2B,0x40,0x60,0x00,0x2F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
-//5F,4F-->movi relativo con espera
-//7F,6F-->movi relativo sin espera
-//3F,2F-->movi absoluto sin espera
-//1F,0F-->movi absluto con espera
-
-  EnviarMSG(CadPos1,ID);
-  EnviarMSG(CadPos2,ID);
-  EnviarMSG(CadPos3,ID);
- }
 #endif
