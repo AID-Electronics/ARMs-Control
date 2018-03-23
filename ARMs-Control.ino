@@ -196,7 +196,7 @@ void moverMotores() {
       
   
 }
-long matrix[][3]={
+double matrix[][3]={
   {0.215969994664, 0.0114713395014, 1.22666156292},
 {0.213174015284, 0.0056540989317, 1.22521841526},
 {0.210524126887, 0.00119585474022, 1.22429478168},
@@ -754,8 +754,7 @@ void loop(){
   cabeceoPosterior=matrix[i][1]; //No estoy demasiado seguro de que sea el eje correcto
   alabeoPosterior=matrix[i][0];
   moverMotores(); 
-
-  delay(50);
+  delay(10);
   }
   //t=micros();
   
