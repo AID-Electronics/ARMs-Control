@@ -9,7 +9,7 @@
 
 void setup(){
   
-    Serial.begin(115200);
+    Serial.begin(1000000);
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
         Serial.println("CAN BUS Shield init fail");
@@ -28,8 +28,6 @@ void setup(){
 char a;
 
 void loop(){
-  Serial.println("Modo relativo sin espera");
-  //Serial.println("Motor 1 positivo");
 
   a=Serial.read();
   while(a==-1){
@@ -39,33 +37,32 @@ void loop(){
     switch(a)
     {
       case '1':
-              mover(0L,ID_MOTOR_1);
-              mover(0L,ID_MOTOR_2);
+              moverAbsEspera(0,ID_MOTOR_1);
+              //moverAbsEspera(0,ID_MOTOR_2);
               break;
               
       case '2':
-               mover(25600L,ID_MOTOR_1);
-               mover(25600L,ID_MOTOR_2);
+               moverRelatEspera(25600L,ID_MOTOR_1);
                 break;
 
       case '3':
-               mover(-25600L,ID_MOTOR_1);
+               moverAbsInmediato(25600L,ID_MOTOR_1);
                break;
 
       case '4':
-               mover(6400L+25600L,ID_MOTOR_1);
+               moverRelatInmediato(25600L,ID_MOTOR_1);
                break;
 
       case '5':
-               mover(-51200,ID_MOTOR_1);
+               //mover(-51200,ID_MOTOR_1);
                break;
 
       case '6':
-          mover(-25600,ID_MOTOR_1);
+          //mover(-25600,ID_MOTOR_1);
           break;
                
       default:
-               mover(256000,ID_MOTOR_1);
+               //mover(256000,ID_MOTOR_1);
                break;
                
     }
