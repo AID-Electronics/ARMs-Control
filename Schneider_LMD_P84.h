@@ -166,68 +166,7 @@ bool SetProfile(int profile, long ID ){
   EnviarMSG(ProfileSet,ID);
 }
 
-void mostrarError(int cuenta){
-   switch (cuenta){
-      
-      case 26:
-                  Serial.println("    TODO CORRECTO          ");
-                  break;
 
-      case 23:
-                  Serial.println("    ERROR SET ACCEL          ");
-                  break;
-     
-
-      case 21:
-                  Serial.println("    ERROR SET DECCEL          ");
-                  break;
-      
-                   
-      case 19:
-                   Serial.println("    ERROR SET MAX VEL         "); 
-                   break;
-                   
-      case 18:
-                   Serial.println("    ERROR SET DECCEL Y SET ACCEL     ");
-                   break;
-
-      case 16:
-                   Serial.println("    ERROR MAX VEL Y SET ACCEL     ");
-                   break;
-                                      
-      case 15:
-                   Serial.println("    Error SET CURRENT         ");    
-                                      break;        
-      case 14:
-                  Serial.println("    ERROR MAX VEL Y SET DECCEL     ");
-                                      break;
-      case 12:
-                   Serial.println("    ERROR SET ACCEL Y SET CURRENT          ");
-                   break;
-      case 11:
-                   Serial.println("    ERROR SET ACCEL , SET CURRENT Y SET DECCEL          ");
-                   break;
-      case 10:
-                   Serial.println("    ERROR SET DECCEL Y SET CURRENT          "); 
-                   break;
-      case 8:
-                   Serial.println("    ERROR MAX VEL Y SET CURRENT          "); 
-                                            break;          
-       case 7:
-                   Serial.println("    ERROR SET DECCEL , SET CURRENT Y SET ACCEL         "); 
-                                      break;
-       case 5:
-                   Serial.println("    ERROR MAX VEL , SET CURRENT Y SET ACCEL         ");
-                                      break;
-       case 3:
-                   Serial.println("    ERROR SET DECCEL Y SET CURRENT Y MAX VEL         ");
-                                      break;
-       default:
-                  Serial.println("   ALGO VA MAL       ");
-                                      break;
-    }
-  
-}
 
 
 
@@ -238,18 +177,20 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
 
     //instrucciones de configuración
     
-
-    cuenta=   SetAccel(Acel,ID_motor)*3 + setDeccel(Decel,ID_motor)*5 +  maxVelocity(MaxVel, ID_motor)* 7 + SetCurrent(current, ID_motor)*11;
-
-    mostrarError(cuenta);
-   
-
+    SetAccel(Acel,ID_motor);
+    setDeccel(Decel,ID_motor);
+    maxVelocity(MaxVel, ID_motor);
+    SetCurrent(current, ID_motor);
+    
+    
     //instrucciones de cambio de estado
     EnviarMSG(ReadytoSwitch,ID_motor);
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
+
+
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
