@@ -201,6 +201,19 @@ void setPolarity (long pasos, long ID){
   EnviarMSG(polarity,ID);
 }
 
+void moverAbsEspera(long pos,long ID){
+  Paquete p;
+  p.i = pos;
+  
+  char posicion[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x1F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
+  
+  EnviarMSG(posicion,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
   
   Paquete p;
