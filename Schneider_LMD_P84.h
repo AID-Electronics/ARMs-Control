@@ -190,17 +190,19 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
-
-
-void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+void setPolarity (long pasos, long ID){
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
-    //polarity[4]=0xFF;
+    polarity[4]=0xFF;
   }
   else {
-    //polarity[4]=0x7F;
+    polarity[4]=0x7F;
   }
+  EnviarMSG(polarity,ID);
+}
 
+void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+  
   Paquete p;
   //p.i=abs(pasos);
   p.i=pasos;
@@ -212,7 +214,7 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
 //7F,6F-->movi relativo sin espera
 //3F,2F-->movi absoluto sin espera
 //1F,0F-->movi absluto con espera
-  //EnviarMSG(polarity,ID);
+
   EnviarMSG(CadPos1,ID);
   EnviarMSG(CadPos2,ID);
   EnviarMSG(CadPos3,ID);
