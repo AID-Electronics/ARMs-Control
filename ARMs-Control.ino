@@ -4,7 +4,33 @@
 #include <SPI.h>
 #include "Schneider_LMD_P84.h"
 
-#define ID_MOTOR_1 0x610
+#define ID_MOTOR_1 0x611
+#define ID_MOTOR_1_R 0x591
+ 
+
+#define T_PDO1 0x190
+#define R_PDO1 0x210
+
+#define T_PDO2 0x290
+#define R_PDO2 0x310
+
+#define T_PDO3 0x390
+#define R_PDO3 0x410
+
+
+#define T_PDO4 0x490
+#define R_PDO4 0x510
+
+
+
+
+
+
+
+
+
+
+
 #define ID_MOTOR_2 0x611
 
 void setup(){
@@ -63,7 +89,38 @@ void loop(){
       case '6':
           mover(-25600,ID_MOTOR_1);
           break;
-               
+
+
+      case '7':
+
+          leerPOS(R_PDO1);
+          break;
+
+      case '8':
+
+          leerPOS(R_PDO2);
+          break;
+
+      case '9':
+
+          leerPOS(R_PDO3);
+          break;
+
+      case '0':
+
+          leerPOS(R_PDO4);
+          break;
+              
+      case 'Q':
+
+          leerPOS(ID_MOTOR_1);
+          break;
+
+      case 'W':
+
+          leerPOS(ID_MOTOR_1_R);
+          break;
+          
       default:
                mover(256000,ID_MOTOR_1);
                break;
