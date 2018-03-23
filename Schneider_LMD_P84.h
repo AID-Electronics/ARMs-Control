@@ -202,7 +202,7 @@ void setPolarity (long pasos, long ID){
 }
 
 void moverAbsEspera(long pos,long ID){
-  Serial.print("Movimiento absoluto con espera \tPosicion: ");
+  Serial.print("Movimiento absoluto con espera \t- Posicion: ");
   Serial.println(pos);
   Paquete p;
   p.i = pos;
@@ -217,7 +217,7 @@ void moverAbsEspera(long pos,long ID){
 }
 
 void moverAbsInmediato(long pos,long ID){
-  Serial.print("Movimiento absoluto sin espera \tPosicion: ");
+  Serial.print("Movimiento absoluto sin espera \t- Posicion: ");
   Serial.println(pos);
   Paquete p;
   p.i = pos;
@@ -232,7 +232,7 @@ void moverAbsInmediato(long pos,long ID){
 }
 
 void moverRelatEspera(long pasos,long ID){
-  Serial.print("Movimiento relativo con espera \tPasos: ");
+  Serial.print("Movimiento relativo con espera \t- Pasos: ");
   Serial.println(pasos);
   Paquete p;
   p.i = pasos;
@@ -247,7 +247,7 @@ void moverRelatEspera(long pasos,long ID){
 }
 
 void moverRelatInmediato(long pasos,long ID){
-  Serial.print("Movimiento relativo sin espera \tPasos: ");
+  Serial.print("Movimiento relativo sin espera \t- Pasos: ");
   Serial.println(pasos);
   Paquete p;
   p.i = pasos;
