@@ -13,12 +13,8 @@ char str[20];
 
 union Paquete{
   byte b[4];
-  long i;
+  int32_t i;
 };
-const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
-const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
-const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
-
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
@@ -108,37 +104,31 @@ bool EnviarMSG(char buff[], long ID){
 }
 
 bool SetCurrent (int porcentaje, long ID){
-  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
-    Paquete p;
+  Paquete p;
   p.i = porcentaje;
   char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],0x00,0x00,0x00};
-    return EnviarMSG(SetcurrentUSE,ID);
+  return EnviarMSG(SetcurrentUSE,ID);
 }
 
 bool maxVelocity (long velocity, long ID){
-  //const char Maxvel[]={0x23,0x81,0x60,0x00,0x00,0xC8,0x00,0x00};
   Paquete p;
   p.i = velocity;
   char Maxvel[]={0x23,0x81,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-    return EnviarMSG(Maxvel,ID);
+  return EnviarMSG(Maxvel,ID);
 }
 
-
 bool setDeccel (uint32_t decel, long ID){
-  //const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete p;
   p.i = decel;
   char SetDecel[]={0x23,0x84,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-    return EnviarMSG(SetDecel,ID);
+  return EnviarMSG(SetDecel,ID);
 }
 
 bool SetAccel (long accel, long ID){
-  //char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete a;
   a.i = accel;
   char SetAccel[]={0x23,0x83,0x60,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
   return EnviarMSG(SetAccel,ID);
-  
 }
 
 bool SetProfile(int profile, long ID ){
@@ -158,32 +148,24 @@ bool SetProfile(int profile, long ID ){
      break;
     default:
       pro=0x00;
-      break;
-     
+      break;  
   }
-   
   char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
   EnviarMSG(ProfileSet,ID);
 }
 
-
-
-
-
 void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
 
-  
-    int cuenta=0;
-
     //instrucciones de configuración
-    
     SetAccel(Acel,ID_motor);
     setDeccel(Decel,ID_motor);
     maxVelocity(MaxVel, ID_motor);
     SetCurrent(current, ID_motor);
     
-    
     //instrucciones de cambio de estado
+    const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
+    const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
+    const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
     EnviarMSG(ReadytoSwitch,ID_motor);
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
