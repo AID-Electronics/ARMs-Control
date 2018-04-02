@@ -4,33 +4,7 @@
 #include <SPI.h>
 #include "Schneider_LMD_P84.h"
 
-#define ID_MOTOR_1 0x611
-#define ID_MOTOR_1_R 0x591
- 
-
-#define T_PDO1 0x190
-#define R_PDO1 0x210
-
-#define T_PDO2 0x290
-#define R_PDO2 0x310
-
-#define T_PDO3 0x390
-#define R_PDO3 0x410
-
-
-#define T_PDO4 0x490
-#define R_PDO4 0x510
-
-
-
-
-
-
-
-
-
-
-
+#define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
 
 void setup(){
@@ -54,8 +28,6 @@ void setup(){
 char a;
 
 void loop(){
-  Serial.println("Modo relativo sin espera");
-  //Serial.println("Motor 1 positivo");
 
   a=Serial.read();
   while(a==-1){
@@ -64,89 +36,29 @@ void loop(){
 
     switch(a)
     {
-      case '1':
-              mover(0L,ID_MOTOR_1);
-              mover(0L,ID_MOTOR_2);
-              break;
-              
-      case '2':
-               mover(25600L,ID_MOTOR_1);
-               mover(25600L,ID_MOTOR_2);
-                break;
-
-      case '3':
-               mover(-25600L,ID_MOTOR_1);
-               break;
-
-      case '4':
-               mover(6400L+25600L,ID_MOTOR_1);
-               break;
-
-      case '5':
-               mover(-51200,ID_MOTOR_1);
-               break;
-
-      case '6':
-          mover(-25600,ID_MOTOR_1);
-          break;
-
-
-      case '7':
-
-          leerPOS(R_PDO1);
-          break;
-
-      case '8':
-
-          leerPOS(R_PDO2);
-          break;
-
-      case '9':
-
-          leerPOS(R_PDO3);
-          break;
-
       case '0':
-
-          leerPOS(R_PDO4);
+          mover(0,ID_MOTOR_1);
           break;
-              
-      case 'Q':
+      
+      case '1':
 
           leerPOS(ID_MOTOR_1);
           break;
 
-      case 'W':
+      case '2':
 
-          leerPOS(ID_MOTOR_1_R);
+          mover(1000,ID_MOTOR_1);
+          break;
+
+      case '3':
+
+          mover(-1000,ID_MOTOR_1);
           break;
           
       default:
-               mover(256000,ID_MOTOR_1);
+               mover(0,ID_MOTOR_1);
                break;
                
     }
-  
-    //while(Serial.read()==-1){}
-    //mover(-51200,ID_MOTOR_1);//Media vuelta
-    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
-    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
-    
-
-// delay(1000);
-  //mover(51200,ID_MOTOR_2);
-    //Serial.println("Motor 2 positivo");
-  //while(Serial.read()==-1){}
-  //delay(1000);
-
-  //mover(-51200,ID_MOTOR_1);
-    //Serial.println("Motor 1 negativo");
-  //while(Serial.read()==-1){}
-//  delay(1000);
-
-  //mover(-51200,ID_MOTOR_2);
-  //Serial.println("Motor 2 negativo");
-  //while(Serial.read()==-1){}
-  //delay(1000);
 }
 
