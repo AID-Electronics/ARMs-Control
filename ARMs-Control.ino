@@ -117,17 +117,17 @@ void setup(){
   ////////////////////////////////////////////////////////////////////IMU
     Serial.begin(115200);
 
-    if(!bno.begin())
-  {
-    Serial.print("BNO055 no detectado");
-    while(1);
-  }
-
-  delay(1000);
-
-  bno.setExtCrystalUse(true);
-
-  displayCalStatus();
+//    if(!bno.begin())
+//  {
+//    Serial.print("BNO055 no detectado");
+//    while(1);
+//  }
+//
+//  delay(1000);
+//
+//  bno.setExtCrystalUse(true);
+//
+// displayCalStatus();
 //////////////////////////////////////////////////////////////////// CAN BUS
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
@@ -181,7 +181,7 @@ void moverMotores() {
       pasosMotor1=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
       pasosMotor4=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
       pasosMotor3=calcularPasos2D(cabeceoPosterior,alabeoPosterior,RESOLUCION,RADIO_POLEA,H,0,-333,D_REF);
-     // imprimirDatos(event);
+      imprimirDatos(event);
       //pasosMotor1=calcularPasos1D(cabeceoPosterior-cabeceoAnterior,RESOLUCION,RADIO_POLEA,H);
       //pasosMotor3=calcularPasos1D(alabeoPosterior-alabeoAnterior,RESOLUCION,RADIO_POLEA,H);
 
@@ -744,24 +744,26 @@ void loop(){
       //Serial.print("Micros: ");
       //Serial.println(micros()-t);
   
-  bno.getEvent (&event);
+  //bno.getEvent (&event);
 
   
 Serial.println ("  ");
-   for(int i=0;i<MAX;i++)
-  {
-  cabeceoPosterior=matrix[i][1]; //No estoy demasiado seguro de que sea el eje correcto
-  alabeoPosterior=matrix[i][0];
- //   Serial.println ("  ");
-    Serial.println ((matrix[i][1]/deg2rad));
- // Serial.print ("  ");
-  //Serial.print ((matrix[i][0]/deg2rad));
-  moverMotores(); 
-  delay(10);
-  }
-  //t=micros();
   
+   for(int i=0;i<MAX;i++){
+   
+     cabeceoPosterior=matrix[i][0]; //No estoy demasiado seguro de que sea el eje correcto
+     alabeoPosterior=matrix[i][1];
+ //   Serial.println ("  ");
+     //Serial.print (" ");
+    Serial.print((matrix[i][0]/deg2rad));
+    Serial.print (" ");
+    Serial.print ((matrix[i][1]/deg2rad));
+  moverMotores(); 
+   delay(10);
+     //t=micros();
+ } 
   exit(0);
+
 }
 
 
