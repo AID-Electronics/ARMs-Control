@@ -190,22 +190,10 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
-void leerPOS(long ID)
-{
-  char leerActualPOS[8]={0x43,0x62,0x60,0x00,0x00,0x00,0x00,0x00};
-
- 
-    EnviarMSG(leerActualPOS,ID);
-
-    leerActualPOS[1]=0x63;
-    
-    EnviarMSG(leerActualPOS,ID);
-
-    leerActualPOS[1]=0x64;
-
-    EnviarMSG(leerActualPOS,ID);
-    
- 
+void requestPos(long ID){
+  char leerPos[8]={0x40,0x62,0x60,0x00,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerPos,ID);
+  
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
