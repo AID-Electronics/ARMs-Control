@@ -4,6 +4,8 @@
 #include "Schneider_LMD_P84.h"
 #define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
+//#define ID_MOTOR_3 0x612
+//#define ID_MOTOR_4 0x613
 
 ///////////////////////////////////////////////////////////////////////////// PARTE DE LA IMU
 #include <Adafruit_Sensor.h>
@@ -177,8 +179,10 @@ void moverMotores() {
      // pasosMotor2=calcularPasos1D(alabeo,RESOLUCION,RADIO_POLEA,H);
 
       //AQUI iría la accion de movimiento
-      mover(pasosMotor1,ID_MOTOR_1);//una vuelta
+      mover(pasosMotor1,ID_MOTOR_1);
       mover(pasosMotor2,ID_MOTOR_2);
+     //mover(pasosMotor3,ID_MOTOR_3);
+     //mover(pasosMotor4,ID_MOTOR_4);
   }
 
 void loop(){
