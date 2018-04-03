@@ -221,6 +221,20 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
       Serial.println("\t Polarity");
     }
   }
+  else if (buf[1]==0x62 && buf[2]==0x60){   //Request position
+    if (envio == 1){
+      Serial.println("\t Request position");
+    }
+    else{
+      Serial.print("\t Actual position: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.println(p.i);
+    }
+  }
   else{
     Serial.println("\t UNKNOWN COMMAND");
   }
