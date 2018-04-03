@@ -23,15 +23,15 @@ const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
 void sending( char buff[], long ID) {
-        Serial.print("(SENT)ID: ");
-        Serial.print(ID,HEX);
-        Serial.print(" / ");
-
-    for(int i=0; i<8;i++){
-      Serial.print(buff[i],HEX);
-      Serial.print(",");
-    }
-    Serial.print("\n");
+//        Serial.print("(SENT)ID: ");
+//        Serial.print(ID,HEX);
+//        Serial.print(" / ");
+//
+//    for(int i=0; i<8;i++){
+//      Serial.print(buff[i],HEX);
+//      Serial.print(",");
+//    }
+//    Serial.print("\n");
     CAN.sendMsgBuf(ID, 0, 8, buff);
     
 }
@@ -41,18 +41,18 @@ bool receive(){
     
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
 
-        Serial.print("(RECEIVED)ID: ");
-
-        Serial.print(CAN.getCanId(),HEX);
-
-       Serial.print(" / ");
-
-        for(int i = 0; i<len; i++)    // print the data
-        {
-            Serial.print(buffRespuesta[i],HEX);
-            Serial.print(",");
-        }
-        Serial.println();
+//        Serial.print("(RECEIVED)ID: ");
+//
+//        Serial.print(CAN.getCanId(),HEX);
+//
+//       Serial.print(" / ");
+//
+//        for(int i = 0; i<len; i++)    // print the data
+//        {
+//            Serial.print(buffRespuesta[i],HEX);
+//            Serial.print(",");
+//        }
+//        Serial.println();
 
         return true;
     }else
@@ -69,7 +69,7 @@ bool comprobarRespuesta(){
     i++;
   }
   
-  Serial.println(i);
+  //Serial.println(i);
   
   if (flag_receive == 1){
     if(buffRespuesta[0]==0x80){
@@ -87,17 +87,17 @@ bool EnviarMSG(char buff[], long ID){
     
     if(comprobarRespuesta() == 1){
       rec_OK = 1;
-      Serial.println("MSG RECIBIDO CORRECTAMENTE");
-      Serial.println("");
+//      Serial.println("MSG RECIBIDO CORRECTAMENTE");
+//      Serial.println("");
     }
     else {
-      Serial.println("ERROR EN MSG");
-      Serial.println("");
+//      Serial.println("ERROR EN MSG");
+//      Serial.println("");
     }
   }
 
   if (rec_OK == 0){
-    Serial.println ("Mensaje erroneo");
+//    Serial.println ("Mensaje erroneo");
   }
   return rec_OK;
 }

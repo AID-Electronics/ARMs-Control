@@ -76,8 +76,7 @@ int calcularPasos1D(double cabeceo,double resolucion,double radioPolea,double di
       else
       aux--;
     }
-   
-  return aux;
+   return aux;
   
 }
 
@@ -140,21 +139,26 @@ void setup(){
 
 void imprimirDatos(sensors_event_t event){
 
-  Serial.print ("X: ");
-  Serial.print (event.orientation.x,4);
-  Serial.print ("\tY: ");
-  Serial.print (event.orientation.y,4);
-  Serial.print ("\tZ: ");
-  Serial.println (event.orientation.z,4);
+  //Serial.print ("X: ");
+  Serial.print (event.orientation.z,4);
+  Serial.print (" ");
+  //Serial.print ("\tY: ");
+  Serial.print (event.orientation.y,4);  
+  Serial.print (" ");
+  //Serial.print ("\tZ: ");
+  //Serial.println (event.orientation.z,4);
 
 
-  Serial.print ("Pasos motor 1: ");
+  //Serial.print ("Pasos motor 1: ");
   Serial.print (pasosMotor1);
-  Serial.print ("        Pasos motor 2: ");
+  Serial.print (" ");
+ // Serial.print ("        Pasos motor 2: ");
   Serial.print (pasosMotor2);
-  Serial.print ("      Pasos motor 3: ");
+  Serial.print (" ");
+  //Serial.print ("      Pasos motor 3: ");
   Serial.print (pasosMotor3);
-  Serial.print ("    Pasos motor 4: ");
+  Serial.print (" ");
+  //Serial.print ("    Pasos motor 4: ");
   Serial.print (pasosMotor4);
   Serial.println(" ");
   //delay (2);
@@ -163,11 +167,7 @@ void imprimirDatos(sensors_event_t event){
 
 
 void moverMotores() {
-
-
-  
- 
-      
+    
       pasosMotor1=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,333,0,D_REF);
       pasosMotor2=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,0,333,D_REF);
       pasosMotor3=calcularPasos2D(cabeceo,alabeo,RESOLUCION,RADIO_POLEA,H,-333,0,D_REF);
@@ -179,13 +179,7 @@ void moverMotores() {
       //AQUI iría la accion de movimiento
       mover(pasosMotor1,ID_MOTOR_1);//una vuelta
       mover(pasosMotor2,ID_MOTOR_2);
-  
-    
-
-
-      
-  
-}
+  }
 
 void loop(){
       //Serial.print("Micros: ");
@@ -193,7 +187,7 @@ void loop(){
   sensors_event_t event;
   bno.getEvent (&event);
 
-  //imprimirDatos(event);
+  imprimirDatos(event);
 
   cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeo=event.orientation.z*deg2rad;
