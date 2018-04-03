@@ -60,7 +60,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     Serial.println("\t Response: ERROR");
   }
   else{
-    Serial.println("UNKNOWN MSG TYPE");
+    Serial.println("\t UNKNOWN MSG TYPE");
   }
 
   // Check comand - buf[1] & buf[2]
@@ -162,7 +162,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
         Serial.println("Set bit 4 to 0 (relative mode/immediate)");
       }
       else{
-        Serial.println("UNKNOWN STATE MACHINE");
+        Serial.println("\t UNKNOWN STATE MACHINE");
       }
     }
     else{
@@ -222,7 +222,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
     }
   }
   else{
-    Serial.println("UNKNOWN COMMAND");
+    Serial.println("\t UNKNOWN COMMAND");
   }
 
   // buf[3] is allways empty
