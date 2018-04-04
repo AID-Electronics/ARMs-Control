@@ -18,6 +18,227 @@ union Paquete{
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
+void traduce(byte *leng, byte *buf, unsigned long ID){
+  bool envio = 0;   // Se pone a 1 cuando el receptor del mensaje es el motor
+  // Check IDs
+  if      (ID == 0x610){
+    Serial.println("\t Mensaje a motor 1");
+    envio = 1;
+  }
+  else if (ID == 0x611){
+    Serial.println("\t Mensaje a motor 2");
+    envio = 1;
+  }
+  else if (ID == 0x590){
+    Serial.println("\t Respuesta motor 1");
+  }
+  else if (ID == 0x591){
+    Serial.println("\t Respuesta motor 2");
+  }
+  else{
+    Serial.println("\t ID recibida incorrecta");
+  }
+
+  // Check msg type - buf[0]
+  if      (buf[0]==0x2F||buf[0]==0x2B||buf[0]==0x27|buf[0]==0x23){
+    Serial.println("\t Write request");
+  }
+  else if (buf[0]==0x4F||buf[0]==0x4B||buf[0]==0x47|buf[0]==0x43){
+    Serial.println("\t Read response: OK");
+  }
+  else if (buf[0]==0x60){
+    Serial.println("\t Write response: OK");
+  }
+  else if (buf[0]==0x40){
+    Serial.println("\t Read request");
+  }
+  else if (buf[0]==0x80){
+    Serial.println("\t Response: ERROR");
+  }
+  else{
+    Serial.println("\t UNKNOWN MSG TYPE");
+  }
+
+  // Check comand - buf[1] & buf[2]
+  if      (buf[1]==0x83 && buf[2]==0x60){   //Profile acceleration
+    if (envio == 1){
+      Serial.print("\t Profile acceleracion: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.print(p.i);
+      Serial.println(" step/sec^2");
+    }
+    else{
+      Serial.println("\t Profile acceleracion");
+    }
+  }
+  else if (buf[1]==0x84 && buf[2]==0x60){   //Profile deceleration
+    if (envio == 1){
+      Serial.print("\t Profile deceleration: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.print(p.i);
+      Serial.println(" step/sec^2");
+    }
+    else{
+      Serial.println("\t Profile deceleration");
+    }
+  }
+  else if (buf[1]==0x81 && buf[2]==0x60){   //Profile velocity
+    if (envio == 1){
+      Serial.print("\t Profile velocity: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.print(p.i);
+      Serial.println(" step/sec");
+    }
+    else{
+      Serial.println("\t Profile velocity");
+    }
+  }
+  else if (buf[1]==0x04 && buf[2]==0x22){   //Run current
+    if (envio == 1){
+      Serial.print("\t Run current: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.print(p.i);
+      Serial.println(" %");
+    }
+    else{
+      Serial.println("\t Run current");
+    }
+  }
+  else if (buf[1]==0x40 && buf[2]==0x60){   //State machine
+    if (envio == 1){
+      Serial.print("\t Control word (state machine) - ");
+      if      (buf[4]==0x06 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Ready to switch on");
+      }
+      else if (buf[4]==0x07 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Swiched on");
+      }
+      else if (buf[4]==0x0F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Operation enable");
+      }
+      // Perform move
+      else if (buf[4]==0x1F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 1 (absolute mode/finish)");
+      }
+      else if (buf[4]==0x0F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 0 (absolute mode/finish)");
+      }
+      else if (buf[4]==0x3F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 1 (absolute mode/immediate)");
+      }
+      else if (buf[4]==0x2F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 0 (absolute mode/immediate)");
+      }
+      else if (buf[4]==0x5F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 1 (relative mode/finish)");
+      }
+      else if (buf[4]==0x4F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 0 (relative mode/finish)");
+      }
+      else if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 1 (relative mode/immediate)");
+      }
+      else if (buf[4]==0x6F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Set bit 4 to 0 (relative mode/immediate)");
+      }
+      else{
+        Serial.println("\t UNKNOWN STATE MACHINE");
+      }
+    }
+    else{
+      Serial.println("\t Control word (state machine)");
+    }
+  }
+  else if (buf[1]==0x60 && buf[2]==0x60){   //Operation mode
+    if (envio == 1){
+      Serial.print("\t Mode of operation: ");
+      if      (buf[4]==0x01 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Profile position");
+      }
+      else if (buf[4]==0x02 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Profile velocity");
+      }
+      else if (buf[4]==0x03 && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Homing");
+      }
+      else{
+        Serial.println("UNKNOWN");
+      }
+    }
+    else{
+      Serial.println("\t Mode of operation");
+    }
+  }
+  else if (buf[1]==0x7A && buf[2]==0x60){   //Target position
+    if (envio == 1){
+      Serial.print("\t Target position: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.print(p.i);
+      Serial.println(" steps");
+    }
+    else{
+      Serial.println("\t Target position");
+    }
+  }
+  else if (buf[1]==0x7E && buf[2]==0x60){   //Polarity
+    if (envio == 1){
+      Serial.print("\t Polarity: ");
+      if (buf[4]==0xFF && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Reverse");
+      }
+      else if (buf[4]==0x7F && buf[5]==0x00 && buf[6]==0x00 && buf[7]==0x00){
+        Serial.println("Forward");
+      }
+      else{
+        Serial.println("UNKNOWN");
+      }
+    }
+    else{
+      Serial.println("\t Polarity");
+    }
+  }
+  else if (buf[1]==0x62 && buf[2]==0x60){   //Request position
+    if (envio == 1){
+      Serial.println("\t Request position");
+    }
+    else{
+      Serial.print("\t Actual position: ");
+      Paquete p;
+      p.b[0] = buf[4];
+      p.b[1] = buf[5];
+      p.b[2] = buf[6];
+      p.b[3] = buf[7];
+      Serial.println(p.i);
+    }
+  }
+  else{
+    Serial.println("\t UNKNOWN COMMAND");
+  }
+
+  // buf[3] is allways empty
+
+}
+
 void sending( char buff[], long ID) {
         Serial.print("(SENT)ID: ");
         Serial.print(ID,HEX);
@@ -32,24 +253,32 @@ void sending( char buff[], long ID) {
     
 }
 
-bool receive(){
+bool receive(bool observador = 0){
     if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
     
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
-
-        Serial.print("(RECEIVED)ID: ");
-
-        Serial.print(CAN.getCanId(),HEX);
+        unsigned long ID = CAN.getCanId();
+        
+        Serial.print("(RECEIVED)ID: ");        
+        Serial.print(ID,HEX);
 
        Serial.print(" / ");
 
-        for(int i = 0; i<len; i++)    // print the data
-        {
+        for(int i = 0; i<len; i++){    // print the data
+        
+          if(buffRespuesta[i]==0){
+            Serial.print("00");
+          }
+          else{
             Serial.print(buffRespuesta[i],HEX);
-            Serial.print(",");
+          }
+          Serial.print(",");
         }
         Serial.println();
-
+        
+        if(observador == 1){
+          traduce(&len, buffRespuesta, ID);
+        }
         return true;
     }else
     
