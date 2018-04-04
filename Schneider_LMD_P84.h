@@ -15,10 +15,6 @@ union Paquete{
   byte b[4];
   int32_t i;
 };
-const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
-const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
-const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
-
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
@@ -337,36 +333,31 @@ bool EnviarMSG(char buff[], long ID){
 }
 
 bool SetCurrent (int porcentaje, long ID){
-  //const byte SetcurrentUSE[]={0x2F,0x04,0x22,0x00,0x50,0x00,0x00,0x00};
-    Paquete p;
+  Paquete p;
   p.i = porcentaje;
   char SetcurrentUSE[]={0x2F,0x04,0x22,0x00,p.b[0],0x00,0x00,0x00};
-    return EnviarMSG(SetcurrentUSE,ID);
+  return EnviarMSG(SetcurrentUSE,ID);
 }
 
 bool maxVelocity (long velocity, long ID){
-  //const char Maxvel[]={0x23,0x81,0x60,0x00,0x00,0xC8,0x00,0x00};
   Paquete p;
   p.i = velocity;
   char Maxvel[]={0x23,0x81,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-    return EnviarMSG(Maxvel,ID);
+  return EnviarMSG(Maxvel,ID);
 }
 
-
 bool setDeccel (uint32_t decel, long ID){
-  //const char SetDecel[]={0x23,0x83,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete p;
   p.i = decel;
-  char SetDecel[]={0x23,0x83,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
-    return EnviarMSG(SetDecel,ID);
+  char SetDecel[]={0x23,0x84,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  return EnviarMSG(SetDecel,ID);
 }
 
 bool SetAccel (long accel, long ID){
-  //char SetAccel[]={0x23,0x84,0x60,0x00,0x40,0x42,0x0F,0x00};
   Paquete a;
   a.i = accel;
-  char SetAccel[]={0x2F,0x04,0x22,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
-  EnviarMSG(SetAccel,ID);
+  char SetAccel[]={0x23,0x83,0x60,0x00,a.b[0],a.b[1],a.b[2],a.b[3]};
+  return EnviarMSG(SetAccel,ID);
 }
 
 bool SetProfile(int profile, long ID ){
@@ -386,100 +377,31 @@ bool SetProfile(int profile, long ID ){
      break;
     default:
       pro=0x00;
-      break;
-     
+      break;  
   }
-   
   char ProfileSet[]={0x2F,0x60,0x60,0x00,pro,0x00,0x00,0x00};
   EnviarMSG(ProfileSet,ID);
 }
 
-void mostrarError(int cuenta){
-   switch (cuenta){
-      
-      case 26:
-                  Serial.println("    TODO CORRECTO          ");
-                  break;
-
-      case 23:
-                  Serial.println("    ERROR SET ACCEL          ");
-                  break;
-     
-
-      case 21:
-                  Serial.println("    ERROR SET DECCEL          ");
-                  break;
-      
-                   
-      case 19:
-                   Serial.println("    ERROR SET MAX VEL         "); 
-                   break;
-                   
-      case 18:
-                   Serial.println("    ERROR SET DECCEL Y SET ACCEL     ");
-                   break;
-
-      case 16:
-                   Serial.println("    ERROR MAX VEL Y SET ACCEL     ");
-                   break;
-                                      
-      case 15:
-                   Serial.println("    Error SET CURRENT         ");    
-                                      break;        
-      case 14:
-                  Serial.println("    ERROR MAX VEL Y SET DECCEL     ");
-                                      break;
-      case 12:
-                   Serial.println("    ERROR SET ACCEL Y SET CURRENT          ");
-                   break;
-      case 11:
-                   Serial.println("    ERROR SET ACCEL , SET CURRENT Y SET DECCEL          ");
-                   break;
-      case 10:
-                   Serial.println("    ERROR SET DECCEL Y SET CURRENT          "); 
-                   break;
-      case 8:
-                   Serial.println("    ERROR MAX VEL Y SET CURRENT          "); 
-                                            break;          
-       case 7:
-                   Serial.println("    ERROR SET DECCEL , SET CURRENT Y SET ACCEL         "); 
-                                      break;
-       case 5:
-                   Serial.println("    ERROR MAX VEL , SET CURRENT Y SET ACCEL         ");
-                                      break;
-       case 3:
-                   Serial.println("    ERROR SET DECCEL Y SET CURRENT Y MAX VEL         ");
-                                      break;
-       default:
-                  Serial.println("   ALGO VA MAL       ");
-                                      break;
-    }
-  
-}
-
-
-
 void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
 
-  
-    int cuenta=0;
-
     //instrucciones de configuración
+    SetAccel(Acel,ID_motor);
+    setDeccel(Decel,ID_motor);
+    maxVelocity(MaxVel, ID_motor);
+    SetCurrent(current, ID_motor);
     
-
-    cuenta=   SetAccel(Acel,ID_motor)*3 + setDeccel(Decel,ID_motor)*5 +  maxVelocity(MaxVel, ID_motor)* 7 + SetCurrent(current, ID_motor)*11;
-
-    mostrarError(cuenta);
-   
-
     //instrucciones de cambio de estado
+    const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
+    const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
+    const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
     EnviarMSG(ReadytoSwitch,ID_motor);
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
-void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
+void setPolarity (long pasos, long ID){
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
     polarity[4]=0xFF;
@@ -487,20 +409,67 @@ void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar
   else {
     polarity[4]=0x7F;
   }
-
-  Paquete p;
-  p.i=abs(pasos);
-  
-  char CadPos1[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]}; //Indica la posición a la que ha de moverse
-  char CadPos2[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};   // son cadenas complementarias para el movimiento que indican el tipo de este: 
-  char CadPos3[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};   //El movimiento será relativo y no se espera a que acabe antes de procesar el siguiente.
-
   EnviarMSG(polarity,ID);
-  EnviarMSG(CadPos1,ID);
-  EnviarMSG(CadPos2,ID);
-  EnviarMSG(CadPos3,ID);
- }
+}
 
+void moverAbsEspera(long pos,long ID){
+  Serial.print("Movimiento absoluto con espera \t- Posicion: ");
+  Serial.println(pos);
+  Paquete p;
+  p.i = pos;
+  
+  char posicion[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x1F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
+  
+  EnviarMSG(posicion,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
 
+void moverAbsInmediato(long pos,long ID){
+  Serial.print("Movimiento absoluto sin espera \t- Posicion: ");
+  Serial.println(pos);
+  Paquete p;
+  p.i = pos;
+  
+  char posicion[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x3F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x2F,0x00,0x00,0x00};
+  
+  EnviarMSG(posicion,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
+void moverRelatEspera(long pasos,long ID){
+  Serial.print("Movimiento relativo con espera \t- Pasos: ");
+  Serial.println(pasos);
+  Paquete p;
+  p.i = pasos;
+  
+  char nPasos[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x5F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x4F,0x00,0x00,0x00};
+  
+  EnviarMSG(nPasos,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
+
+void moverRelatInmediato(long pasos,long ID){
+  Serial.print("Movimiento relativo sin espera \t- Pasos: ");
+  Serial.println(pasos);
+  Paquete p;
+  p.i = pasos;
+  
+  char nPasos[]={0x23,0x7A,0x60,0x00,p.b[0],p.b[1],p.b[2],p.b[3]};
+  char tipo_mov1[]={0x2B,0x40,0x60,0x00,0x7F,0x00,0x00,0x00};
+  char tipo_mov2[]={0x2B,0x40,0x60,0x00,0x6F,0x00,0x00,0x00};
+  
+  EnviarMSG(nPasos,ID);
+  EnviarMSG(tipo_mov1,ID);
+  EnviarMSG(tipo_mov2,ID);
+}
 
 #endif

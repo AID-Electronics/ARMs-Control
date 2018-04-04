@@ -21,16 +21,54 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,1000000,1000000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     setupMotor(ID_MOTOR_2,1000000,1000000,80,512000);
 }
 
+char a;
+
 void loop(){
+
+  a=Serial.read();
+  while(a==-1){
+    a=Serial.read();
+    }
+
+    switch(a)
+    {
+      case '1':
+              moverAbsEspera(0,ID_MOTOR_1);
+              //moverAbsEspera(0,ID_MOTOR_2);
+              break;
+              
+      case '2':
+               moverRelatEspera(25600L,ID_MOTOR_1);
+                break;
+
+      case '3':
+               moverAbsInmediato(25600L,ID_MOTOR_1);
+               break;
+
+      case '4':
+               moverRelatInmediato(25600L,ID_MOTOR_1);
+               break;
+
+      case '5':
+               //mover(-51200,ID_MOTOR_1);
+               break;
+
+      case '6':
+          //mover(-25600,ID_MOTOR_1);
+          break;
+               
+      default:
+               //mover(256000,ID_MOTOR_1);
+               break;
+               
+    }
   
-  Serial.println("Motor 1 positivo");
-  while(Serial.read()==-1){}
-    mover(51200,ID_MOTOR_1);//una vuelta
-    //mover(25600,ID_MOTOR_1);//Media vuelta
+    //while(Serial.read()==-1){}
+    //mover(-51200,ID_MOTOR_1);//Media vuelta
     //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
     //mover(34133,ID_MOTOR_1);//2/3 de vuelta
     
