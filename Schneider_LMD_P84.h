@@ -32,8 +32,8 @@ void sending( char buff[], long ID) {
       Serial.print(",");
     }
     Serial.print("\n");
-    CAN.sendMsgBuf(ID, 0, 8, buff);
     
+    CAN.sendMsgBuf(ID, 0, 8, buff);
 }
 
 bool receive(){
@@ -76,6 +76,9 @@ bool comprobarRespuesta(){
       return false;
     }
     else if(buffRespuesta[0]==0x60){
+      return true;
+    }
+    else if (buffRespuesta[0]==0x4F||buffRespuesta[0]==0x4B||buffRespuesta[0]==0x47|buffRespuesta[0]==0x43){
       return true;
     }
   }
@@ -190,14 +193,27 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
-void requestPos(long ID){
+long requestPos(long ID){
   char leerPos[8]={0x40,0x62,0x60,0x00,0x00,0x00,0x00,0x00};
   EnviarMSG(leerPos,ID);
+  
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
 }
 
 void requestVin(long ID){
   char leerVin[8]={0x40,0x15,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerVin,ID);
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos

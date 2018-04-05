@@ -9,7 +9,7 @@
 
 void setup(){
   
-    Serial.begin(115200);
+    Serial.begin(1000000);
 
     while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
         Serial.println("CAN BUS Shield init fail");
@@ -26,6 +26,7 @@ void setup(){
 }
 
 char a;
+long pos;
 
 void loop(){
 
@@ -42,7 +43,9 @@ void loop(){
       
       case '1':
 
-          leerPOS(ID_MOTOR_1);
+          pos = requestPos(ID_MOTOR_1);
+          Serial.print ("Actual position: ");
+          Serial.println (pos);
           break;
 
       case '2':
