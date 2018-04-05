@@ -193,7 +193,11 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
 void requestPos(long ID){
   char leerPos[8]={0x40,0x62,0x60,0x00,0x00,0x00,0x00,0x00};
   EnviarMSG(leerPos,ID);
-  
+}
+
+void requestVin(long ID){
+  char leerVin[8]={0x40,0x15,0x20,0x01,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerVin,ID);
 }
 
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
