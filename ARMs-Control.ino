@@ -40,7 +40,9 @@ sensors_event_t event;
 ///////////////////////////////////////////////////////////////////////////////////
 
 int muestra;
-
+unsigned long tiempoMuestreo = 50;
+unsigned long pastTiempo = 0;
+unsigned long inicio;
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 void displayCalStatus ()
@@ -117,7 +119,7 @@ int calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radio
 void setup(){
 
   ////////////////////////////////////////////////////////////////////IMU
-    Serial.begin(115200);
+    Serial.begin(1000000);
 
 //    if(!bno.begin())
 //  {
@@ -142,10 +144,11 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,100000,100000,80,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,100000,100000,80,512000);
+    setupMotor(ID_MOTOR_1,100000,100000,80,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,100000,100000,80,51200);
 
     muestra = 0;
+    inicio = millis();
 }
 
 
@@ -800,13 +803,9 @@ double matrix[][2]={
   
   
 void loop(){
-      Serial.print("Micros: ");
-      Serial.println(micros()-t);
-  
-  //bno.getEvent (&event);
 
-  
-Serial.println ("  ");
+  if (millis() - pastTiempo >= tiempoMuestreo){
+    pastTiempo = millis();
    
      cabeceoPosterior=matrix[muestra][0]*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
      alabeoPosterior=matrix[muestra][1]*deg2rad;
@@ -815,14 +814,16 @@ Serial.println ("  ");
     Serial.print((matrix[muestra][0]/deg2rad));
     Serial.print (" ");
     Serial.print ((matrix[muestra][1]/deg2rad));
-  moverMotores(); 
-  t = micros();
+    moverMotores(); 
+ 
   muestra++;
   if (muestra == MAX){
-    exit(0);
+    inicio = millis() - inicio;
+    Serial.print("Tiempo total simulacion = ");
+    Serial.print(inicio);
+    while(1){}
    }
-   delay(50);
-   
+  }
 }
 
 
