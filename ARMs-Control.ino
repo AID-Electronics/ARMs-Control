@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include <utility/imumaths.h>
                                                         // DATOS FIJOS DEL SISTEMAS DE POLEAS Y ACTUADORES
-#define RESOLUCION 0.007  //GRADOS POR PASO
+#define RESOLUCION 0.00703125  //GRADOS POR PASO
 #define RADIO_POLEA 25 //mm
 #define ALTURA_POLEAS 360 //mm
 #define D_REF 333//mm
@@ -24,10 +24,10 @@
 double cabeceo;
 double alabeo;
 
-  int pasosMotor1;
-  int pasosMotor2;
-  int pasosMotor3;
-  int pasosMotor4;
+  long pasosMotor1;
+  long pasosMotor2;
+  long pasosMotor3;
+  long pasosMotor4;
   unsigned long t=0;
   
  const double pi=3.141592;
@@ -36,28 +36,29 @@ double alabeo;
 
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
-void displayCalStatus ()
-{
-  /*Cogemos los cuatro velores de calibración (0...3)
-   * Cualquier sensor cuyo valor sea 0 es ignorado,
-   * 3 significa calibrado.
-   */
-   uint8_t system, gyro, accel, mag;
-   system = gyro = accel = mag = 0;
-   bno.getCalibration(&system, &gyro, &accel, &mag);
-
-   Serial.print("\t");
-   if(!system)
+void displayCalStatus (){
+  /* Get the four calibration values (0..3) */
+  /* Any sensor data reporting 0 should be ignored, */
+  /* 3 means 'fully calibrated" */
+  uint8_t sys, gyro, accel, mag;
+  sys = gyro = accel = mag = 0;
+  bno.getCalibration(&sys, &gyro, &accel, &mag);
+ 
+  /* The data should be ignored until the sys calibration is > 0 */
+  Serial.print("\t");
+  if (sys==0){
     Serial.print("! ");
-
-   Serial.print("Sys: ");
-   Serial.print(system, DEC);
-   Serial.print (" G: ");
-   Serial.print (gyro, DEC);
-   Serial.print (" A: ");
-   Serial.print (accel, DEC);
-   Serial.print (" M: ");
-   Serial.println(mag, DEC);
+  }
+ 
+  /* Display the individual values */
+  Serial.print("Sys:");
+  Serial.print(sys, DEC);
+  Serial.print(" G:");
+  Serial.print(gyro, DEC);
+  Serial.print(" A:");
+  Serial.print(accel, DEC);
+  Serial.print(" M:");
+  Serial.println(mag, DEC);
 }
 
 
@@ -82,17 +83,17 @@ int calcularPasos1D(double cabeceo,double resolucion,double radioPolea,double di
   
 }
 
-int calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radioPolea,double h,double posX, double posY,double Dref)
+long calcularPasos2D(double cabeceo,double alabeo ,double resolucion,double radioPolea,double h,double posX, double posY,double Dref)
 {
     double PASOS;
   double tangenteCAB= tan(cabeceo);  //ES EL ANGULO RESPECTO EL EJE X
   double tangenteAL= tan(alabeo); //ES EL ANGULO RESPECTO EL EJE Y
   double numerador= (sqrt((tangenteCAB*h-posY)*(tangenteCAB*h-posY)+(tangenteAL*h-posX)*(tangenteAL*h-posX))-Dref);
   
-  PASOS=((numerador/(2*pi*radioPolea))*(360/resolucion)) ;
+  PASOS=((numerador/(2*pi*radioPolea))*(360.0/resolucion)) ;
 
   
-  int aux=(int)PASOS;
+  long aux=(long)PASOS;
   double aux2=PASOS-aux;
 
     if(abs(aux2)>0.5)
@@ -120,7 +121,7 @@ void setup(){
   delay(1000);
 
   bno.setExtCrystalUse(true);
-
+    delay(1000);
   displayCalStatus();
 //////////////////////////////////////////////////////////////////// CAN BUS
 
@@ -134,8 +135,8 @@ void setup(){
 
     delay(200);
   
-    setupMotor(ID_MOTOR_1,100000,100000,80,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,100000,100000,80,51200);
+    setupMotor(ID_MOTOR_1,100000,100000,100,51200); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,100000,100000,100,51200);
 }
 
 
@@ -190,13 +191,18 @@ void loop(){
       //Serial.println(micros()-t);
   sensors_event_t event;
   bno.getEvent (&event);
+  if(Serial.read()!=-1){
+    imprimirDatos(event);
+     displayCalStatus();
 
-  imprimirDatos(event);
+   // mover(0,ID_MOTOR_1);
+   // mover(0,ID_MOTOR_2);
+    }   
 
-  cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
-  alabeo=event.orientation.z*deg2rad;
+    cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
+    alabeo=event.orientation.z*deg2rad;
   
-  moverMotores();  
+     moverMotores();
   t=micros();
 }
 
