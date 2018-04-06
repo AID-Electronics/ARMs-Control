@@ -216,9 +216,20 @@ void requestVin(long ID){
   return p.i;
 }
 
-void requestTemp(long ID){
-  char leerTemp[8]={0x40,0x18,0x20,0x01,0x00,0x00,0x00,0x00};
-  EnviarMSG(leerTemp,ID);
+void requestBoardTemp(long ID){
+  char leerBoardTemp[8]={0x40,0x18,0x20,0x01,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerBoardTemp,ID);
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
+}
+
+void requestBridgeTemp(long ID){
+  char leerBridgeTemp[8]={0x40,0x19,0x20,0x01,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerBridgeTemp,ID);
   Paquete p;
   p.b[0] = buffRespuesta[4];
   p.b[1] = buffRespuesta[5];
