@@ -216,6 +216,17 @@ void requestVin(long ID){
   return p.i;
 }
 
+void requestTemp(long ID){
+  char leerTemp[8]={0x40,0x18,0x20,0x01,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerTemp,ID);
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
+}
+
 void mover (long pasos,long ID){ //pasos debe ser de tipo long para poder contar los suficientes pasos
   char polarity[8]={0x2F,0x7E,0x60,0x00,0xC0,0x00,0x00,0x00};
   if (pasos<0){
