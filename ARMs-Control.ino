@@ -38,28 +38,29 @@ void loop(){
     switch(a)
     {
       case '0':
-          mover(0,ID_MOTOR_1);
-          break;
+           moverAbsEspera(0,ID_MOTOR_1);
+           //moverAbsEspera(0,ID_MOTOR_2);
+           break;
       
       case '1':
-
           pos = requestPos(ID_MOTOR_1);
           Serial.print ("Actual position: ");
           Serial.println (pos);
           break;
-
+         
       case '2':
-
-          mover(1000,ID_MOTOR_1);
-          break;
+               moverRelatEspera(25600L,ID_MOTOR_1);
+                break;
 
       case '3':
+               moverAbsInmediato(25600L,ID_MOTOR_1);
+               break;
 
-          mover(-1000,ID_MOTOR_1);
-          break;
+      case '4':
+               moverRelatInmediato(25600L,ID_MOTOR_1);
+               break;
           
       default:
-               mover(0,ID_MOTOR_1);
                break;
                
     }
