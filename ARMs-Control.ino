@@ -26,6 +26,7 @@ void setup(){
 }
 
 char a;
+long pos;
 
 void loop(){
 
@@ -36,11 +37,17 @@ void loop(){
 
     switch(a)
     {
+      case '0':
+           moverAbsEspera(0,ID_MOTOR_1);
+           //moverAbsEspera(0,ID_MOTOR_2);
+           break;
+      
       case '1':
-              moverAbsEspera(0,ID_MOTOR_1);
-              //moverAbsEspera(0,ID_MOTOR_2);
-              break;
-              
+          pos = requestPos(ID_MOTOR_1);
+          Serial.print ("Actual position: ");
+          Serial.println (pos);
+          break;
+         
       case '2':
                moverRelatEspera(25600L,ID_MOTOR_1);
                 break;
@@ -52,41 +59,10 @@ void loop(){
       case '4':
                moverRelatInmediato(25600L,ID_MOTOR_1);
                break;
-
-      case '5':
-               //mover(-51200,ID_MOTOR_1);
-               break;
-
-      case '6':
-          //mover(-25600,ID_MOTOR_1);
-          break;
-               
+          
       default:
-               //mover(256000,ID_MOTOR_1);
                break;
                
     }
-  
-    //while(Serial.read()==-1){}
-    //mover(-51200,ID_MOTOR_1);//Media vuelta
-    //mover(38400,ID_MOTOR_1);//3/4 DE VUELTA
-    //mover(34133,ID_MOTOR_1);//2/3 de vuelta
-    
-
-// delay(1000);
-  //mover(51200,ID_MOTOR_2);
-    //Serial.println("Motor 2 positivo");
-  //while(Serial.read()==-1){}
-  //delay(1000);
-
-  //mover(-51200,ID_MOTOR_1);
-    //Serial.println("Motor 1 negativo");
-  //while(Serial.read()==-1){}
-//  delay(1000);
-
-  //mover(-51200,ID_MOTOR_2);
-  //Serial.println("Motor 2 negativo");
-  //while(Serial.read()==-1){}
-  //delay(1000);
 }
 
