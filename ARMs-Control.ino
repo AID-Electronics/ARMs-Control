@@ -8,18 +8,7 @@
 //#define ID_MOTOR_4 0x613
 
 ///////////////////////////////////////////////////////////////////////////// PARTE DE LA IMU
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <Wire.h>
-#include <utility/imumaths.h>
-                                                        // DATOS FIJOS DEL SISTEMAS DE POLEAS Y ACTUADORES
-#define RESOLUCION 0.00703125  //GRADOS POR PASO
-#define RADIO_POLEA 25 //mm
-#define ALTURA_POLEAS 360 //mm
-#define D_REF 333//mm
-#define DIST 50
-#define H 360
-#define TOL 0.035 
+#include "IMU.h"
 
 double cabeceo;
 double alabeo;
@@ -30,8 +19,7 @@ double alabeo;
   long pasosMotor4;
   unsigned long t=0;
   
- const double pi=3.141592;
- double deg2rad= pi/180;
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 
