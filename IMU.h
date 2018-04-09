@@ -135,6 +135,12 @@ void imprimirDatos(sensors_event_t event) {
   //delay (2);
 }
 
+void actualizaOrientacion(){
+  bno.getEvent (&event);
+  cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
+  alabeo=event.orientation.z*deg2rad;
+}
+
 void moverMotores() {
 
   pasosMotor1 = calcularPasos2D(cabeceo, alabeo, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);

@@ -31,16 +31,13 @@ void setup(){
 }
 
 void loop(){
-  bno.getEvent (&event);
+  actualizaOrientacion();
+  moverMotores();
   
   if(Serial.read()!=-1){
     imprimirDatos(event);
-     displayCalStatus();
-    }   
-
-    cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
-    alabeo=event.orientation.z*deg2rad;
+    displayCalStatus();
+  }
   
-     moverMotores();
 }
 
