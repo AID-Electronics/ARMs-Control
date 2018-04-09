@@ -10,10 +10,6 @@
 ///////////////////////////////////////////////////////////////////////////// PARTE DE LA IMU
 #include "IMU.h"
 
-
-  unsigned long t=0;
-  
-
 void setup(){
   Serial.begin(1000000);
   setupIMU();
@@ -34,28 +30,18 @@ void setup(){
     setupMotor(ID_MOTOR_2,100000,100000,100,51200);
 }
 
-
-
-
-
-
 void loop(){
-      //Serial.print("Micros: ");
-      //Serial.println(micros()-t);
+  
   sensors_event_t event;
   bno.getEvent (&event);
   if(Serial.read()!=-1){
     imprimirDatos(event);
      displayCalStatus();
-
-   // mover(0,ID_MOTOR_1);
-   // mover(0,ID_MOTOR_2);
     }   
 
     cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
     alabeo=event.orientation.z*deg2rad;
   
      moverMotores();
-  t=micros();
 }
 
