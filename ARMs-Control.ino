@@ -31,9 +31,8 @@ void setup(){
 }
 
 void loop(){
-  
-  sensors_event_t event;
   bno.getEvent (&event);
+  
   if(Serial.read()!=-1){
     imprimirDatos(event);
      displayCalStatus();

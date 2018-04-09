@@ -23,6 +23,7 @@
 #define rad2deg 57.295779
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
+sensors_event_t event;
 
 long pasosMotor1;
 long pasosMotor2;
