@@ -161,4 +161,12 @@ void moverMotores() {
   //mover(pasosMotor4,ID_MOTOR_4);
 }
 
+int8_t printIMUtemp(){
+  int8_t temp = bno.getTemp();
+  Serial.print("Current Temperature: ");
+  Serial.print(temp);
+  Serial.println(" C");
+  return temp;
+}
+
 #endif

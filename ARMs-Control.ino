@@ -37,6 +37,7 @@ void loop(){
   if(Serial.read()!=-1){
     imprimirDatos(event);
     displayCalStatus();
+    printIMUtemp();
   }
   
 }
