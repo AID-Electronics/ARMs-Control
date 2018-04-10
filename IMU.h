@@ -59,14 +59,17 @@ void displayCalStatus () {
 }
 
 void setupIMU() {
+  Serial.println("Setup IMU");
   while (!bno.begin()) {
-    Serial.print("BNO055 no detectado");
+    Serial.println("BNO055 no detectado");
     delay(500);
   }
-
+  Serial.println("\t1/3 - IMU detectada");
   delay(1000);
   bno.setExtCrystalUse(true);
+  Serial.println("\t2/3 - IMU activada");
   delay(1000);
+  Serial.print("\t3/3 - Calibracion :");
   displayCalStatus();
 }
 
