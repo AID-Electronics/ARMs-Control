@@ -18,6 +18,18 @@ union Paquete{
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
+void setupCAN(){
+  while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
+    Serial.println("CAN BUS Shield init fail");
+    Serial.println(" Init CAN BUS Shield again");
+    delay(500);
+  }
+  Serial.println("CAN BUS Shield init ok!");
+  Serial.println();
+
+  delay(200);
+}
+
 void traduce(byte *leng, byte *buf, unsigned long ID){
   bool envio = 0;   // Se pone a 1 cuando el receptor del mensaje es el motor
   // Check IDs

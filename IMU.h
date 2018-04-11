@@ -44,7 +44,7 @@ public:
   Vector3D orientacion;
   Vector3D accel;
 
-  void setup();
+  bool setup();
   void displayCalStatus();
   int8_t printTemp();
   void raw_accel();
@@ -78,7 +78,7 @@ void IMU::displayCalStatus () {
   Serial.println(mag, DEC);
 }
 
-void IMU::setup() {
+bool IMU::setup() {
   Serial.println("Setup IMU");
   int cont = 0;
   while (!bno.begin() && cont<10) {
@@ -91,7 +91,6 @@ void IMU::setup() {
     Serial.println("\tErrror setup IMU");
     return false;
   }
-  else{
     Serial.println("\t1/3 - IMU detectada");
     delay(1000);
     bno.setExtCrystalUse(true);
@@ -99,8 +98,7 @@ void IMU::setup() {
     delay(1000);
     Serial.print("\t3/3 - Calibracion :");
     displayCalStatus();
-  }
-  
+    return true;  
 }
 
 int calcularPasos1D(double cabeceo, double resolucion, double radioPolea, double distCentro) {
@@ -191,8 +189,8 @@ void moverMotores(double cabeceo, double alabeo) {
   // pasosMotor2=calcularPasos1D(alabeo,RESOLUCION,RADIO_POLEA,H);
 
   //AQUI iría la accion de movimiento
-  mover(pasosMotor1, ID_MOTOR_1);
-  mover(pasosMotor2, ID_MOTOR_2);
+  moverAbsInmediato(pasosMotor1, ID_MOTOR_1);
+  moverAbsInmediato(pasosMotor2, ID_MOTOR_2);
   //mover(pasosMotor3,ID_MOTOR_3);
   //mover(pasosMotor4,ID_MOTOR_4);
 }
