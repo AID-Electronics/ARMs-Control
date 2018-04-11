@@ -41,12 +41,6 @@ void loop(){
     IMU_fija.displayCalStatus();
     IMU_fija.printTemp();
   }
-  IMU_fija.raw_accel();
-  Serial.print("\tX: ");
-  Serial.print(IMU_fija.accel.x,4);
-  Serial.print("\tY: ");
-  Serial.print(IMU_fija.accel.y,4);
-  Serial.print("\tZ: ");
-  Serial.println(IMU_fija.accel.z),4;
+  IMU_fija.print();
 }
 

@@ -177,6 +177,8 @@ void IMU::update(){
   
   cabeceo = orientacion.y * deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeo = orientacion.z * deg2rad;
+
+  raw_accel();
 }
 
 void moverMotores(double cabeceo, double alabeo) {
@@ -211,4 +213,30 @@ int8_t IMU::printTemp(){
   return temp;
 }
 
+void IMU::print(){
+  Serial.print ("Cabeceo: ");
+  Serial.print (cabeceo,4);
+  Serial.print ("\tAlabeo: ");
+  Serial.println (cabeceo,4);
+  
+  Serial.print ("Orientacion ");
+  Serial.print ("\tX: ");
+  Serial.print (orientacion.x, 4);
+  Serial.print (" ");
+  Serial.print ("\tY: ");
+  Serial.print (orientacion.y, 4);
+  Serial.print (" ");
+  Serial.print ("\tZ: ");
+  Serial.println (orientacion.z,4);
+
+  Serial.print ("Aceleracion ");
+  Serial.print ("\tX: ");
+  Serial.print (accel.x, 4);
+  Serial.print (" ");
+  Serial.print ("\tY: ");
+  Serial.print (accel.y, 4);
+  Serial.print (" ");
+  Serial.print ("\tZ: ");
+  Serial.println (accel.z,4);
+}
 #endif
