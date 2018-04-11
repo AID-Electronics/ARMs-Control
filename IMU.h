@@ -33,6 +33,12 @@ long pasosMotor4;
 double cabeceo;
 double alabeo;
 
+typedef struct Vector3D{
+  double x;
+  double y;
+  double z;
+};
+
 void displayCalStatus () {
   /* Get the four calibration values (0..3) */
   /* Any sensor data reporting 0 should be ignored, */
@@ -169,6 +175,14 @@ void moverMotores() {
   mover(pasosMotor2, ID_MOTOR_2);
   //mover(pasosMotor3,ID_MOTOR_3);
   //mover(pasosMotor4,ID_MOTOR_4);
+}
+
+void raw_accel(Vector3D* v){
+  imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+  
+  v->x = accel.x();
+  v->y = accel.y();
+  v->z = accel.z();
 }
 
 int8_t printIMUtemp(){

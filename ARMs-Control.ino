@@ -38,7 +38,15 @@ void loop(){
     imprimirDatos(event);
     displayCalStatus();
     printIMUtemp();
+    
   }
-  
+  Vector3D acceleration;
+  raw_accel(&acceleration);
+  Serial.print("\tX: ");
+  Serial.print(acceleration.x,4);
+  Serial.print("\tY: ");
+  Serial.print(acceleration.y,4);
+  Serial.print("\tZ: ");
+  Serial.println(acceleration.z),4;
 }
 
