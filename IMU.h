@@ -23,6 +23,7 @@
 #define rad2deg 57.295779
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
+//sensors_event_t event;
 
 long pasosMotor1;
 long pasosMotor2;
@@ -38,8 +39,9 @@ typedef struct Vector3D{
 
 class IMU{
 public:
-  double cabeceo;
-  double alabeo;
+  double cabeceo; //en radianes
+  double alabeo;  //en radianes
+  Vector3D orientacion;
   Vector3D accel;
 
   void setup();
@@ -47,6 +49,8 @@ public:
   int8_t printTemp();
   void raw_accel();
   void update();
+  void print();
+  void imprimirDatos();
 };
 
 void IMU::displayCalStatus () {
@@ -137,16 +141,16 @@ long calcularPasos2D(double cabeceo, double alabeo , double resolucion, double r
   return aux;
 }
 
-void imprimirDatos(sensors_event_t event) {
+void IMU::imprimirDatos() {
 
   //Serial.print ("X: ");
-  Serial.print (event.orientation.z, 4);
+  Serial.print (orientacion.z, 4);
   Serial.print (" ");
   //Serial.print ("\tY: ");
-  Serial.print (event.orientation.y, 4);
+  Serial.print (orientacion.y, 4);
   Serial.print (" ");
   //Serial.print ("\tZ: ");
-  //Serial.println (event.orientation.z,4);
+  //Serial.println (orientacion.z,4);
 
 
   //Serial.print ("Pasos motor 1: ");
@@ -165,7 +169,7 @@ void imprimirDatos(sensors_event_t event) {
 }
 
 void IMU::update(){
-  
+  sensors_event_t event;
   bno.getEvent (&event);
   orientacion.x = event.orientation.x;
   orientacion.y = event.orientation.y;

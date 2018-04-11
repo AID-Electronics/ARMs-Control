@@ -37,7 +37,7 @@ void loop(){
   moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
   if(Serial.read()!=-1){
-    imprimirDatos(event);
+    IMU_fija.imprimirDatos();
     IMU_fija.displayCalStatus();
     IMU_fija.printTemp();
   }
