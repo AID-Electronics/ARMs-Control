@@ -60,17 +60,27 @@ void displayCalStatus () {
 
 void setupIMU() {
   Serial.println("Setup IMU");
-  while (!bno.begin()) {
-    Serial.println("BNO055 no detectado");
+  int cont = 0;
+  while (!bno.begin() && cont<10) {
+    Serial.print("\tIMU no detectada ");
+    Serial.println(cont+1);
     delay(500);
+    cont++;
   }
-  Serial.println("\t1/3 - IMU detectada");
-  delay(1000);
-  bno.setExtCrystalUse(true);
-  Serial.println("\t2/3 - IMU activada");
-  delay(1000);
-  Serial.print("\t3/3 - Calibracion :");
-  displayCalStatus();
+  if (cont == 10){
+    Serial.println("\tErrror setup IMU");
+    return false;
+  }
+  else{
+    Serial.println("\t1/3 - IMU detectada");
+    delay(1000);
+    bno.setExtCrystalUse(true);
+    Serial.println("\t2/3 - IMU activada");
+    delay(1000);
+    Serial.print("\t3/3 - Calibracion :");
+    displayCalStatus();
+  }
+  
 }
 
 int calcularPasos1D(double cabeceo, double resolucion, double radioPolea, double distCentro) {
