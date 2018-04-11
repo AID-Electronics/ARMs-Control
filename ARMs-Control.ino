@@ -33,22 +33,20 @@ void setup(){
 }
 
 void loop(){
-  actualizaOrientacion();
-  moverMotores();
+  IMU_fija.update();
+  moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
   if(Serial.read()!=-1){
     imprimirDatos(event);
-    displayCalStatus();
-    printIMUtemp();
-    
+    IMU_fija.displayCalStatus();
+    IMU_fija.printTemp();
   }
-  Vector3D acceleration;
-  raw_accel(&acceleration);
+  IMU_fija.raw_accel();
   Serial.print("\tX: ");
-  Serial.print(acceleration.x,4);
+  Serial.print(IMU_fija.accel.x,4);
   Serial.print("\tY: ");
-  Serial.print(acceleration.y,4);
+  Serial.print(IMU_fija.accel.y,4);
   Serial.print("\tZ: ");
-  Serial.println(acceleration.z),4;
+  Serial.println(IMU_fija.accel.z),4;
 }
 

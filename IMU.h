@@ -23,15 +23,12 @@
 #define rad2deg 57.295779
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
-sensors_event_t event;
 
 long pasosMotor1;
 long pasosMotor2;
 long pasosMotor3;
 long pasosMotor4;
 
-double cabeceo;
-double alabeo;
 
 typedef struct Vector3D{
   double x;
@@ -43,11 +40,16 @@ class IMU{
 public:
   double cabeceo;
   double alabeo;
+  Vector3D accel;
 
   void setup();
+  void displayCalStatus();
+  int8_t printTemp();
+  void raw_accel();
+  void update();
 };
 
-void displayCalStatus () {
+void IMU::displayCalStatus () {
   /* Get the four calibration values (0..3) */
   /* Any sensor data reporting 0 should be ignored, */
   /* 3 means 'fully calibrated" */
@@ -162,14 +164,14 @@ void imprimirDatos(sensors_event_t event) {
   //delay (2);
 }
 
-void actualizaOrientacion(){
+void IMU::update(){
+  sensors_event_t event;
   bno.getEvent (&event);
   cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeo=event.orientation.z*deg2rad;
 }
 
-void moverMotores() {
-
+void moverMotores(double cabeceo, double alabeo) {
   pasosMotor1 = calcularPasos2D(cabeceo, alabeo, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);
   pasosMotor2 = calcularPasos2D(cabeceo, alabeo, RESOLUCION, RADIO_POLEA, H, 0, 333, D_REF);
   pasosMotor3 = calcularPasos2D(cabeceo, alabeo, RESOLUCION, RADIO_POLEA, H, -333, 0, D_REF);
@@ -185,15 +187,15 @@ void moverMotores() {
   //mover(pasosMotor4,ID_MOTOR_4);
 }
 
-void raw_accel(Vector3D* v){
-  imu::Vector<3> accel = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+void IMU::raw_accel(){
+  imu::Vector<3> acceleration = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
   
-  v->x = accel.x();
-  v->y = accel.y();
-  v->z = accel.z();
+  accel.x = acceleration.x();
+  accel.y = acceleration.y();
+  accel.z = acceleration.z();
 }
 
-int8_t printIMUtemp(){
+int8_t IMU::printTemp(){
   int8_t temp = bno.getTemp();
   Serial.print("Current Temperature: ");
   Serial.print(temp);
