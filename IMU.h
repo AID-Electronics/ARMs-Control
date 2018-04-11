@@ -39,6 +39,14 @@ typedef struct Vector3D{
   double z;
 };
 
+class IMU{
+public:
+  double cabeceo;
+  double alabeo;
+
+  void setup();
+};
+
 void displayCalStatus () {
   /* Get the four calibration values (0..3) */
   /* Any sensor data reporting 0 should be ignored, */
@@ -64,7 +72,7 @@ void displayCalStatus () {
   Serial.println(mag, DEC);
 }
 
-void setupIMU() {
+void IMU::setup() {
   Serial.println("Setup IMU");
   int cont = 0;
   while (!bno.begin() && cont<10) {
