@@ -6,6 +6,8 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
+#define CAN_CS 53
+
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
 unsigned char buffRespuesta[8];
@@ -16,7 +18,7 @@ union Paquete{
   int32_t i;
 };
 
-MCP_CAN CAN(53);                                      // Set CS to pin 53
+MCP_CAN CAN(CAN_CS);
 
 void setupCAN(){
   while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
