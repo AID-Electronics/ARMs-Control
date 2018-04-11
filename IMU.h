@@ -165,10 +165,14 @@ void imprimirDatos(sensors_event_t event) {
 }
 
 void IMU::update(){
-  sensors_event_t event;
+  
   bno.getEvent (&event);
-  cabeceo=event.orientation.y*deg2rad; //No estoy demasiado seguro de que sea el eje correcto
-  alabeo=event.orientation.z*deg2rad;
+  orientacion.x = event.orientation.x;
+  orientacion.y = event.orientation.y;
+  orientacion.z = event.orientation.z;
+  
+  cabeceo = orientacion.y * deg2rad; //No estoy demasiado seguro de que sea el eje correcto
+  alabeo = orientacion.z * deg2rad;
 }
 
 void moverMotores(double cabeceo, double alabeo) {
