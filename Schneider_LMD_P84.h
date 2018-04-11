@@ -253,15 +253,15 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
 
 void sending( char buff[], long ID) {
   
-        Serial.print("(SENT)ID: ");
-        Serial.print(ID,HEX);
-        Serial.print(" / ");
-
-    for(int i=0; i<8;i++){
-      Serial.print(buff[i],HEX);
-      Serial.print(",");
-    }
-    Serial.print("\n");
+//        Serial.print("(SENT)ID: ");
+//        Serial.print(ID,HEX);
+//        Serial.print(" / ");
+//
+//    for(int i=0; i<8;i++){
+//      Serial.print(buff[i],HEX);
+//      Serial.print(",");
+//    }
+//    Serial.print("\n");
     
     CAN.sendMsgBuf(ID, 0, 8, buff);
 }
@@ -272,22 +272,22 @@ bool receive(bool observador = 0){
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
         unsigned long ID = CAN.getCanId();
         
-        Serial.print("(RECEIVED)ID: ");        
-        Serial.print(ID,HEX);
-
-       Serial.print(" / ");
-
-        for(int i = 0; i<len; i++){    // print the data
-        
-          if(buffRespuesta[i]==0){
-            Serial.print("00");
-          }
-          else{
-            Serial.print(buffRespuesta[i],HEX);
-          }
-          Serial.print(",");
-        }
-        Serial.println();
+//        Serial.print("(RECEIVED)ID: ");        
+//        Serial.print(ID,HEX);
+//
+//       Serial.print(" / ");
+//
+//        for(int i = 0; i<len; i++){    // print the data
+//        
+//          if(buffRespuesta[i]==0){
+//            Serial.print("00");
+//          }
+//          else{
+//            Serial.print(buffRespuesta[i],HEX);
+//          }
+//          Serial.print(",");
+//        }
+//        Serial.println();
         
         if(observador == 1){
           traduce(&len, buffRespuesta, ID);
@@ -324,7 +324,7 @@ bool comprobarRespuesta(){
     return false;
   }
 }
-}
+
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
@@ -489,8 +489,8 @@ void moverAbsEspera(long pos,long ID){
 }
 
 void moverAbsInmediato(long pos,long ID){
-  Serial.print("Movimiento absoluto sin espera \t- Posicion: ");
-  Serial.println(pos);
+  //Serial.print("Movimiento absoluto sin espera \t- Posicion: ");
+  //Serial.println(pos);
   Paquete p;
   p.i = pos;
   
