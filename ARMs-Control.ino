@@ -1,5 +1,3 @@
-#include <mcp_can.h>
-#include <SPI.h>
 #include "Schneider_LMD_P84.h"
 
 #define ID_MOTOR_1 0x610

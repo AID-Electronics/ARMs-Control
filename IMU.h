@@ -215,7 +215,7 @@ void IMU::print(){
   Serial.print ("Cabeceo: ");
   Serial.print (cabeceo,4);
   Serial.print ("\tAlabeo: ");
-  Serial.println (cabeceo,4);
+  Serial.println (alabeo,4);
   
   Serial.print ("Orientacion ");
   Serial.print ("\tX: ");
