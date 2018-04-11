@@ -240,6 +240,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
 }
 
 void sending( char buff[], long ID) {
+  
         Serial.print("(SENT)ID: ");
         Serial.print(ID,HEX);
         Serial.print(" / ");
@@ -294,7 +295,7 @@ bool comprobarRespuesta(){
     i++;
   }
   
-  Serial.println(i);
+  //Serial.println(i);
   
   if (flag_receive == 1){
     if(buffRespuesta[0]==0x80){
@@ -311,7 +312,7 @@ bool comprobarRespuesta(){
     return false;
   }
 }
-
+}
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
@@ -320,17 +321,17 @@ bool EnviarMSG(char buff[], long ID){
     
     if(comprobarRespuesta() == 1){
       rec_OK = 1;
-      Serial.println("MSG RECIBIDO CORRECTAMENTE");
-      Serial.println("");
+//      Serial.println("MSG RECIBIDO CORRECTAMENTE");
+//      Serial.println("");
     }
     else {
-      Serial.println("ERROR EN MSG");
-      Serial.println("");
+//      Serial.println("ERROR EN MSG");
+//      Serial.println("");
     }
   }
 
   if (rec_OK == 0){
-    Serial.println ("Mensaje erroneo");
+//    Serial.println ("Mensaje erroneo");
   }
   return rec_OK;
 }
@@ -519,5 +520,6 @@ void moverRelatInmediato(long pasos,long ID){
   EnviarMSG(tipo_mov1,ID);
   EnviarMSG(tipo_mov2,ID);
 }
+
 
 #endif
