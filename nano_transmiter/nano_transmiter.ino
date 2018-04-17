@@ -10,7 +10,7 @@ void setup()
 
     for (int i=0;i<100;i++)
     {
-      Serial.println(i);
+      Serial.write(i);
     }
 }
  
@@ -21,17 +21,17 @@ void loop()
     switch (Serial.read())
    {
     case '1':
-      Serial.println("hola caracola");
+      Serial.write("hola caracola");
       break;
     case '2':
-      Serial.println("adios pardiez");
+      Serial.write("adios pardiez");
       break;
     case '3':
-    Serial.println("hasta luego que me muero"); 
+    Serial.write("hasta luego que me muero"); 
     break;
 
     default:
-    Serial.println("default value adquired"); 
+    Serial.write("default value adquired"); 
     break;
    }
    }
