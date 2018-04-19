@@ -15,7 +15,7 @@ void leer_RF(){                                     //se pretende usar esta func
    if (vw_get_message(message, &messageLength)) // Non-blocking
   {
     Serial.print("IMU2: ");
-    for (int i = 0; i < messageLength; i++) //parece ser que no detecta bien la longitud del mensaje, estaría bien comprobar desde un segundo receiver que el mensaje se envia entero
+    for (int i = 0; i < messageLength; i++) //parece ser que no detecta bien la longitud del mensaje cuando los motores estan encendidos, parecen interferencias.
     {
       Serial.write(message[i]);
     }
@@ -31,7 +31,7 @@ void setup(){
     setupMotor(ID_MOTOR_1,1000000,1000000,100,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
 
-//**************************************************SETUP RF*********************************************************
+//************************************************** SETUP RF *********************************************************
   Serial.println("RF is ready");
   vw_setup(2000); // Bits per sec -->150m
   vw_set_rx_pin(3); //pin por el que llega el Rx.
