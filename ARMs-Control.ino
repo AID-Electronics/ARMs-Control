@@ -14,8 +14,8 @@ byte messageLength = VW_MAX_MESSAGE_LEN; // the size of the message
 void leer_RF(){                                     //se pretende usar esta función solo durante la calibración
    if (vw_get_message(message, &messageLength)) // Non-blocking
   {
-    Serial.print("Received: ");
-    for (int i = 0; i < messageLength; i++)
+    Serial.print("IMU2: ");
+    for (int i = 0; i < messageLength; i++) //parece ser que no detecta bien la longitud del mensaje, estaría bien comprobar desde un segundo receiver que el mensaje se envia entero
     {
       Serial.write(message[i]);
     }
