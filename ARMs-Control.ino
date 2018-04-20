@@ -10,7 +10,8 @@
 IMU IMU_fija;
 
 void setup(){
-  Serial.begin(2400);
+  Serial.begin(1000000);
+  Serial1.begin(4800);
  /* IMU_fija.setup();
   setupCAN();
 
@@ -31,7 +32,11 @@ void loop(){
     IMU_fija.printTemp();
     IMU_fija.print();
   }*/
-  Serial.println(Serial.read());
+
+  if (Serial1.available()){
+    char c = Serial1.read();
+    Serial.print(c);
+  }  
   
 }
 
