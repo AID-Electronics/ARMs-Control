@@ -12,15 +12,16 @@ IMU IMU_fija;
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
- /* IMU_fija.setup();
+  IMU_fija.setup();
   setupCAN();
 
     setupMotor(ID_MOTOR_1,1000000,1000000,100,512000); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);*/
+    setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
 }
 
 char a;
 long pos;
+
 
 void loop(){
  /* IMU_fija.update();
@@ -34,9 +35,12 @@ void loop(){
   }*/
 
   if (Serial1.available()){
-    char c = Serial1.read();
-    Serial.print(c);
-  }  
+    char token = Serial1.read();
+    if(token == '='){
+      Serial.print(token);
+      
+    }
+  }
   
 }
 
