@@ -22,6 +22,12 @@ void setup(){
 char a;
 long pos;
 
+bool RxStart = 0;
+bool RxEnd = 0;
+unsigned int RxCont = 0;
+String RxBuff[8];
+bool negativo;
+double alabeo;
 
 void loop(){
  /* IMU_fija.update();
@@ -36,10 +42,31 @@ void loop(){
 
   if (Serial1.available()){
     char token = Serial1.read();
+    Serial.print(token);
     if(token == '='){
-      Serial.print(token);
-      
+      RxStart = 1;
+      RxCont = 0;
+      negativo = 0;
     }
+    else{
+      if(token = ';'){
+        RxBuff[RxCont] = NULL;
+        RxCont = 0;
+        alabeo = RxBuff.toDouble();
+        if (negativo == true){
+          alabeo = 0 - alabeo;
+        }
+      }
+      else if (token == '-'){
+        negativo = true;
+      }
+      else if (RxStart == true){
+        RxBuff[RxCont] = token;
+        RxCont++;
+      }
+    }
+    
+    
   }
   
 }
