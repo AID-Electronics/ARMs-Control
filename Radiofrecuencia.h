@@ -4,15 +4,14 @@
 #include <Arduino.h>
 
 bool RxStart = 0;
-bool RxEnd = 0;
+//bool RxEnd = 0;
 unsigned int RxCont = 0;
 char RxBuff[9];
 bool negativo;
-double alabeo;
-double cabeceo;
+double alabeoPlat;
+double cabeceoPlat;
 
 void getOrientExterna() {
-
   if (Serial1.available()) {
     char token = Serial1.read();
     //Serial.print(token);
@@ -27,13 +26,13 @@ void getOrientExterna() {
         RxCont = 0;
 
         char *p;
-        alabeo = strtod(RxBuff, &p);
+        alabeoPlat = strtod(RxBuff, &p);
         if (negativo == true) {
-          alabeo = 0 - alabeo;
+          alabeoPlat = 0 - alabeoPlat;
           negativo = false;
         }
         Serial.print("   Alabeo: ");
-        Serial.print(alabeo, 4);
+        Serial.print(alabeoPlat, 4);
       }
       else if (token == '-') {
         negativo = true;
@@ -46,13 +45,13 @@ void getOrientExterna() {
         //Serial.print(RxBuff);
 
         char *p;
-        cabeceo = strtod(RxBuff, &p);
+        cabeceoPlat = strtod(RxBuff, &p);
         if (negativo == true) {
-          cabeceo = 0 - cabeceo;
+          cabeceoPlat = 0 - cabeceoPlat;
           negativo = false;
         }
         Serial.print("\tCabeceo: ");
-        Serial.println(cabeceo, 4);
+        Serial.println(cabeceoPlat, 4);
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;
