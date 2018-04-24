@@ -7,6 +7,7 @@
 #include <Adafruit_BNO055.h>
 #include <Wire.h>
 #include <utility/imumaths.h>
+#include "Trigonometria.h"
 
 // DATOS FIJOS DEL SISTEMAS DE POLEAS Y ACTUADORES
 #define RESOLUCION 0.00703125  //GRADOS POR PASO
@@ -30,12 +31,6 @@ long pasosMotor2;
 long pasosMotor3;
 long pasosMotor4;
 
-
-typedef struct Vector3D{
-  double x;
-  double y;
-  double z;
-};
 
 class IMU{
 public:

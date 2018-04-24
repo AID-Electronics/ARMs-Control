@@ -2,6 +2,7 @@
 #define RADIOFRECUENCIA_H
 
 #include <Arduino.h>
+#include "Trigonometria.h"
 
 bool RxStart = 0;
 //bool RxEnd = 0;
@@ -11,7 +12,7 @@ bool negativo;
 double alabeoPlat;
 double cabeceoPlat;
 
-void getOrientExterna() {
+void getOrientRF(Vector3D *v) {
   if (Serial1.available()) {
     char token = Serial1.read();
     //Serial.print(token);
@@ -26,13 +27,13 @@ void getOrientExterna() {
         RxCont = 0;
 
         char *p;
-        alabeoPlat = strtod(RxBuff, &p);
+        v->y = strtod(RxBuff, &p);
         if (negativo == true) {
-          alabeoPlat = 0 - alabeoPlat;
+          v->y = 0 - v->y;
           negativo = false;
         }
-        Serial.print("   Alabeo: ");
-        Serial.print(alabeoPlat, 4);
+        //Serial.print("   Alabeo: ");
+        //Serial.print(v->y, 4);
       }
       else if (token == '-') {
         negativo = true;
@@ -45,13 +46,13 @@ void getOrientExterna() {
         //Serial.print(RxBuff);
 
         char *p;
-        cabeceoPlat = strtod(RxBuff, &p);
+        v->z = strtod(RxBuff, &p);
         if (negativo == true) {
-          cabeceoPlat = 0 - cabeceoPlat;
+          v->z = 0 - v->z;
           negativo = false;
         }
-        Serial.print("\tCabeceo: ");
-        Serial.println(cabeceoPlat, 4);
+        //Serial.print("\tCabeceo: ");
+        //Serial.println(v->z, 4);
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;

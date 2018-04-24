@@ -11,6 +11,7 @@
 IMU IMU_fija;
 
 class Plataforma{
+public:
   Vector3D orientacion;
   Vector3D accel;
   double zrad;
@@ -23,7 +24,7 @@ bool Plataforma::calibrarPlat(){
   while(abs(orientacion.y)>0.5 || abs(orientacion.z)>0.5){
 
     Vector3D aux;
-    getOrientRF(aux);
+    getOrientRF(&aux);
     yrad = (-orientacion.y )* deg2rad;
     zrad = (-orientacion.z )* deg2rad;
     
