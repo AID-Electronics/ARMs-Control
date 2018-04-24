@@ -12,10 +12,13 @@ public:
 };
 
 bool Plataforma::calibrarPlat(){
-  while(abs(orientacion.y)>0.5 || abs(orientacion.z)>0.5){
-
-    Vector3D aux;
-    getOrientRF(&aux);
+  Vector3D aux;
+  getOrientRF(&aux);
+  
+  orientacion.y = aux.y;
+  orientacion.z = aux.z;
+  
+  while(abs(accel.z)<9.9){
     yrad = (-orientacion.y )* deg2rad;
     zrad = (-orientacion.z )* deg2rad;
     
@@ -30,9 +33,11 @@ bool Plataforma::calibrarPlat(){
     //moverRelatEspera(pasosMotor4,ID_MOTOR_4);
   
   }
-     //apagar motores()//funcion para apagar motores para que la posicien absoluta de cero pasos coincida con al horizonte 
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,512000);
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
+     //apagar motores()//funcion para apagar motores para que la posicien absoluta de cero pasos coincida con al horizonte
+     //Se hara con un relé 
+     //Despues se debe hacer el setup de nuevo
+    //setupMotor(ID_MOTOR_1,1000000,1000000,100,512000);
+    //setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
  return true;
 }
 
