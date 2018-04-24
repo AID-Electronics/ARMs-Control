@@ -28,7 +28,7 @@ void getOrientRF(Vector3D *v) {
       if (token == ',') {
         RxBuff[RxCont] = '\0';
         RxCont = 0;
-
+        
         char *p; //Utilizado unicamente en la funcion strtod
         double num = strtod(RxBuff, &p);
         if (negativo == true) {
@@ -37,12 +37,15 @@ void getOrientRF(Vector3D *v) {
         }
         if(nDato == 0){
           v->x = num;
+          Serial.print("   X: ");
+          Serial.print(v->x, 4);
         }
         else if (nDato == 1){
           v->y = num;
+          Serial.print("\tY: ");
+          Serial.print(v->y, 4);
         }
-        //Serial.print("   Alabeo: ");
-        //Serial.print(v->y, 4);
+        
         nDato++;
       }
       else if (token == '-') {
@@ -63,10 +66,11 @@ void getOrientRF(Vector3D *v) {
         }
         if(nDato == 2){
           v->z = num;
+          Serial.print("\tZ: ");
+          Serial.println(num, 4);
         }
         nDato = 0;
-        //Serial.print("\tCabeceo: ");
-        //Serial.println(v->z, 4);
+        
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;
