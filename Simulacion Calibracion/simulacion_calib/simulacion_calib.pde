@@ -4,13 +4,18 @@ Plataforma plat;
 
 void setup() {
   size(600, 400, P3D);
-  estruc = new Estructura(width/2.0, height/2.0, 0.0);
+  estruc = new Estructura(0, 0, 50);
   plat = new Plataforma(width/2.0, height/2.0, 100);
+  rectMode(CENTER);
 }
 
 
 void draw() {
   background(200);
+  translate(width/2, height/2, 0);
+  rotateX(PI/2.6);
+  rotateZ(PI/8);
+  coordinates();
   //rotateX(PI/3);
   //rotateZ(PI/8);
   estruc.show();
@@ -61,4 +66,16 @@ class Plataforma {
     strokeWeight(1);
     translate(-posX, -posY, -posZ);
   }
+}
+
+void coordinates(){
+  strokeWeight(4);
+  stroke(255, 0, 0);
+  line(0,0,0,100,0,0);
+  stroke(0, 255, 0);
+  line(0,0,0,0,100,0);
+  stroke(0, 0, 255);
+  line(0,0,0,0,0,100);
+  stroke(0);
+  strokeWeight(1);
 }
