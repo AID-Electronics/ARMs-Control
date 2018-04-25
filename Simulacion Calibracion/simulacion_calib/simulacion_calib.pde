@@ -17,8 +17,11 @@ void draw() {
   rotateX(PI/2.6); //2.6
   rotateZ(PI/8);
   coordinates();
-  
+  float rotX = (mouseX-width/2)/2;
+  float rotY = (mouseY-height/1.5)/2;
+  estruc.orientacion(rotX,rotY);
   estruc.show();
+  plat.orientacion(-rotX,-rotY);
   plat.show();
 }
 
@@ -60,16 +63,39 @@ class Plataforma {
   float posX;
   float posY;
   float posZ;
+  
+  float angX;
+  float angY;
+  float angZ;
+  
+  float velZ;  // En rad/img
 
   Plataforma(float x, float y, float z) {
     posX = x;
     posY = y;
     posZ = z;
+    
+    angX = 0;
+    angY = 0;
+    angZ = 0;
+    
+    velZ = 0.1;
+  }
+  
+  void orientacion(float x, float y){
+    angX = radians(x);
+    angY = radians(y);
+    angZ = angZ + velZ;
   }
 
   void show() {
     //Altura barra 50
-    translate(posX, posY, posZ+25);
+    translate(posX, posY, posZ);
+    rotateX(angX);
+    rotateY(angY);
+    rotateZ(angZ);
+    
+    translate(0,0,25);
     box(10, 10, 50);
     translate(0, 0, 30);
     box(200, 200, 10);  
