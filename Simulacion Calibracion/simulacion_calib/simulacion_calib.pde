@@ -26,17 +26,33 @@ class Estructura {
   float posX;
   float posY;
   float posZ;
+  
+  float angX;
+  float angY;
+  //No gira en Z
 
   Estructura(float x, float y, float z) {
     posX = x;
     posY = y;
-    posZ = z+50;
+    posZ = z;
+    
+    angX = 0;
+    angY = 0;
+  }
+  
+  void orientacion(float x, float y){
+    angX = radians(x);
+    angY = radians(y);
   }
 
   void show() {
     translate(posX, posY, posZ);
+    rotateX(angX);
+    rotateY(angY);
+    
+    translate(0, 0, 50);
     box(100);
-    translate(-posX, -posY, -(posZ));
+    translate(-posX, -posY, -posZ-50);
   }
 }
 
