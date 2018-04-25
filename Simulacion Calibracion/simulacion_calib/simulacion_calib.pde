@@ -16,7 +16,7 @@ void draw() {
   translate(width/2, height/1.5, 0);
   rotateX(PI/2.6); //2.6
   rotateZ(PI/8);
-  coordinates();
+  coordinates(100);
   float rotX = (mouseX-width/2)/2;
   float rotY = (mouseY-height/1.5)/2;
   estruc.orientacion(rotX,rotY);
@@ -102,14 +102,14 @@ class Plataforma {
   }
 }
 
-void coordinates(){
+void coordinates(int longitud){
   strokeWeight(4);
   stroke(255, 0, 0);    //X rojo
-  line(0,0,0,100,0,0);
+  line(0,0,0,longitud,0,0);
   stroke(0, 255, 0);    //Y verde
-  line(0,0,0,0,100,0);
+  line(0,0,0,0,longitud,0);
   stroke(0, 0, 255);    //Z azul
-  line(0,0,0,0,0,100);
+  line(0,0,0,0,0,longitud);
   stroke(0);
   strokeWeight(1);
 }
