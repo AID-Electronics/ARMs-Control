@@ -2,12 +2,14 @@
 Estructura estruc;
 Plataforma plat;
 IMU imuFija;
+IMU imuMovil;
 
 void setup() {
   size(800, 600, P3D);
   estruc = new Estructura(0, 0, 0); // Z -> mitad del cubo
   plat = new Plataforma(0, 0, 100);
   imuFija = new IMU ();
+  imuMovil = new IMU ();
   rectMode(CENTER);
 }
 
@@ -15,20 +17,26 @@ void setup() {
 void draw() {
   background(200);
   
+  //Orientacion mundo
   translate(width/2, height/1.5, 0);
   rotateX(PI/2.6); //2.6
   rotateZ(PI/8);
   coordinates(200);
+  
+  //Orientacion estructura
   float rotX = (mouseX-width/2)/2;
   float rotY = (mouseY-height/1.5)/2;
   estruc.orientacion(rotX,rotY);
   estruc.show();
-  imuFija.show();
+  imuFija.show(100);
   plat.orientacion(-rotX,-rotY);
   plat.show();
+  imuMovil.show(50);
   
   imuFija.computeAccel(estruc.angX,estruc.angY);
-  println("X: " + imuFija.accelX + "\tY: " + imuFija.accelY + "\tZ: " + imuFija.accelZ);
+  println("* X: " + imuFija.accelX + "\tY: " + imuFija.accelY + "\tZ: " + imuFija.accelZ);
+  imuMovil.computeAccel(estruc.angX + plat.angX, estruc.angY + plat.angY);
+  println("- X: " + imuMovil.accelX + "\tY: " + imuMovil.accelY + "\tZ: " + imuMovil.accelZ);
 }
 
 class Estructura {
@@ -106,6 +114,7 @@ class Plataforma {
     box(10, 10, 50);
     translate(0, 0, 30);
     box(200, 200, 10);
+    translate(0,0,5);
   }
 }
 
@@ -131,7 +140,7 @@ class IMU {
     accelY = 10*sin(angX);
     accelZ = 10*cos(angX)*cos(angY);
   }
-  void show(){
-    coordinates(100);
+  void show(int longitud){
+    coordinates(longitud);
   }
 }
