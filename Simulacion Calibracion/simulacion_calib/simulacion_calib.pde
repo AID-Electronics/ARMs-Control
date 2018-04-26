@@ -1,11 +1,13 @@
 
 Estructura estruc;
 Plataforma plat;
+IMU imuEstructura;
 
 void setup() {
   size(600, 400, P3D);
   estruc = new Estructura(0, 0, 0); // Z -> mitad del cubo
   plat = new Plataforma(0, 0, 100);
+  imuEstructura = new IMU ();
   rectMode(CENTER);
 }
 
@@ -16,11 +18,12 @@ void draw() {
   translate(width/2, height/1.5, 0);
   rotateX(PI/2.6); //2.6
   rotateZ(PI/8);
-  coordinates(100);
+  coordinates(200);
   float rotX = (mouseX-width/2)/2;
   float rotY = (mouseY-height/1.5)/2;
   estruc.orientacion(rotX,rotY);
   estruc.show();
+  imuEstructura.show();
   plat.orientacion(-rotX,-rotY);
   plat.show();
 }
@@ -52,7 +55,7 @@ class Estructura {
     translate(posX, posY, posZ);
     rotateX(angX);
     rotateY(angY);
-    
+    //rotateX(angX);
     translate(0, 0, 50);
     box(100);
     translate(-posX, -posY, -posZ-50);
@@ -91,8 +94,9 @@ class Plataforma {
   void show() {
     //Altura barra 50
     translate(posX, posY, posZ);
-    rotateX(angX);
+    //rotateX(angX);
     rotateY(angY);
+    rotateX(angX);
     rotateZ(angZ);
     
     translate(0,0,25);
@@ -112,4 +116,19 @@ void coordinates(int longitud){
   line(0,0,0,0,0,longitud);
   stroke(0);
   strokeWeight(1);
+}
+
+class IMU {
+  float accelX;
+  float accelY;
+  float accelZ;
+  
+  void computeAccel(float angX, float angY, float angZ){
+    accelX = 10*sin(angY);
+    accelY = 10*sin(angX);
+    accelZ = 10*cos(angX)*cos(angY);
+  }
+  void show(){
+    coordinates(100);
+  }
 }
