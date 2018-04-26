@@ -1,13 +1,13 @@
 
 Estructura estruc;
 Plataforma plat;
-IMU imuEstructura;
+IMU imuFija;
 
 void setup() {
-  size(600, 400, P3D);
+  size(800, 600, P3D);
   estruc = new Estructura(0, 0, 0); // Z -> mitad del cubo
   plat = new Plataforma(0, 0, 100);
-  imuEstructura = new IMU ();
+  imuFija = new IMU ();
   rectMode(CENTER);
 }
 
@@ -23,9 +23,12 @@ void draw() {
   float rotY = (mouseY-height/1.5)/2;
   estruc.orientacion(rotX,rotY);
   estruc.show();
-  imuEstructura.show();
+  imuFija.show();
   plat.orientacion(-rotX,-rotY);
   plat.show();
+  
+  imuFija.computeAccel(estruc.angX,estruc.angY);
+  println("X: " + imuFija.accelX + "\tY: " + imuFija.accelY + "\tZ: " + imuFija.accelZ);
 }
 
 class Estructura {
@@ -102,7 +105,7 @@ class Plataforma {
     translate(0,0,25);
     box(10, 10, 50);
     translate(0, 0, 30);
-    box(200, 200, 10);  
+    box(200, 200, 10);
   }
 }
 
@@ -123,7 +126,7 @@ class IMU {
   float accelY;
   float accelZ;
   
-  void computeAccel(float angX, float angY, float angZ){
+  void computeAccel(float angX, float angY){
     accelX = 10*sin(angY);
     accelY = 10*sin(angX);
     accelZ = 10*cos(angX)*cos(angY);
