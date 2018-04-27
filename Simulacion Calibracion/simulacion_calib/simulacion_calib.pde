@@ -46,7 +46,7 @@ class Estructura {
   
   float angX;
   float angY;
-  //No gira en Z
+  float angZ;  //No gira en Z siempre 0
 
   Estructura(float x, float y, float z) {
     posX = x;
@@ -55,6 +55,7 @@ class Estructura {
     
     angX = 0;
     angY = 0;
+    angZ = 0;
   }
   
   void orientacion(float x, float y){
@@ -64,9 +65,24 @@ class Estructura {
 
   void show() {
     translate(posX, posY, posZ);
+    
+    //--Rotaacion intrínseca--
+    /*
+    float c1 = cos(angX);
+    float s1 = sin(angX);
+    float c2 = cos(angY);
+    float s2 = sin(angY);
+    float c3 = cos(angZ);
+    float s3 = sin(angZ);
+    applyMatrix( c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3, 0,
+               -s2, c1*c2, c2*s1, 0,
+               c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
+               0, 0, 0, 1);
+    */
+    //--Rotacion extrínseca--
     rotateX(angX);
     rotateY(angY);
-    //rotateX(angX);
+    
     translate(0, 0, 50);
     box(100);
     translate(-posX, -posY, -posZ-50);
