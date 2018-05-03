@@ -5,7 +5,7 @@ IMU imuFija;
 IMU imuMovil;
 Calibracion cal;
 
-int mode = 0;
+int state = 0;
 
 void setup() {
   size(800, 600, P3D);
@@ -15,6 +15,8 @@ void setup() {
   imuMovil = new IMU ();
   cal = new Calibracion();
   rectMode(CENTER);
+  
+  plat.orientacion(20,20);
 }
 
 
@@ -30,10 +32,10 @@ void draw() {
   //Orientacion estructura
   float rotX = (mouseX-width/2)/2;
   float rotY = (mouseY-height/1.5)/2;
-  estruc.orientacion(rotX,rotY);
+  estruc.orientacion(0,0);
   estruc.show();
   imuFija.show(100);
-  plat.orientacion(-rotX,-rotY);
+  //plat.orientacion(10,0);
   plat.show();
   imuMovil.show(50);
   
@@ -44,28 +46,7 @@ void draw() {
   println("- X: " + imuMovil.accelX + "\tY: " + imuMovil.accelY + "\tZ: " + imuMovil.accelZ);
   
   //Calibracion
-  if (mode == 0){
-    cal.past_accel = cal.getAccel();
-    cal.mueveEje(1);
-    cal.cont = 0;
-    mode = 1;
-  }
-  else if (mode == 1){
-    cal.getAccel();
-    if (cal.accel > cal.past_accel){
-      cal.cont = 1;
-    }
-    else if (cal.accel < cal.past_accel){
-      if (cal.cont == 0){
-        cal.invierteSentido();
-        
-      }
-      else {
-        //Cambia de eje
-      }
-    }
-    cal.past_accel = cal.accel;
-  }
+  cal.doCalib();
   
   
 }
