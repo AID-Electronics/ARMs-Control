@@ -47,9 +47,24 @@ void draw() {
   if (mode == 0){
     cal.past_accel = cal.getAccel();
     cal.mueveEje('X',1);
+    cal.cont = 0;
+    mode = 1;
   }
   else if (mode == 1){
-    
+    cal.getAccel();
+    if (cal.accel > cal.past_accel){
+      cal.cont = 1;
+    }
+    else if (cal.accel < cal.past_accel){
+      if (cal.cont == 0){
+        cal.invierteSentido();
+        
+      }
+      else {
+        //Cambia de eje
+      }
+    }
+    cal.past_accel = cal.accel;
   }
   
   

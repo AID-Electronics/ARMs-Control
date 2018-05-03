@@ -1,7 +1,7 @@
 class Calibracion {
   float accel;
   float past_accel;
-  int cont;
+  int cont = 0;
   boolean invSentido = false;
   
   float getAccel(){
@@ -32,4 +32,7 @@ class Calibracion {
     }
   }
   
+  void invierteSentido(){
+    invSentido = !invSentido;
+  }
 }
