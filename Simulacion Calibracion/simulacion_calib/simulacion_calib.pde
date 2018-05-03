@@ -46,7 +46,7 @@ void draw() {
   //Calibracion
   if (mode == 0){
     cal.past_accel = cal.getAccel();
-    cal.mueveEje('X',1);
+    cal.mueveEje(1);
     cal.cont = 0;
     mode = 1;
   }
