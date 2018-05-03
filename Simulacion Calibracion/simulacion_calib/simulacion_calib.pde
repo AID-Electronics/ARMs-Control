@@ -3,6 +3,9 @@ Estructura estruc;
 Plataforma plat;
 IMU imuFija;
 IMU imuMovil;
+Calibracion cal;
+
+int mode = 0;
 
 void setup() {
   size(800, 600, P3D);
@@ -10,6 +13,7 @@ void setup() {
   plat = new Plataforma(0, 0, 100);
   imuFija = new IMU ();
   imuMovil = new IMU ();
+  cal = new Calibracion();
   rectMode(CENTER);
 }
 
@@ -33,15 +37,22 @@ void draw() {
   plat.show();
   imuMovil.show(50);
   
+  println("\t AngX: " + degrees(estruc.angX) + "\t AngY: " + degrees(estruc.angY));
   imuFija.computeAccel(estruc.angX,estruc.angY);
   println("* X: " + imuFija.accelX + "\tY: " + imuFija.accelY + "\tZ: " + imuFija.accelZ);
   imuMovil.computeAccel(estruc.angX + plat.angX, estruc.angY + plat.angY);
   println("- X: " + imuMovil.accelX + "\tY: " + imuMovil.accelY + "\tZ: " + imuMovil.accelZ);
+  
+  //Calibracion
+  if (mode == 0){
+    cal.past_accel = cal.getAccel();
+  }
+  else if (mode == 1){
+    
+  }
+  
+  
 }
-
-
-
-
 
 void coordinates(int longitud){
   strokeWeight(4);
