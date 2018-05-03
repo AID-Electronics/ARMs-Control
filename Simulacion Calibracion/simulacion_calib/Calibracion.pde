@@ -51,10 +51,17 @@ class Calibracion {
           invierteSentido();
         } else {
           cambiaEje();
+          state = 0;
         }
       }
       past_accel = accel;
-      mueveEje(1);
+      if (accel >=9.9){
+        mueveEje(0.05);
+      }else if(accel >= 9){
+        mueveEje(0.1);
+      }else{
+      mueveEje(0.5);
+      }
     }
   }
 }

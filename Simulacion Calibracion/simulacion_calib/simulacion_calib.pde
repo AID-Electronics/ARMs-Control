@@ -16,7 +16,7 @@ void setup() {
   cal = new Calibracion();
   rectMode(CENTER);
   
-  plat.orientacion(20,20);
+  plat.orientacion(45,30);
 }
 
 
@@ -30,9 +30,9 @@ void draw() {
   coordinates(200);
   
   //Orientacion estructura
-  float rotX = (mouseX-width/2)/2;
-  float rotY = (mouseY-height/1.5)/2;
-  estruc.orientacion(0,0);
+  float rotX = (mouseX-width/2)/8;
+  float rotY = (mouseY-height/1.5)/8;
+  estruc.orientacion(rotX,rotY);
   estruc.show();
   imuFija.show(100);
   //plat.orientacion(10,0);
