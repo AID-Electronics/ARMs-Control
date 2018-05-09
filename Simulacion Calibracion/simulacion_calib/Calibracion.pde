@@ -39,7 +39,6 @@ class Calibracion {
   void doCalib() {
     if (state == 0) {              //Estado 0
       past_accel = getAccel();
-      mueveEje(1);
       cont = 0;
       state = 1;
     } else if (state == 1) {      //Estado 1
@@ -55,13 +54,13 @@ class Calibracion {
         }
       }
       past_accel = accel;
-      if (accel >=9.9){
-        mueveEje(0.05);
-      }else if(accel >= 9){
-        mueveEje(0.1);
-      }else{
-      mueveEje(0.5);
-      }
     }
-  }
+    if (accel >=9.9) {
+      mueveEje(0.05);
+    } else if (accel >= 9) {
+      mueveEje(0.2);
+    } else {
+      mueveEje(0.5);
+    }
+  } //Fin doCalib
 }
