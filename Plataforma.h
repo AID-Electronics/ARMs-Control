@@ -9,9 +9,16 @@ public:
   double yrad;
 
   uint8_t calibState;
+  Plataforma();
   void setAccel(Vector3D *v);
   bool calibrarPlat();
 };
+
+void Plataforma::Plataforma(){
+  calibState = 0;
+  zrad = 0;
+  yrad = 0;
+}
 
 void Plataforma::setAccel(Vector3D *v){
   accel.x = v->x;
