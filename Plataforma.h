@@ -8,8 +8,16 @@ public:
   double zrad;
   double yrad;
 
+  uint8_t calibState;
+  void setAccel(Vector3D *v);
   bool calibrarPlat();
 };
+
+void Plataforma::setAccel(Vector3D *v){
+  accel.x = v->x;
+  accel.y = v->y;
+  accel.z = v->z;
+}
 
 bool Plataforma::calibrarPlat(){
   Vector3D aux;
