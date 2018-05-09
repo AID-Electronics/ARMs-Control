@@ -8,16 +8,34 @@ public:
   double zrad;
   double yrad;
 
+  //Para calibracion
+  double presentAccel;
+  double pastAccel;
+  int cont;
+  bool invSentido;
+  bool eje;
   uint8_t calibState;
+
   Plataforma();
+  double getAccel();
   void setAccel(Vector3D *v);
   bool calibrarPlat();
 };
 
-void Plataforma::Plataforma(){
+Plataforma::Plataforma(){
+  presentAccel = 0;
+  pastAccel = 0;
+  cont = 0;
+  invSentido = 0;
+  eje = 0;
   calibState = 0;
+  
   zrad = 0;
   yrad = 0;
+}
+
+double Plataforma::getAccel(){
+  return accel.z;
 }
 
 void Plataforma::setAccel(Vector3D *v){
