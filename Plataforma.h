@@ -55,6 +55,21 @@ bool Plataforma::calibrarPlat(){
     cont = 0;
     calibState = 1;
   }
+  else if (calibState == 1){
+    presentAccel = getAccel();
+    if (presentAccel > pastAccel){
+      cont = 1;
+    }
+    else{
+      if(cont == 0){
+        invierteSentido();
+      }
+      else{
+        cambiaEje();
+        state = 0;
+      }
+    }
+  }
   
   Serial.println(accel.z);
   if(abs(accel.z)<9.9){
