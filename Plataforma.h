@@ -19,6 +19,8 @@ public:
   Plataforma();
   double getAccel();
   void setAccel(Vector3D *v);
+  void invierteSentido();
+  void cambiaEje();
   bool calibrarPlat();
 };
 
@@ -26,8 +28,8 @@ Plataforma::Plataforma(){
   presentAccel = 0;
   pastAccel = 0;
   cont = 0;
-  invSentido = 0;
-  eje = 0;
+  invSentido = false;
+  eje = false;
   calibState = 0;
   
   zrad = 0;
@@ -42,6 +44,14 @@ void Plataforma::setAccel(Vector3D *v){
   accel.x = v->x;
   accel.y = v->y;
   accel.z = v->z;
+}
+
+void Plataforma::invierteSentido(){
+  invSentido = !invSentido;
+}
+
+void Plataforma::cambiaEje(){
+  eje = !eje;
 }
 
 bool Plataforma::calibrarPlat(){
@@ -66,7 +76,7 @@ bool Plataforma::calibrarPlat(){
       }
       else{
         cambiaEje();
-        state = 0;
+        calibState = 0;
       }
     }
   }
