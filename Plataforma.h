@@ -46,11 +46,17 @@ void Plataforma::setAccel(Vector3D *v){
 
 bool Plataforma::calibrarPlat(){
   Vector3D aux;
-  getOrientRF(&aux);
+  bool orient = getOrientRF(&aux);
   
-  orientacion.y = aux.y;
-  orientacion.z = aux.z;
+  setAccel(&aux);
+  if (calibState == 0){
+    pastAccel = getAccel();
+    //Mueve eje unos grados
+    cont = 0;
+    calibState = 1;
+  }
   
+  Serial.println(accel.z);
   if(abs(accel.z)<9.9){
     //Mover los motores, y comprobar a que corresponde con respecto al giro de la 
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
