@@ -10,6 +10,7 @@
 #include "Plataforma.h"
 
 IMU IMU_fija;
+Plataforma platform;
 
 void setup(){
   Serial.begin(1000000);
@@ -26,6 +27,13 @@ long pos;
 
 
 void loop(){
+  
+  bool calibState;
+  calibState = platform.calibrarPlat();
+  delay(500);
+  String serialBuff;
+  serialBuff += (String)calibState + " accel: " + (String)platform.accel.z;
+  Serial.println(serialBuff);
  /* IMU_fija.update();
   moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   

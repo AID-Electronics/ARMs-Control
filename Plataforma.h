@@ -12,7 +12,7 @@ public:
   double presentAccel;
   double pastAccel;
   int cont;
-  bool invSentido;
+  bool sentido;
   bool eje;
   uint8_t calibState;
 
@@ -28,7 +28,7 @@ Plataforma::Plataforma(){
   presentAccel = 0;
   pastAccel = 0;
   cont = 0;
-  invSentido = false;
+  sentido = false;
   eje = false;
   calibState = 0;
   
@@ -47,7 +47,7 @@ void Plataforma::setAccel(Vector3D *v){
 }
 
 void Plataforma::invierteSentido(){
-  invSentido = !invSentido;
+  sentido = !sentido;
 }
 
 void Plataforma::cambiaEje(){
@@ -61,7 +61,6 @@ bool Plataforma::calibrarPlat(){
   setAccel(&aux);
   if (calibState == 0){
     pastAccel = getAccel();
-    //Mueve eje unos grados
     cont = 0;
     calibState = 1;
   }
@@ -79,16 +78,31 @@ bool Plataforma::calibrarPlat(){
         calibState = 0;
       }
     }
+    pastAccel = presentAccel;
   }
   
-  Serial.println(accel.z);
+  //Serial.println(accel.z);
   if(abs(accel.z)<9.9){
     //Mover los motores, y comprobar a que corresponde con respecto al giro de la 
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
     
-    yrad = (-orientacion.y )* deg2rad;
-    zrad = (-orientacion.z )* deg2rad;
+    if(!eje && !sentido){
+      yrad = 1 * deg2rad;
+      zrad = 0 * deg2rad;
+    }
+    else if(eje && !sentido){
+      yrad = 0 * deg2rad;
+      zrad = 1 * deg2rad;
+    }
+    else if(!eje && sentido){
+      yrad = -1 * deg2rad;
+      zrad = 0 * deg2rad;
+    }
+    else if(eje && sentido){
+      yrad = 0 * deg2rad;
+      zrad = -1 * deg2rad;
+    }
     
     pasosMotor1 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);
     pasosMotor2 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, 333, D_REF);
@@ -103,14 +117,13 @@ bool Plataforma::calibrarPlat(){
     return false;  
   }
   else{
-    return true;
-  }
-     //apagar motores()//funcion para apagar motores para que la posicien absoluta de cero pasos coincida con al horizonte
-     //Se hara con un relé 
-     //Despues se debe hacer el setup de nuevo
+    //apagar motores()//funcion para apagar motores para que la posicien absoluta de cero pasos coincida con al horizonte
+    //Se hara con un relé 
+    //Despues se debe hacer el setup de nuevo
     //setupMotor(ID_MOTOR_1,1000000,1000000,100,512000);
     //setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
- 
+    return true;
+  } 
 }
 
 #endif
