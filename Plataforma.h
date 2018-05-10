@@ -55,12 +55,16 @@ void Plataforma::cambiaEje(){
 }
 
 bool Plataforma::calibrarPlat(){
-  Vector3D aux;
-  bool RF_ok = getOrientRF(&aux);
-  while(RF_ok != 1){
-    RF_ok = getOrientRF(&aux);
+  int tot = 10;
+  Vector3D aux[tot];
+  for(int i=0; i<tot; i++){
+    bool RF_ok = getOrientRF(&aux[i]);
+    while(RF_ok != 1){
+      RF_ok = getOrientRF(&aux[i]);
+    }
   }
-  setAccel(&aux);
+  Vector3D media = V3D_media(aux,tot);
+  setAccel(&media);
   if (calibState == 0){
     pastAccel = getAccel();
     cont = 0;
