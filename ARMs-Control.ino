@@ -30,7 +30,7 @@ void loop(){
   
   bool calibState;
   calibState = platform.calibrarPlat();
-  delay(500);
+  //delay(500);
   String serialBuff;
   serialBuff += (String)calibState + " accel: " + (String)platform.accel.z;
   Serial.println(serialBuff);
@@ -43,6 +43,8 @@ void loop(){
     IMU_fija.printTemp();
     IMU_fija.print();
   }*/
-  
+  if (Serial.available()){
+    while(1);
+  }
 }
 
