@@ -68,7 +68,7 @@ bool getOrientRF(Vector3D *v) {
           v->z = num;
           //Serial.print("\tZ: ");
           //Serial.println(num, 4);
-          Serial.print("********Recibido**********");
+          //Serial.print("**Recibido**");
           return true;
         }
         nDato = 0;
@@ -76,7 +76,9 @@ bool getOrientRF(Vector3D *v) {
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;
-        RxCont++;
+        if(RxCont < 9){     //Evitamos que el buffer desborde
+          RxCont++;
+        }
       }
     }
   }
