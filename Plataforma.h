@@ -108,7 +108,15 @@ bool Plataforma::calibrarPlat(){
     pasosMotor2 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, 333, D_REF);
     pasosMotor3 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, -333, 0, D_REF);
     pasosMotor4 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, -333, D_REF);
-  
+    Serial.print("pasosMotor1: ");
+    Serial.println(pasosMotor1);
+    Serial.print("pasosMotor2: ");
+    Serial.println(pasosMotor2);
+    Serial.print("pasosMotor3: ");
+    Serial.println(pasosMotor3);
+    Serial.print("pasosMotor4: ");
+    Serial.println(pasosMotor4);
+    
     moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
     moverRelatEspera(pasosMotor2, ID_MOTOR_2);
     //moverRelatEspera(pasosMotor3,ID_MOTOR_3);
