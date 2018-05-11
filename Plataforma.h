@@ -12,9 +12,11 @@ public:
   double yrad;
 
   //Para calibracion
-  double presentAccel;
+  double presentAccel;  //Para las Z
   double pastAccel;
-  int cont;
+  double presentError;  //Para X e Y
+  double pastError;
+  int cont;             //Para ambos
   bool sentido;
   bool eje;
   uint8_t calibState;
@@ -87,7 +89,7 @@ bool Plataforma::calibrarPlat(){
       }
       else{
         cambiaEje();
-        if (presentAccel > 9.5){
+        if (presentAccel > accel_switch){
           calibState = 2;
         }
         else{
