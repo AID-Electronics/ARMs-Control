@@ -400,7 +400,7 @@ bool SetProfile(int profile, long ID ){
 }
 
 void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
-
+  Serial.println("Setup Motor");
     //instrucciones de configuración
     SetAccel(Acel,ID_motor);
     setDeccel(Decel,ID_motor);
@@ -429,7 +429,19 @@ long requestPos(long ID){
   return p.i;
 }
 
-void requestVin(long ID){
+long requestAccel (long ID){
+  char GetAccel[]={0x40,0x83,0x60,0x00,0x00,0x00,0x00,0x00};
+  EnviarMSG(GetAccel,ID);
+
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
+}
+
+long requestVin(long ID){
   char leerVin[8]={0x40,0x15,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerVin,ID);
   Paquete p;
