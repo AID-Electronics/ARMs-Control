@@ -441,6 +441,18 @@ long requestAccel (long ID){
   return p.i;
 }
 
+long requestDecel (long ID){
+  char GetDecel[]={0x40,0x84,0x60,0x00,0x00,0x00,0x00,0x00};
+  EnviarMSG(GetDecel,ID);
+
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
+}
+
 long requestVin(long ID){
   char leerVin[8]={0x40,0x15,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerVin,ID);
