@@ -129,26 +129,27 @@ bool Plataforma::calibrarPlat(){
   }
   
   //Serial.println(accel.z);
-  if(abs(accel.z)<9.5){
-    //Mover los motores, y comprobar a que corresponde con respecto al giro de la 
+  if(abs(accel.z) < accel_switch){
+    //Mover los motores, y comprobar  que corresponde con respecto al giro de la 
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
+    float grados = 1;
     
     if(!eje && !sentido){
-      yrad = 1 * deg2rad;
+      yrad = grados * deg2rad;
       zrad = 0 * deg2rad;
     }
     else if(eje && !sentido){
       yrad = 0 * deg2rad;
-      zrad = 1 * deg2rad;
+      zrad = grados * deg2rad;
     }
     else if(!eje && sentido){
-      yrad = -1 * deg2rad;
+      yrad = -grados * deg2rad;
       zrad = 0 * deg2rad;
     }
     else if(eje && sentido){
       yrad = 0 * deg2rad;
-      zrad = -1 * deg2rad;
+      zrad = -grados * deg2rad;
     }
     
     pasosMotor1 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);
@@ -170,6 +171,44 @@ bool Plataforma::calibrarPlat(){
     //moverRelatEspera(pasosMotor4,ID_MOTOR_4);
 
     return false;  
+  }
+  else if (presentError > sensibilidad){
+    float grados = 0.5;
+    
+    if(!eje && !sentido){
+      yrad = grados * deg2rad;
+      zrad = 0 * deg2rad;
+    }
+    else if(eje && !sentido){
+      yrad = 0 * deg2rad;
+      zrad = grados * deg2rad;
+    }
+    else if(!eje && sentido){
+      yrad = -grados * deg2rad;
+      zrad = 0 * deg2rad;
+    }
+    else if(eje && sentido){
+      yrad = 0 * deg2rad;
+      zrad = -grados * deg2rad;
+    }
+
+    pasosMotor1 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);
+    pasosMotor2 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, 333, D_REF);
+    pasosMotor3 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, -333, 0, D_REF);
+    pasosMotor4 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, -333, D_REF);
+    Serial.print("pasosMotor1: ");
+    Serial.println(pasosMotor1);
+    Serial.print("pasosMotor2: ");
+    Serial.println(pasosMotor2);
+    Serial.print("pasosMotor3: ");
+    Serial.println(pasosMotor3);
+    Serial.print("pasosMotor4: ");
+    Serial.println(pasosMotor4);
+    
+    moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
+    moverRelatEspera(pasosMotor2, ID_MOTOR_2);
+    //moverRelatEspera(pasosMotor3,ID_MOTOR_3);
+    //moverRelatEspera(pasosMotor4,ID_MOTOR_4);
   }
   else{
     //apagar motores()//funcion para apagar motores para que la posicien absoluta de cero pasos coincida con al horizonte
