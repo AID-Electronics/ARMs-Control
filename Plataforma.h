@@ -23,6 +23,7 @@ public:
 
   Plataforma();
   double getAccel();
+  double getError();
   void setAccel(Vector3D *v);
   void invierteSentido();
   void cambiaEje();
@@ -43,6 +44,12 @@ Plataforma::Plataforma(){
 
 double Plataforma::getAccel(){
   return accel.z;
+}
+
+double Plataforma::getError(){
+  double errorX = abs(accel.x);
+  double errorY = abs(accel.y);
+  return errorX + errorY;
 }
 
 void Plataforma::setAccel(Vector3D *v){
