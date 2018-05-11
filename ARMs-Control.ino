@@ -26,6 +26,8 @@ void setup(){
   Serial.println(requestAccel(ID_MOTOR_1));
   Serial.print("Deceleracion: ");
   Serial.println(requestDecel(ID_MOTOR_1));
+  Serial.print("Max Velocity: ");
+  Serial.println(requestMaxVel(ID_MOTOR_1));
 }
 
 char a;
