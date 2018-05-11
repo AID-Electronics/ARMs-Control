@@ -2,7 +2,7 @@
 #define PLATAFORMA_H
 
 #define accel_switch 9.5
-#define sensibilidad 0.05
+#define sensibilidad 0.1
 
 class Plataforma{
 public:
@@ -164,6 +164,11 @@ bool Plataforma::calibrarPlat(){
     Serial.println(pasosMotor3);
     Serial.print("pasosMotor4: ");
     Serial.println(pasosMotor4);
+
+    Serial.print("Max Velocity 1: ");
+    Serial.println(requestMaxVel(ID_MOTOR_1));
+    Serial.print("Max Velocity 2: ");
+    Serial.println(requestMaxVel(ID_MOTOR_2));
     
     moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
     moverRelatEspera(pasosMotor2, ID_MOTOR_2);
@@ -173,7 +178,7 @@ bool Plataforma::calibrarPlat(){
     return false;  
   }
   else if (presentError > sensibilidad){
-    float grados = 0.5;
+    float grados = 1;
     
     if(!eje && !sentido){
       yrad = grados * deg2rad;
@@ -204,6 +209,11 @@ bool Plataforma::calibrarPlat(){
     Serial.println(pasosMotor3);
     Serial.print("pasosMotor4: ");
     Serial.println(pasosMotor4);
+
+    Serial.print("Max Velocity 1: ");
+    Serial.println(requestMaxVel(ID_MOTOR_1));
+    Serial.print("Max Velocity 2: ");
+    Serial.println(requestMaxVel(ID_MOTOR_2));
     
     moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
     moverRelatEspera(pasosMotor2, ID_MOTOR_2);
