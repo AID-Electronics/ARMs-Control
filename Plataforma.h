@@ -88,7 +88,7 @@ bool Plataforma::calibrarPlat(){
   }
   
   //Serial.println(accel.z);
-  if(abs(accel.z)<9.9){
+  if(abs(accel.z)<9.5){
     //Mover los motores, y comprobar a que corresponde con respecto al giro de la 
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
