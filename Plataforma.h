@@ -1,6 +1,9 @@
 #ifndef PLATAFORMA_H
 #define PLATAFORMA_H
 
+#define accel_switch 9.5
+#define sensibilidad 0.05
+
 class Plataforma{
 public:
   Vector3D orientacion;
@@ -55,6 +58,7 @@ void Plataforma::cambiaEje(){
 }
 
 bool Plataforma::calibrarPlat(){
+  //Lectura de 10 acceleraciones y filtrado
   int tot = 10;
   Vector3D aux[tot];
   for(int i=0; i<tot; i++){
@@ -65,6 +69,8 @@ bool Plataforma::calibrarPlat(){
   }
   Vector3D media = V3D_media(aux,tot);
   setAccel(&media);
+
+  //Inicio del algoritmo de calibracion
   if (calibState == 0){
     pastAccel = getAccel();
     cont = 0;
@@ -81,10 +87,36 @@ bool Plataforma::calibrarPlat(){
       }
       else{
         cambiaEje();
-        calibState = 0;
+        if (presentAccel > 9.5){
+          calibState = 2;
+        }
+        else{
+          calibState = 0;
+        }
       }
     }
     pastAccel = presentAccel;
+  }
+  else if (calibState == 2){
+    pastError = getError();
+    cont = 0;
+    calibState = 3;
+  }
+  else if (calibState == 3){
+    presentError = getError();
+    if (presentError < pastError){
+      cont = 1;
+    }
+    else{
+      if(cont == 0){
+        invierteSentido();
+      }
+      else{
+        cambiaEje();
+        calibState = 2;
+      }
+    }
+    pastError = presentError;
   }
   
   //Serial.println(accel.z);

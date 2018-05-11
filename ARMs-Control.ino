@@ -32,7 +32,7 @@ void loop(){
   calibState = platform.calibrarPlat();
   //delay(500);
   String serialBuff;
-  serialBuff += (String)calibState + " accel: " + (String)platform.accel.z;
+  serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
   Serial.println(serialBuff);
  /* IMU_fija.update();
   moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
