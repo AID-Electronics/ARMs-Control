@@ -16,11 +16,13 @@
 IMU IMU_fija;
 Plataforma platform;
 
+uint8_t globalState;
+
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
-  IMU_fija.setup();
-  setupCAN();
+  globalState = 0;
+  
 
   //Encendido del motor 1 y 2
   pinMode(CONTROLLINO_R0, OUTPUT);
@@ -47,6 +49,35 @@ long pos;
 
 
 void loop(){
+
+  if (globalState == 0){
+    if (Serial.available()){
+      globalState = 1;
+    }
+  }
+  else if (globalState == 1){
+    bool OK;
+    OK = IMU_fija.setup();
+    if(OK){
+      globalState = 2;
+    }
+  }
+  else if (globalState == 2){
+    setupCAN();
+    globalState = 3;
+  }
+  else if (globalState == 3){
+    //Encendido de motores
+    pinMode(CONTROLLINO_R0, OUTPUT);
+    pinMode(CONTROLLINO_R1, OUTPUT);
+    digitalWrite(CONTROLLINO_R0, HIGH);
+    digitalWrite(CONTROLLINO_R1, HIGH);
+    delay(500);
+
+    //Setup de motores
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+  }
   
   bool calibState;
   calibState = platform.calibrarPlat();
