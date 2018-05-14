@@ -134,14 +134,13 @@ bool Plataforma::calibrarPlat(){
     //Mover los motores, y comprobar  que corresponde con respecto al giro de la 
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
-    float grados = 1;
-    giraEje(grados);
+    
+    giraEje(1);
     
     return false;  
   }
   else if (presentError > sensibilidad){
-    float grados = 1;
-    giraEje(grados);
+    giraEje(1);
     
     return false;
   }
@@ -156,27 +155,29 @@ bool Plataforma::calibrarPlat(){
 }
 
 void Plataforma::giraEje(float grados){
+  float rad = grados * deg2rad;
   if(!eje && !sentido){
-      yrad = grados * deg2rad;
-      zrad = 0 * deg2rad;
+      yrad = rad;
+      zrad = 0;
     }
     else if(eje && !sentido){
-      yrad = 0 * deg2rad;
-      zrad = grados * deg2rad;
+      yrad = 0;
+      zrad = rad;
     }
     else if(!eje && sentido){
-      yrad = -grados * deg2rad;
-      zrad = 0 * deg2rad;
+      yrad = -rad;
+      zrad = 0;
     }
     else if(eje && sentido){
-      yrad = 0 * deg2rad;
-      zrad = -grados * deg2rad;
+      yrad = 0;
+      zrad = -rad;
     }
     
   pasosMotor1 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 333, 0, D_REF);
   pasosMotor2 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, 333, D_REF);
   pasosMotor3 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, -333, 0, D_REF);
   pasosMotor4 = calcularPasos2D(yrad, zrad, RESOLUCION, RADIO_POLEA, H, 0, -333, D_REF);
+  
   Serial.print("pasosMotor1: ");
   Serial.println(pasosMotor1);
   Serial.print("pasosMotor2: ");
