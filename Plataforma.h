@@ -187,11 +187,13 @@ void Plataforma::giraEje(float grados){
   Serial.print("pasosMotor4: ");
   Serial.println(pasosMotor4);
 
+  long maxVel1 = requestMaxVel(ID_MOTOR_1);
+  long maxVel2 = requestMaxVel(ID_MOTOR_2);
   Serial.print("Max Velocity 1: ");
-  Serial.println(requestMaxVel(ID_MOTOR_1));
+  Serial.println(maxVel1);
   Serial.print("Max Velocity 2: ");
-  Serial.println(requestMaxVel(ID_MOTOR_2));
-    
+  Serial.println(maxVel2);
+
   moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
   moverRelatEspera(pasosMotor2, ID_MOTOR_2);
   //moverRelatEspera(pasosMotor3,ID_MOTOR_3);

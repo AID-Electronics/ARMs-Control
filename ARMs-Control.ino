@@ -6,6 +6,8 @@
 //#define ID_MOTOR_3 0x612
 //#define ID_MOTOR_4 0x613
 
+#define velocidad 5120
+
 #include "IMU.h"
 #include "Plataforma.h"
 
@@ -19,8 +21,8 @@ void setup(){
   setupCAN();
   
 
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,5120); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,5120);
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
 
   Serial.print("Aceleracion: ");
   Serial.println(requestAccel(ID_MOTOR_1));
