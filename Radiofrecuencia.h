@@ -12,7 +12,9 @@ bool negativo;
 double alabeoPlat;
 double cabeceoPlat;
 
-void getOrientRF(Vector3D *v) {
+uint8_t nDato = 0;
+
+bool getOrientRF(Vector3D *v) {
   if (Serial1.available()) {
     char token = Serial1.read();
     //Serial.print(token);
@@ -20,20 +22,31 @@ void getOrientRF(Vector3D *v) {
       RxStart = 1;
       RxCont = 0;
       negativo = 0;
+      nDato = 0;
     }
     else {
       if (token == ',') {
         RxBuff[RxCont] = '\0';
         RxCont = 0;
-
-        char *p;
-        v->y = strtod(RxBuff, &p);
+        
+        char *p; //Utilizado unicamente en la funcion strtod
+        double num = strtod(RxBuff, &p);
         if (negativo == true) {
-          v->y = 0 - v->y;
+          num = 0 - num;
           negativo = false;
         }
-        //Serial.print("   Alabeo: ");
-        //Serial.print(v->y, 4);
+        if(nDato == 0){
+          v->x = num;
+          //Serial.print("   X: ");
+          //Serial.print(v->x, 4);
+        }
+        else if (nDato == 1){
+          v->y = num;
+          //Serial.print("\tY: ");
+          //Serial.print(v->y, 4);
+        }
+        
+        nDato++;
       }
       else if (token == '-') {
         negativo = true;
@@ -46,20 +59,30 @@ void getOrientRF(Vector3D *v) {
         //Serial.print(RxBuff);
 
         char *p;
-        v->z = strtod(RxBuff, &p);
+        double num = strtod(RxBuff, &p);
         if (negativo == true) {
-          v->z = 0 - v->z;
+          num = 0 - num;
           negativo = false;
         }
-        //Serial.print("\tCabeceo: ");
-        //Serial.println(v->z, 4);
+        if(nDato == 2){
+          v->z = num;
+          //Serial.print("\tZ: ");
+          //Serial.println(num, 4);
+          //Serial.print("**Recibido**");
+          return true;
+        }
+        nDato = 0;
+        
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;
-        RxCont++;
+        if(RxCont < 9){     //Evitamos que el buffer desborde
+          RxCont++;
+        }
       }
     }
   }
+  return false;
 }
 
 #endif
