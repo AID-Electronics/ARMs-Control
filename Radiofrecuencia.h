@@ -14,7 +14,7 @@ double cabeceoPlat;
 
 uint8_t nDato = 0;
 
-void getOrientRF(Vector3D *v) {
+bool getOrientRF(Vector3D *v) {
   if (Serial1.available()) {
     char token = Serial1.read();
     //Serial.print(token);
@@ -37,13 +37,13 @@ void getOrientRF(Vector3D *v) {
         }
         if(nDato == 0){
           v->x = num;
-          Serial.print("   X: ");
-          Serial.print(v->x, 4);
+          //Serial.print("   X: ");
+          //Serial.print(v->x, 4);
         }
         else if (nDato == 1){
           v->y = num;
-          Serial.print("\tY: ");
-          Serial.print(v->y, 4);
+          //Serial.print("\tY: ");
+          //Serial.print(v->y, 4);
         }
         
         nDato++;
@@ -66,18 +66,23 @@ void getOrientRF(Vector3D *v) {
         }
         if(nDato == 2){
           v->z = num;
-          Serial.print("\tZ: ");
-          Serial.println(num, 4);
+          //Serial.print("\tZ: ");
+          //Serial.println(num, 4);
+          //Serial.print("**Recibido**");
+          return true;
         }
         nDato = 0;
         
       }
       else if (RxStart == true) {
         RxBuff[RxCont] = token;
-        RxCont++;
+        if(RxCont < 9){     //Evitamos que el buffer desborde
+          RxCont++;
+        }
       }
     }
   }
+  return false;
 }
 
 #endif
