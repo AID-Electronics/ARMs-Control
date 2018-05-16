@@ -34,6 +34,8 @@ public:
 Plataforma::Plataforma(){
   presentAccel = 0;
   pastAccel = 0;
+  presentError = 10;
+  pastError = 0;
   cont = 0;
   sentido = false;
   eje = false;
@@ -150,6 +152,7 @@ bool Plataforma::calibrarPlat(){
     //Despues se debe hacer el setup de nuevo
     //setupMotor(ID_MOTOR_1,1000000,1000000,100,512000);
     //setupMotor(ID_MOTOR_2,1000000,1000000,100,512000);
+    
     return true;
   } 
 }
