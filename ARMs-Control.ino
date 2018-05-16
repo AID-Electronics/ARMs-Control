@@ -90,6 +90,11 @@ void loop(){
   else if (globalState == 5){
     bool calibState;
     calibState = platform.calibrarPlat();
+
+    String serialBuff;
+    serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
+    Serial.println(serialBuff);
+  
     if(calibState == 1){
       //Apaga el motor y vuelve a encenderlo
       digitalWrite(CONTROLLINO_R0, LOW);
@@ -101,14 +106,13 @@ void loop(){
       //Se vuelve a hacer el setup
       setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad);
       setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+
+      globalState = 6;
     }
   }
 
     
   }
-  String serialBuff;
-  serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
-  Serial.println(serialBuff);
  /* IMU_fija.update();
   moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
