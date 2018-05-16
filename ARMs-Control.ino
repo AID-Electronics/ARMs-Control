@@ -67,6 +67,9 @@ void loop(){
         globalState = 4;
       }
     }
+    if(globalState != 4){
+      Serial.print("Motores sin alimentacion");
+    }
   }
 
   else if (globalState == 4){
@@ -80,21 +83,28 @@ void loop(){
     Serial.println(requestDecel(ID_MOTOR_1));
     Serial.print("Max Velocity: ");
     Serial.println(requestMaxVel(ID_MOTOR_1));
-  }
-  
-  bool calibState;
-  calibState = platform.calibrarPlat();
-  if(calibState == 1){
-    //Apaga el motor y vuelve a encenderlo
-    digitalWrite(CONTROLLINO_R0, LOW);
-    digitalWrite(CONTROLLINO_R1, LOW);
-    delay(500);
-    digitalWrite(CONTROLLINO_R0, HIGH);
-    digitalWrite(CONTROLLINO_R1, HIGH);
 
-    //Se vuelve a hacer el setup
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad);
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+    globalState = 5;
+  }
+
+  else if (globalState == 5){
+    bool calibState;
+    calibState = platform.calibrarPlat();
+    if(calibState == 1){
+      //Apaga el motor y vuelve a encenderlo
+      digitalWrite(CONTROLLINO_R0, LOW);
+      digitalWrite(CONTROLLINO_R1, LOW);
+      delay(500);
+      digitalWrite(CONTROLLINO_R0, HIGH);
+      digitalWrite(CONTROLLINO_R1, HIGH);
+      
+      //Se vuelve a hacer el setup
+      setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad);
+      setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+    }
+  }
+
+    
   }
   String serialBuff;
   serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
