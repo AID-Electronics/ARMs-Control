@@ -111,17 +111,18 @@ void loop(){
     }
   }
 
-    
-  }
- /* IMU_fija.update();
-  moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
+  else if (globalState = 6){
+    IMU_fija.update();
+    moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
-  if(Serial.read()!=-1){
-    IMU_fija.imprimirDatos();
-    IMU_fija.displayCalStatus();
-    IMU_fija.printTemp();
-    IMU_fija.print();
-  }*/
+    if(Serial.read()!=-1){
+      IMU_fija.imprimirDatos();
+      IMU_fija.displayCalStatus();
+      IMU_fija.printTemp();
+      IMU_fija.print();
+    }
+  }
+  
   if (Serial.available()){
     while(1);
   }
