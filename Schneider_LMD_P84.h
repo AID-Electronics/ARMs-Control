@@ -400,7 +400,7 @@ bool SetProfile(int profile, long ID ){
 }
 
 void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
-  Serial.println("Setup Motor");
+    
     //instrucciones de configuración
     SetAccel(Acel,ID_motor);
     setDeccel(Decel,ID_motor);

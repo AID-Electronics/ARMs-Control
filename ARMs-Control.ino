@@ -23,7 +23,8 @@ void setup(){
   Serial1.begin(4800);
   globalState = 0;
 
-
+  Serial.println ("Setup Controllino Finalizado");
+  Serial.println ("Pulse una tecla para continuar");
 }
 
 char a;
@@ -56,11 +57,13 @@ void loop(){
     digitalWrite(CONTROLLINO_R1, HIGH);
     delay(500);
 
-    long tensionM1 = requestVin(ID_MOTOR_1);
-    long tensionM2 = requestVin(ID_MOTOR_2);
-
-    Serial.println("Tension M1: " + tensionM1);
-    Serial.println("Tension M2: " + tensionM2);
+    float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
+    float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
+    
+    Serial.print("Tension M1: ");
+    Serial.println(tensionM1);
+    Serial.print("Tension M2: ");
+    Serial.println(tensionM2);
 
     if (tensionM1 > 23.5 && tensionM1 < 24.5){
       if (tensionM2 > 23.5 && tensionM2 < 24.5){
@@ -68,20 +71,21 @@ void loop(){
       }
     }
     if(globalState != 4){
-      Serial.print("Motores sin alimentacion");
+      Serial.println("Motores sin alimentacion");
     }
   }
 
   else if (globalState == 4){
     //Setup de motores
+    Serial.println("Setup motores");
     setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
 
-    Serial.print("Aceleracion: ");
+    Serial.print("\tAceleracion: ");
     Serial.println(requestAccel(ID_MOTOR_1));
-    Serial.print("Deceleracion: ");
+    Serial.print("\tDeceleracion: ");
     Serial.println(requestDecel(ID_MOTOR_1));
-    Serial.print("Max Velocity: ");
+    Serial.print("\tMax Velocity: ");
     Serial.println(requestMaxVel(ID_MOTOR_1));
 
     globalState = 5;
@@ -124,7 +128,9 @@ void loop(){
   }
   
   if (Serial.available()){
-    while(1);
+    if (Serial.read() == '0'){
+      while(1);
+    }
   }
 }
 
