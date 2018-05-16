@@ -20,13 +20,13 @@ void loop(){
    Serial.print(IMU_movil.accel.z,4);
    Serial.println(";");
 //SERIAL 1
-  Serial1.print("=");
-   Serial1.print(IMU_movil.accel.x,4); 
-   Serial1.print(",");
-   Serial1.print(IMU_movil.accel.y,4);
-   Serial1.print(",");
-   Serial1.print(IMU_movil.accel.z,4);
-   Serial1.println(";");
+//  Serial1.print("=");
+//   Serial1.print(IMU_movil.accel.x,4); 
+//   Serial1.print(",");
+//   Serial1.print(IMU_movil.accel.y,4);
+//   Serial1.print(",");
+//   Serial1.print(IMU_movil.accel.z,4);
+//   Serial1.println(";");
 
     if(Serial.read()!=-1){
        IMU_movil.imprimirDatos();
