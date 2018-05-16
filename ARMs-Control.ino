@@ -118,8 +118,8 @@ void loop(){
       digitalWrite(CONTROLLINO_R1, HIGH);
       
       //Se vuelve a hacer el setup
-      setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad);
-      setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+      setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
+      setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
       globalState = 6;
     }
