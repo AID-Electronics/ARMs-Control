@@ -22,6 +22,11 @@ void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
   globalState = 0;
+  
+  pinMode(CONTROLLINO_R0, OUTPUT);
+  pinMode(CONTROLLINO_R1, OUTPUT);
+  digitalWrite(CONTROLLINO_R0, LOW);
+  digitalWrite(CONTROLLINO_R1, LOW);
 
   Serial.println ("Setup Controllino Finalizado");
   Serial.println ("Pulse una tecla para continuar");
@@ -51,11 +56,9 @@ void loop(){
   }
   else if (globalState == 3){
     //Encendido de motores
-    pinMode(CONTROLLINO_R0, OUTPUT);
-    pinMode(CONTROLLINO_R1, OUTPUT);
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
-    delay(500);
+    delay(1000);
 
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
@@ -87,6 +90,13 @@ void loop(){
     Serial.println(requestDecel(ID_MOTOR_1));
     Serial.print("\tMax Velocity: ");
     Serial.println(requestMaxVel(ID_MOTOR_1));
+
+    Serial.print("\tAceleracion: ");
+    Serial.println(requestAccel(ID_MOTOR_2));
+    Serial.print("\tDeceleracion: ");
+    Serial.println(requestDecel(ID_MOTOR_2));
+    Serial.print("\tMax Velocity: ");
+    Serial.println(requestMaxVel(ID_MOTOR_2));
 
     globalState = 5;
   }
