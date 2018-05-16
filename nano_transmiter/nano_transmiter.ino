@@ -4,8 +4,8 @@ IMU IMU_movil;
  int i=0;
 
 void setup(){
-    Serial1.begin(4800);     
-    Serial.begin(115200);
+    //Serial1.begin(4800);  
+    Serial.begin(4800);
     IMU_movil.setup();
 
 }
