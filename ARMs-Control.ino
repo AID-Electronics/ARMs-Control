@@ -49,6 +49,7 @@ void loop(){
   if (globalState == 0){
     if (Serial.available()){
       globalState = 1;
+      Serial.println("Paso al estado 1");
     }
   }
   else if (globalState == 1){
@@ -56,6 +57,7 @@ void loop(){
     OK = IMU_fija.setup();
     if(OK){
       globalState = 2;
+      Serial.println("Paso al estado 2");
     }
     else{
       errorIMU = true;
@@ -67,8 +69,10 @@ void loop(){
 
     if(setupCAN_ok){
       globalState = 3;
+      Serial.println("Paso al estado 3");
     }
     else{
+      Serial.println("Paso al estado 10");
       globalState = 10; //Estado error
     }
   }
@@ -89,12 +93,13 @@ void loop(){
     if (tensionM1 > 23.5 && tensionM1 < 24.5){
       if (tensionM2 > 23.5 && tensionM2 < 24.5){
         globalState = 4;
+        Serial.println("Paso al estado 4");
       }
     }
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
-      globalState = 10
+      globalState = 10;
     }
   }
 
@@ -130,6 +135,7 @@ void loop(){
     if (m1_Vel == velocidad && m2_Vel == velocidad){
       //Por ahora no tenemos en cuenta aceleraciones
       globalState = 5;
+      Serial.println("Paso al estado 5");
     }
     else{
       Serial.println("Fallo setup motores");
@@ -158,10 +164,11 @@ void loop(){
       setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
       globalState = 6;
+      Serial.println("Paso al estado 6");
     }
   }
 
-  else if (globalState = 6){
+  else if (globalState == 6){
     IMU_fija.update();
     moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
