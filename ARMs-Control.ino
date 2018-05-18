@@ -27,10 +27,14 @@ bool errorMotoresSetup = false;
 bool errorComunicRadar = false;
 bool errorComunicRF = false;
 
+bool entradaEstadoError = true;
+
 void errorSolucionado (uint8_t estado){
   if (Serial.available()){
     if (Serial.read() == 'C'){
       globalState = estado;
+      Serial.print ("Paso al estado ");
+      Serial.println (estado);
     }
   }
 }
@@ -82,6 +86,7 @@ void loop(){
     else{
       Serial.println("Paso al estado 10");
       globalState = 10; //Estado error
+      entradaEstadoError = true;
     }
   }
   else if (globalState == 3){
@@ -108,6 +113,7 @@ void loop(){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
       globalState = 10;
+      entradaEstadoError = true;
     }
   }
 
@@ -148,6 +154,7 @@ void loop(){
     else{
       Serial.println("Fallo setup motores");
       globalState = 10;
+      entradaEstadoError = true;
     }
   }
 
@@ -189,6 +196,22 @@ void loop(){
   }
 
   else if (globalState == 10){
+    if (entradaEstadoError == true){
+      Serial.print("errorIMU: ");
+      Serial.println(errorIMU);
+      Serial.print("errorCAN: ");
+      Serial.println(errorCAN);
+      Serial.print("errorMotoresON: ");
+      Serial.println(errorMotoresON);
+      Serial.print("errorMotoresSetup: ");
+      Serial.println(errorMotoresSetup);
+      Serial.print("errorComunicRadar: ");
+      Serial.println(errorComunicRadar);
+      Serial.print("errorComunicRF: ");
+      Serial.println(errorComunicRF);
+
+      entradaEstadoError = false;
+    }
     if (errorIMU){
       errorSolucionado (1);
     }
