@@ -18,6 +18,13 @@ Plataforma platform;
 
 uint8_t globalState;
 
+bool errorIMU = false;
+bool errorCAN = false;
+bool errorMotoresON = false;
+bool errorMotoresSetup = false;
+bool errorComunicRadar = false;
+bool errorComunicRF = false;
+
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
@@ -34,14 +41,6 @@ void setup(){
 
 char a;
 long pos;
-
-bool errorIMU = false;
-bool errorCAN = false;
-bool errorMotoresON = false;
-bool errorMotoresSetup = false;
-bool errorComunicRadar = false;
-bool errorComunicRF = false;
-
 
 void loop(){
 
