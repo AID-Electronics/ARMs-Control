@@ -27,6 +27,14 @@ bool errorMotoresSetup = false;
 bool errorComunicRadar = false;
 bool errorComunicRF = false;
 
+void errorSolucionado (uint8_t estado){
+  if (Serial.available()){
+    if (Serial.read() == 'C'){
+      globalState = estado;
+    }
+  }
+}
+
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
@@ -177,6 +185,21 @@ void loop(){
       IMU_fija.displayCalStatus();
       IMU_fija.printTemp();
       IMU_fija.print();
+    }
+  }
+
+  else if (globalState == 10){
+    if (errorIMU){
+      errorSolucionado (1);
+    }
+    else if (errorCAN){
+      errorSolucionado (2);
+    }
+    else if (errorMotoresON){
+      errorSolucionado (3);
+    }
+    else if (errorMotoresSetup){
+      errorSolucionado (4);
     }
   }
   
