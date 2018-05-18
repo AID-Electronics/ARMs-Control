@@ -8,6 +8,8 @@
 //#define ID_MOTOR_4 0x613
 
 #define velocidad 5120
+#define aceleracion 1000000
+#define deceleracion 1000000
 
 #include "IMU.h"
 #include "Plataforma.h"
@@ -91,30 +93,48 @@ void loop(){
     }
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
+      errorMotoresON = true;
+      globalState = 10
     }
   }
 
   else if (globalState == 4){
     //Setup de motores
     Serial.println("Setup motores");
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,velocidad);
+    setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+
+    long m1_Accel = requestAccel(ID_MOTOR_1);
+    long m1_Decel = requestDecel(ID_MOTOR_1);
+    long m1_Vel = requestMaxVel(ID_MOTOR_1);
+
+    long m2_Accel = requestDecel(ID_MOTOR_2);
+    long m2_Decel = requestDecel(ID_MOTOR_2);
+    long m2_Vel = requestMaxVel(ID_MOTOR_2);
+
+    
+    Serial.print("\tAceleracion: ");
+    Serial.println(m1_Accel);
+    Serial.print("\tDeceleracion: ");
+    Serial.println(m1_Decel);
+    Serial.print("\tMax Velocity: ");
+    Serial.println(m1_Vel);
 
     Serial.print("\tAceleracion: ");
-    Serial.println(requestAccel(ID_MOTOR_1));
+    Serial.println(m2_Accel);
     Serial.print("\tDeceleracion: ");
-    Serial.println(requestDecel(ID_MOTOR_1));
+    Serial.println(m2_Decel);
     Serial.print("\tMax Velocity: ");
-    Serial.println(requestMaxVel(ID_MOTOR_1));
+    Serial.println(m2_Vel);
 
-    Serial.print("\tAceleracion: ");
-    Serial.println(requestAccel(ID_MOTOR_2));
-    Serial.print("\tDeceleracion: ");
-    Serial.println(requestDecel(ID_MOTOR_2));
-    Serial.print("\tMax Velocity: ");
-    Serial.println(requestMaxVel(ID_MOTOR_2));
-
-    globalState = 5;
+    if (m1_Vel == velocidad && m2_Vel == velocidad){
+      //Por ahora no tenemos en cuenta aceleraciones
+      globalState = 5;
+    }
+    else{
+      Serial.println("Fallo setup motores");
+      globalState = 10;
+    }
   }
 
   else if (globalState == 5){
