@@ -55,10 +55,20 @@ void loop(){
     if(OK){
       globalState = 2;
     }
+    else{
+      errorIMU = true;
+    }
   }
   else if (globalState == 2){
-    setupCAN();
-    globalState = 3;
+    bool setupCAN_ok = setupCAN();
+    errorCAN = !setupCAN_ok;
+
+    if(setupCAN_ok){
+      globalState = 3;
+    }
+    else{
+      globalState = 10; //Estado error
+    }
   }
   else if (globalState == 3){
     //Encendido de motores
