@@ -67,13 +67,9 @@ void loop(){
   else if (globalState == 1){
     bool OK;
     OK = IMU_fija.setup();
-    if(OK){
-      globalState = 2;
-      Serial.println("Paso al estado 2");
-    }
-    else{
-      errorIMU = true;
-    }
+    errorIMU = !OK;
+    globalState = 2;
+    Serial.println("Paso al estado 2");
   }
   else if (globalState == 2){
     bool setupCAN_ok = setupCAN();
