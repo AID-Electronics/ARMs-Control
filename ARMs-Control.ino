@@ -35,6 +35,13 @@ void setup(){
 char a;
 long pos;
 
+bool errorIMU = false;
+bool errorCAN = false;
+bool errorMotoresON = false;
+bool errorMotoresSetup = false;
+bool errorComunicRadar = false;
+bool errorComunicRF = false;
+
 
 void loop(){
 
