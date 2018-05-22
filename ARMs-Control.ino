@@ -173,7 +173,7 @@ void loop(){
     Serial.println("Paso al estado 7");
   }
 
-  else if (globalState == 6){
+  else if (globalState == 7){
     bool calibState;
     calibState = platform.calibrarPlat();
 
@@ -182,23 +182,29 @@ void loop(){
     Serial.println(serialBuff);
   
     if(calibState == 1){
-      //Apaga el motor y vuelve a encenderlo
-      digitalWrite(CONTROLLINO_R0, LOW);
-      digitalWrite(CONTROLLINO_R1, LOW);
-      delay(500);
-      digitalWrite(CONTROLLINO_R0, HIGH);
-      digitalWrite(CONTROLLINO_R1, HIGH);
       
-      //Se vuelve a hacer el setup
-      setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
-      setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
-      globalState = 7;
-      Serial.println("Paso al estado 7");
+      globalState = 8;
+      Serial.println("Paso al estado 8");
     }
   }
 
-  else if (globalState == 7){
+  else if (globalState == 8){
+    //Apaga el motor y vuelve a encenderlo
+    digitalWrite(CONTROLLINO_R0, LOW);
+    digitalWrite(CONTROLLINO_R1, LOW);
+    delay(500);
+    digitalWrite(CONTROLLINO_R0, HIGH);
+    digitalWrite(CONTROLLINO_R1, HIGH);
+      
+    //Se vuelve a hacer el setup
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
+    setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
+
+    globalState = 9;
+  }
+
+  else if (globalState == 9){
     IMU_fija.update();
     moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
