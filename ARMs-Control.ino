@@ -167,6 +167,13 @@ void loop(){
   }
 
   else if (globalState == 6){
+    //Test comunicacion MAXI
+    //Si OK
+    globalState = 7;
+    Serial.println("Paso al estado 7");
+  }
+
+  else if (globalState == 6){
     bool calibState;
     calibState = platform.calibrarPlat();
 
