@@ -153,8 +153,20 @@ void loop(){
       entradaEstadoError = true;
     }
   }
-
+  
   else if (globalState == 5){
+    Vector3D test;
+    if (getOrientRF(&test)){
+      globalState = 6;
+      Serial.println("Recepcion RF OK");
+      Serial.println("Paso al estado 6");
+    }
+    else{
+      //comprobar tiempo de espera
+    }
+  }
+
+  else if (globalState == 6){
     bool calibState;
     calibState = platform.calibrarPlat();
 
@@ -174,12 +186,12 @@ void loop(){
       setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
       setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
-      globalState = 6;
-      Serial.println("Paso al estado 6");
+      globalState = 7;
+      Serial.println("Paso al estado 7");
     }
   }
 
-  else if (globalState == 6){
+  else if (globalState == 7){
     IMU_fija.update();
     moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
   
