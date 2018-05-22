@@ -174,49 +174,6 @@ void loop(){
   }
 
   else if (globalState == 7){
-    bool calibState;
-    calibState = platform.calibrarPlat();
-
-    String serialBuff;
-    serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
-    Serial.println(serialBuff);
-  
-    if(calibState == 1){
-      
-
-      globalState = 8;
-      Serial.println("Paso al estado 8");
-    }
-  }
-
-  else if (globalState == 8){
-    //Apaga el motor y vuelve a encenderlo
-    digitalWrite(CONTROLLINO_R0, LOW);
-    digitalWrite(CONTROLLINO_R1, LOW);
-    delay(500);
-    digitalWrite(CONTROLLINO_R0, HIGH);
-    digitalWrite(CONTROLLINO_R1, HIGH);
-      
-    //Se vuelve a hacer el setup
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
-
-    globalState = 9;
-  }
-
-  else if (globalState == 9){
-    IMU_fija.update();
-    moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
-  
-    if(Serial.read()!=-1){
-      IMU_fija.imprimirDatos();
-      IMU_fija.displayCalStatus();
-      IMU_fija.printTemp();
-      IMU_fija.print();
-    }
-  }
-
-  else if (globalState == 10){
     if (entradaEstadoError == true){
       Serial.print("errorIMU: ");
       Serial.println(errorIMU);
@@ -244,6 +201,59 @@ void loop(){
     }
     else if (errorMotoresSetup){
       errorSolucionado (4);
+    }
+    else if (errorComunicRF){
+      errorSolucionado (5);
+    }
+    else if (errorComunicRadar){
+      errorSolucionado (6);
+    }
+    else {
+      globalState = 8
+    }
+  }
+
+  else if (globalState == 8){
+    bool calibState;
+    calibState = platform.calibrarPlat();
+
+    String serialBuff;
+    serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
+    Serial.println(serialBuff);
+  
+    if(calibState == 1){
+      
+
+      globalState = 9;
+      Serial.println("Paso al estado 9");
+    }
+  }
+
+  else if (globalState == 9){
+    //Apaga el motor y vuelve a encenderlo
+    digitalWrite(CONTROLLINO_R0, LOW);
+    digitalWrite(CONTROLLINO_R1, LOW);
+    delay(500);
+    digitalWrite(CONTROLLINO_R0, HIGH);
+    digitalWrite(CONTROLLINO_R1, HIGH);
+      
+    //Se vuelve a hacer el setup
+    setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
+    setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
+
+    Serial.println("Paso al estado 10");
+    globalState = 10;
+  }
+
+  else if (globalState == 10){
+    IMU_fija.update();
+    moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
+  
+    if(Serial.read()!=-1){
+      IMU_fija.imprimirDatos();
+      IMU_fija.displayCalStatus();
+      IMU_fija.printTemp();
+      IMU_fija.print();
     }
   }
   
