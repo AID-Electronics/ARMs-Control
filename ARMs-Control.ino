@@ -80,9 +80,8 @@ void loop(){
       Serial.println("Paso al estado 3");
     }
     else{
-      Serial.println("Paso al estado 10");
-      globalState = 10; //Estado error
-      entradaEstadoError = true;
+      Serial.println("Paso al estado 5");
+      globalState = 5;
     }
   }
   else if (globalState == 3){
@@ -101,6 +100,7 @@ void loop(){
 
     if (tensionM1 > 23.5 && tensionM1 < 24.5){
       if (tensionM2 > 23.5 && tensionM2 < 24.5){
+        errorMotoresON = false;
         globalState = 4;
         Serial.println("Paso al estado 4");
       }
@@ -108,8 +108,7 @@ void loop(){
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
-      globalState = 10;
-      entradaEstadoError = true;
+      globalState = 5;
     }
   }
 
@@ -144,33 +143,38 @@ void loop(){
 
     if (m1_Vel == velocidad && m2_Vel == velocidad){
       //Por ahora no tenemos en cuenta aceleraciones
-      globalState = 5;
+      errorMotoresSetup = false;
       Serial.println("Paso al estado 5");
+      globalState = 5;
     }
     else{
       Serial.println("Fallo setup motores");
-      globalState = 10;
-      entradaEstadoError = true;
+      Serial.println("Paso al estado 5");
+      errorMotoresSetup = true;
+      globalState = 5;
     }
   }
   
   else if (globalState == 5){
     Vector3D test;
     if (getOrientRF(&test)){
-      globalState = 6;
+      errorComunicRF = false;
       Serial.println("Recepcion RF OK");
       Serial.println("Paso al estado 6");
+      globalState = 6;
     }
     else{
       //comprobar tiempo de espera
+      errorComunicRF = true;
     }
   }
 
   else if (globalState == 6){
     //Test comunicacion MAXI
     //Si OK
-    globalState = 7;
     Serial.println("Paso al estado 7");
+    globalState = 7;
+    entradaEstadoError = true;
   }
 
   else if (globalState == 7){
@@ -209,7 +213,7 @@ void loop(){
       errorSolucionado (6);
     }
     else {
-      globalState = 8
+      globalState = 8;
     }
   }
 
