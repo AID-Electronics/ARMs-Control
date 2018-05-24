@@ -1,7 +1,7 @@
 #ifndef COMUNICACION_MAXI_H
 #define COMUNICACION_MAXI_H
 
-#define pinEstado A0
+#define pinEstado 2
 #define bufferSize 10
 
 class Comunicacion_MAXI{
@@ -16,6 +16,7 @@ public:
   Comunicacion_MAXI();
   void setup();
   bool receive();
+  void printBuffer();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -29,6 +30,8 @@ void Comunicacion_MAXI::setup(){
   Serial3.begin(115200);
   Controllino_RS485Init();
   pinMode(pinEstado,OUTPUT);
+  digitalWrite(pinEstado,LOW);
+  
 }
 
 bool Comunicacion_MAXI::receive() {
@@ -57,4 +60,11 @@ bool Comunicacion_MAXI::receive() {
 
 }
 
+void Comunicacion_MAXI::printBuffer(){
+  Serial.print(" Buffer: ");
+  for (int i = 0; i < bufferSize; i++){
+    Serial.print(buff[i]);
+  }
+  Serial.println();
+}
 #endif

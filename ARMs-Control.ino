@@ -181,7 +181,14 @@ void loop(){
   else if (globalState == 6){
     //Test comunicacion MAXI
     digitalWrite(CONTROLLINO_R4, HIGH);
-    com_maxi.receive();
+    if(com_maxi.receive()){
+      com_maxi.printBuffer();
+      digitalWrite(pinEstado,HIGH);
+      Serial.println("HIGH");
+      delay(2000);
+      digitalWrite(pinEstado,LOW);
+      Serial.println("LOW");
+    }
     
     //Si OK
     /*
