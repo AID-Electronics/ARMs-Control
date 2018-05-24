@@ -21,6 +21,7 @@ Plataforma platform;
 Comunicacion_MAXI com_maxi;
 
 uint8_t globalState;
+uint8_t localState;
 
 bool errorIMU = false;
 bool errorCAN = false;
@@ -45,6 +46,7 @@ void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
   globalState = 0;
+  localState = 0;
 
   com_maxi.setup();
 
@@ -180,14 +182,27 @@ void loop(){
 
   else if (globalState == 6){
     //Test comunicacion MAXI
-    digitalWrite(CONTROLLINO_R4, HIGH);
-    if(com_maxi.receive()){
-      com_maxi.printBuffer();
+    if (localState == 0){
+      digitalWrite(CONTROLLINO_R4, HIGH);
+      if(com_maxi.receive()){
+        com_maxi.printBuffer();
+        localState = 1;
+      }
+    }
+    else if (localState == 1){
       digitalWrite(pinEstado,HIGH);
       Serial.println("HIGH");
-      delay(2000);
+      delay(501);
       digitalWrite(pinEstado,LOW);
       Serial.println("LOW");
+      localState = 2;
+    }
+    else if (localState == 2){
+      if(com_maxi.receive()){
+        com_maxi.printBuffer();
+        globalState = 7;
+        localState = 0;
+      }
     }
     
     //Si OK
