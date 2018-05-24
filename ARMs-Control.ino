@@ -43,11 +43,16 @@ void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
   globalState = 0;
-  
+
+  //Alimentacion motores
   pinMode(CONTROLLINO_R0, OUTPUT);
   pinMode(CONTROLLINO_R1, OUTPUT);
   digitalWrite(CONTROLLINO_R0, LOW);
   digitalWrite(CONTROLLINO_R1, LOW);
+  
+  //Alimentacion MAXI
+  pinMode(CONTROLLINO_R4, OUTPUT);
+  digitalWrite(CONTROLLINO_R4, LOW);
 
   Serial.println ("Setup Controllino Finalizado");
   Serial.println ("Pulse una tecla para continuar");
@@ -171,6 +176,7 @@ void loop(){
 
   else if (globalState == 6){
     //Test comunicacion MAXI
+    digitalWrite(CONTROLLINO_R0, HIGH);
     //Si OK
     Serial.println("Paso al estado 7");
     globalState = 7;
@@ -263,6 +269,7 @@ void loop(){
   
   if (Serial.available()){
     if (Serial.read() == '0'){
+      Serial.print("STOP");
       while(1);
     }
   }
