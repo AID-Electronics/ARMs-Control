@@ -1,0 +1,4 @@
+#ifndef COMUNICACION_MAXI_H
+#define COMUNICACION_MAXI_H
+
+#endif
