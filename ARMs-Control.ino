@@ -46,6 +46,8 @@ void setup(){
   Serial1.begin(4800);
   globalState = 0;
 
+  com_maxi.setup();
+
   //Alimentacion motores
   pinMode(CONTROLLINO_R0, OUTPUT);
   pinMode(CONTROLLINO_R1, OUTPUT);
@@ -178,14 +180,14 @@ void loop(){
 
   else if (globalState == 6){
     //Test comunicacion MAXI
-    digitalWrite(CONTROLLINO_R0, HIGH);
-    com_maxi.setup();
+    digitalWrite(CONTROLLINO_R4, HIGH);
     com_maxi.receive();
     
     //Si OK
+    /*
     Serial.println("Paso al estado 7");
     globalState = 7;
-    entradaEstadoError = true;
+    entradaEstadoError = true;*/
   }
 
   else if (globalState == 7){
