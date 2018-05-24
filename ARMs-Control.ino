@@ -13,10 +13,12 @@
 
 #include "IMU.h"
 #include "Plataforma.h"
+#include "Comunicacion_MAXI.h"
 
 
 IMU IMU_fija;
 Plataforma platform;
+Comunicacion_MAXI com_maxi;
 
 uint8_t globalState;
 
@@ -177,6 +179,9 @@ void loop(){
   else if (globalState == 6){
     //Test comunicacion MAXI
     digitalWrite(CONTROLLINO_R0, HIGH);
+    com_maxi.setup();
+    com_maxi.receive();
+    
     //Si OK
     Serial.println("Paso al estado 7");
     globalState = 7;
