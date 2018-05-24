@@ -2,14 +2,26 @@
 #define COMUNICACION_MAXI_H
 
 #define pinEstado A0
+#define bufferSize 10
 
 class Comunicacion_MAXI{
 public:
-  char buff[];
-  
+  char buff[bufferSize];
+  int cont;
+
+  bool errorMotor;
+  bool errorRadar;
+
+  Comunicacion_MAXI();
   void setup();
   bool receive();
 };
+
+Comunicacion_MAXI::Comunicacion_MAXI(){
+  cont = 0;
+  errorMotor = false;
+  errorRadar = false;
+}
 
 void Comunicacion_MAXI::setup(){
   Serial3.begin(115200);
@@ -28,8 +40,9 @@ bool Comunicacion_MAXI::receive() {
     char token = Serial3.read();
     Serial.print (token);
     buff[i] = token;
-    i++;
-
+    if (i < bufferSize-1){
+      i++;
+    }
     if (!flag)
       flag = true;
   }
