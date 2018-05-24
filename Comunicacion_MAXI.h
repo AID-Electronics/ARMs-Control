@@ -8,6 +8,7 @@ class Comunicacion_MAXI{
 public:
   char buff[bufferSize];
   int cont;
+  bool startMsg;
 
   bool errorMotor;
   bool errorRadar;
@@ -19,8 +20,9 @@ public:
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
   cont = 0;
+  startMsg = false;
   errorMotor = false;
-  errorRadar = false;
+  errorRadar = false;  
 }
 
 void Comunicacion_MAXI::setup(){
@@ -32,23 +34,26 @@ void Comunicacion_MAXI::setup(){
 bool Comunicacion_MAXI::receive() {
   // PORTJ = PORTJ & B10011111; // Ponemos nuestro puerto RS485 en modo lectura.
 
-  bool flag = false;
-  int i = 0;
-
   while (Serial3.available()){
   
     char token = Serial3.read();
     Serial.print (token);
-    buff[i] = token;
-    if (i < bufferSize-1){
-      i++;
+
+    if (token == '$'){
+      cont = 0;
+      startMsg = true;
     }
-    if (!flag)
-      flag = true;
+    else if (token == ';'){
+      buff[cont] = '\0';
+      startMsg = false;
+      return true;
+    }
+    else if (cont < bufferSize && startMsg){
+      buff[cont] = token;
+      cont++;
+    }
   }
-  
-  buff[i] = '\0';
-  return flag;
+  return false;
 
 }
 
