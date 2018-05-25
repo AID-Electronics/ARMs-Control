@@ -12,11 +12,16 @@ public:
 
   bool errorMotor;
   bool errorRadar;
+  bool errorCom;
+  bool comMotor;
+  bool comRadar;
+  bool comPLCs;
 
   Comunicacion_MAXI();
   void setup();
   bool receive();
   void printBuffer();
+  void parseBuff();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -66,5 +71,48 @@ void Comunicacion_MAXI::printBuffer(){
     Serial.print(buff[i]);
   }
   Serial.println();
+}
+
+void Comunicacion_MAXI::parseBuff(){
+  if (buff[0] == 'E'){        //Error msg
+    if (buff[1] == '1'){
+      errorMotor = true;
+    }
+    else if (buff[1] == '0'){
+      errorMotor = false;
+    }
+    if (buff[2] == '1'){
+      errorRadar = true;
+    }
+    else if (buff[2] == '0'){
+      errorRadar = false;
+    }
+    if (buff[3] == '1'){
+      errorCom = true;
+    }
+    else if (buff[3] == '0'){
+      errorCom = false;
+    }
+  }
+  if (buff[0] == 'C'){        //Comunication msg
+    if (buff[1] == '1'){
+      comMotor = true;
+    }
+    else if (buff[1] == '0'){
+      comMotor = false;
+    }
+    if (buff[2] == '1'){
+      comRadar = true;
+    }
+    else if (buff[2] == '0'){
+      comRadar = false;
+    }
+    if (buff[3] == '1'){
+      comPLCs = true;
+    }
+    else if (buff[3] == '0'){
+      comPLCs = false;
+    }
+  }
 }
 #endif
