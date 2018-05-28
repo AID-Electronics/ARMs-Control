@@ -4,6 +4,14 @@
 #define pinEstado 2
 #define bufferSize 10
 
+typedef struct Objetivo{
+  uint32_t id;
+  float vel;
+  float dist;
+  float ang;
+  float intensidad;
+};
+
 class Comunicacion_MAXI{
 public:
   char buff[bufferSize];
@@ -17,6 +25,8 @@ public:
   bool comRadar;
   bool comPLCs;
 
+  Objetivo dron;
+
   Comunicacion_MAXI();
   void setup();
   bool receive();
@@ -29,7 +39,14 @@ Comunicacion_MAXI::Comunicacion_MAXI(){
   cont = 0;
   startMsg = false;
   errorMotor = false;
-  errorRadar = false;  
+  errorRadar = false;
+  errorCom = false;
+
+  dron.id = 0;
+  dron.vel = 0;
+  dron.dist = 0;
+  dron.ang = 0;
+  dron.intensidad = 0;
 }
 
 void Comunicacion_MAXI::setup(){
