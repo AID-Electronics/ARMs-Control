@@ -22,6 +22,7 @@ public:
   bool receive();
   void printBuffer();
   void parseBuff();
+  bool printError();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -114,5 +115,14 @@ void Comunicacion_MAXI::parseBuff(){
       comPLCs = false;
     }
   }
+}
+
+bool Comunicacion_MAXI::printError() {
+  Serial.print("errorMotor: ");
+  Serial.println(errorMotor);
+  Serial.print("errorRadar: ");
+  Serial.println(errorRadar);
+  Serial.print("errorCom: ");
+  Serial.println(errorCom);
 }
 #endif
