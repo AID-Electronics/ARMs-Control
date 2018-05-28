@@ -35,6 +35,7 @@ public:
   void printBuffer();
   void parseBuff();
   bool printError();
+  void printData()
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -187,5 +188,18 @@ bool Comunicacion_MAXI::printError() {
   Serial.println(errorRadar);
   Serial.print("errorCom: ");
   Serial.println(errorCom);
+}
+
+void Comunicacion_MAXI::printData(){
+  Serial.print("dron.id: ");
+  Serial.println(dron.id);
+  Serial.print("dron.vel: ");
+  Serial.println(dron.vel);
+  Serial.print("dron.dist: ");
+  Serial.println(dron.dist);
+  Serial.print("dron.ang: ");
+  Serial.println(dron.ang);
+  Serial.print("dron.intensidad: ");
+  Serial.println(dron.intensidad);
 }
 #endif
