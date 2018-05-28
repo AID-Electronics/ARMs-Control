@@ -35,7 +35,7 @@ public:
   void printBuffer();
   void parseBuff();
   bool printError();
-  void printData()
+  void printData();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -104,32 +104,44 @@ void Comunicacion_MAXI::parseBuff(){
         auxBuff[j] = '\0';
         if (nDato == 0){
           dron.id = strtod(auxBuff, NULL);
+          Serial.print("dron.id: ");
+          Serial.println(dron.id);
           nDato = 1;
           j = 0;
         }
         else if (nDato == 1){
           dron.vel = strtod(auxBuff, NULL);
+          Serial.print("dron.vel: ");
+          Serial.println(dron.vel);
           nDato = 2;
           j = 0;
         }
         else if (nDato == 2){
           dron.dist = strtod(auxBuff, NULL);
+          Serial.print("dron.dist: ");
+          Serial.println(dron.dist);
           nDato = 3;
           j = 0;
         }
         else if (nDato == 3){
           dron.ang = strtod(auxBuff, NULL);
+          Serial.print("dron.ang: ");
+          Serial.println(dron.ang);
           nDato = 4;
           j = 0;
         }
         else if (nDato == 4){
           dron.intensidad = strtod(auxBuff, NULL);
+          Serial.print("dron.intensidad: ");
+          Serial.println(dron.intensidad);
           nDato = 0;
           j = 0;
         }
       }
       else if (buff[i] = '\0' && nDato == 4){
         dron.intensidad = strtod(auxBuff, NULL);
+        Serial.print("dron.id: ");
+          Serial.println(dron.id);
         nDato = 0;
         fin = true;
       }
