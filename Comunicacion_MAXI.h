@@ -15,7 +15,9 @@ typedef struct Objetivo{
 class Comunicacion_MAXI{
 public:
   char buff[bufferSize];
+  char auxBuff[bufferSize];
   int cont;
+  int nDato;
   bool startMsg;
 
   bool errorMotor;
@@ -37,6 +39,7 @@ public:
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
   cont = 0;
+  nDato = 0;
   startMsg = false;
   errorMotor = false;
   errorRadar = false;
@@ -92,6 +95,49 @@ void Comunicacion_MAXI::printBuffer(){
 }
 
 void Comunicacion_MAXI::parseBuff(){
+  if (buff[0] == 'D'){        //Datos radar
+    int j = 0;
+    bool fin = false;
+    for (int i = 1; i < bufferSize || !fin ; i++){
+      if (buff[i] == ','){
+        auxBuff[j] = '\0';
+        if (nDato == 0){
+          dron.id = strtod(auxBuff, NULL);
+          nDato = 1;
+          j = 0;
+        }
+        else if (nDato == 1){
+          dron.vel = strtod(auxBuff, NULL);
+          nDato = 2;
+          j = 0;
+        }
+        else if (nDato == 2){
+          dron.dist = strtod(auxBuff, NULL);
+          nDato = 3;
+          j = 0;
+        }
+        else if (nDato == 3){
+          dron.ang = strtod(auxBuff, NULL);
+          nDato = 4;
+          j = 0;
+        }
+        else if (nDato == 4){
+          dron.intensidad = strtod(auxBuff, NULL);
+          nDato = 0;
+          j = 0;
+        }
+      }
+      else if (buff[i] = '\0' && nDato == 4){
+        dron.intensidad = strtod(auxBuff, NULL);
+        nDato = 0;
+        fin = true;
+      }
+      else
+        auxBuff[j] = buff[i];
+        j++;
+    }
+      
+  }
   if (buff[0] == 'E'){        //Error msg
     if (buff[1] == '1'){
       errorMotor = true;
