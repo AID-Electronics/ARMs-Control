@@ -2,7 +2,7 @@
 #define COMUNICACION_MAXI_H
 
 #define pinEstado 2
-#define bufferSize 10
+#define bufferSize 100
 
 typedef struct Objetivo{
   uint32_t id;
@@ -74,7 +74,8 @@ bool Comunicacion_MAXI::receive() {
       startMsg = true;
     }
     else if (token == ';'){
-      buff[cont] = '\0';
+      buff[cont] = ',';
+      buff[cont + 1] = '\0';
       startMsg = false;
       return true;
     }
@@ -137,13 +138,6 @@ void Comunicacion_MAXI::parseBuff(){
           nDato = 0;
           j = 0;
         }
-      }
-      else if (buff[i] = '\0' && nDato == 4){
-        dron.intensidad = strtod(auxBuff, NULL);
-        Serial.print("dron.id: ");
-          Serial.println(dron.id);
-        nDato = 0;
-        fin = true;
       }
       else
         auxBuff[j] = buff[i];
