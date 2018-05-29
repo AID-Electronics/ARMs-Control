@@ -147,11 +147,12 @@ void Comunicacion_MAXI::parseBuff(){
           j = 0;
         }
       }
-      else
+      else {
         Serial.print(j);
         Serial.print("/");
         auxBuff[j] = buff[i];
         j++;
+      }
     }
       
   }
