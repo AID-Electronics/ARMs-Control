@@ -100,7 +100,7 @@ void Comunicacion_MAXI::parseBuff(){
   if (buff[0] == 'D'){        //Datos radar
     int j = 0;
     bool fin = false;
-    for (int i = 1; i < bufferSize || !fin ; i++){
+    for (int i = 1; i < bufferSize && !fin ; i++){
       if (buff[i] == ','){
         auxBuff[j] = '\0';
         if (nDato == 0){
@@ -137,6 +137,7 @@ void Comunicacion_MAXI::parseBuff(){
           Serial.println(dron.intensidad);
           nDato = 0;
           j = 0;
+          fin = true;
         }
       }
       else
