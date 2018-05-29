@@ -188,7 +188,13 @@ void loop(){
       digitalWrite(CONTROLLINO_R4, HIGH);
       if(com_maxi.receive()){
         com_maxi.printBuffer();
-        com_maxi.parseBuff();
+        if (com_maxi.buff[0] == 'E'){
+          com_maxi.parseBuff();
+        }
+        else {
+          Serial.println("Error: menseje no esperado");
+          com_maxi.errorCom = true;
+        }
         localState = 1;
       }
     }
@@ -203,7 +209,13 @@ void loop(){
     else if (localState == 2){
       if(com_maxi.receive()){
         com_maxi.printBuffer();
-        com_maxi.parseBuff();
+        if (com_maxi.buff[0] == 'C'){
+          com_maxi.parseBuff();
+        }
+        else{
+          Serial.println("Error: menseje no esperado");
+          com_maxi.errorCom = true;
+        }
         globalState = 7;
         localState = 0;
         entradaEstadoError = true;
