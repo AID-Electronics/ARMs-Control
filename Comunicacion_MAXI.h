@@ -104,10 +104,6 @@ void Comunicacion_MAXI::parseBuff(){
       if (buff[i] == ','){
         auxBuff[j] = '\0';
         if (nDato == 0){
-          for (int k = 0; auxBuff[k]!='\0'; k++){
-            Serial.print(auxBuff[k]);
-          }
-          Serial.println();
           dron.id = strtod(auxBuff, NULL);
           Serial.print("dron.id: ");
           Serial.println(dron.id);
@@ -115,10 +111,6 @@ void Comunicacion_MAXI::parseBuff(){
           j = 0;
         }
         else if (nDato == 1){
-          for (int k = 0; auxBuff[k]!='\0'; k++){
-            Serial.print(auxBuff[k]);
-          }
-          Serial.println();
           dron.vel = strtod(auxBuff, NULL);
           Serial.print("dron.vel: ");
           Serial.println(dron.vel);
@@ -148,13 +140,10 @@ void Comunicacion_MAXI::parseBuff(){
         }
       }
       else {
-        Serial.print(j);
-        Serial.print("/");
         auxBuff[j] = buff[i];
         j++;
       }
     }
-      
   }
   if (buff[0] == 'E'){        //Error msg
     if (buff[1] == '1'){
