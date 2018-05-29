@@ -23,6 +23,9 @@ Comunicacion_MAXI com_maxi;
 uint8_t globalState;
 uint8_t localState;
 
+unsigned long arrivalState_time;
+unsigned long inState_time;
+
 bool errorIMU = false;
 bool errorCAN = false;
 bool errorMotoresON = false;
@@ -157,15 +160,15 @@ void loop(){
     if (m1_Vel == velocidad && m2_Vel == velocidad){
       //Por ahora no tenemos en cuenta aceleraciones
       errorMotoresSetup = false;
-      Serial.println("Paso al estado 5");
-      globalState = 5;
     }
     else{
       Serial.println("Fallo setup motores");
-      Serial.println("Paso al estado 5");
       errorMotoresSetup = true;
-      globalState = 5;
     }
+    
+    Serial.println("Paso al estado 5");
+    globalState = 5;
+    arrivalState_time = millis();
   }
   
   else if (globalState == 5){
@@ -178,7 +181,13 @@ void loop(){
     }
     else{
       //comprobar tiempo de espera
-      errorComunicRF = true;
+      inState_time = millis() - arrivalState_time;
+      if (inState_time > 5000){
+        errorComunicRF = true;
+        Serial.println("Error Recepcion RF");
+        Serial.println("Paso al estado 6");
+        globalState = 6;
+      }
     }
   }
 
