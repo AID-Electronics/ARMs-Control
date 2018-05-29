@@ -2,10 +2,11 @@
 #define COMUNICACION_MAXI_H
 
 #define pinEstado 2
+#define pinRequestData 3
 #define bufferSize 100
 
 typedef struct Objetivo{
-  uint32_t id;
+  int32_t id;
   float vel;
   float dist;
   float ang;
@@ -54,11 +55,11 @@ Comunicacion_MAXI::Comunicacion_MAXI(){
 }
 
 void Comunicacion_MAXI::setup(){
-  Serial3.begin(115200);
   Controllino_RS485Init();
   pinMode(pinEstado,OUTPUT);
   digitalWrite(pinEstado,LOW);
-  
+  pinMode(pinRequestData,OUTPUT);
+  digitalWrite(pinRequestData,LOW);
 }
 
 bool Comunicacion_MAXI::receive() {
@@ -67,7 +68,7 @@ bool Comunicacion_MAXI::receive() {
   while (Serial3.available()){
   
     char token = Serial3.read();
-    Serial.print (token);
+    //Serial.print (token);
 
     if (token == '$'){
       cont = 0;
@@ -140,11 +141,11 @@ void Comunicacion_MAXI::parseBuff(){
           fin = true;
         }
       }
-      else
+      else {
         auxBuff[j] = buff[i];
         j++;
+      }
     }
-      
   }
   if (buff[0] == 'E'){        //Error msg
     if (buff[1] == '1'){

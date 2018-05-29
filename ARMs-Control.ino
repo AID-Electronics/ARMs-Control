@@ -45,6 +45,7 @@ void errorSolucionado (uint8_t estado){
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
+  Serial3.begin(115200);
   globalState = 0;
   localState = 0;
 
@@ -119,6 +120,7 @@ void loop(){
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
+      Serial.println("Paso al estado 5");
       globalState = 5;
     }
   }
@@ -186,30 +188,27 @@ void loop(){
       digitalWrite(CONTROLLINO_R4, HIGH);
       if(com_maxi.receive()){
         com_maxi.printBuffer();
+        com_maxi.parseBuff();
         localState = 1;
       }
     }
     else if (localState == 1){
       digitalWrite(pinEstado,HIGH);
-      Serial.println("HIGH");
-      delay(501);
+      Serial.println("Bit com - HIGH");
+      delay(100);
       digitalWrite(pinEstado,LOW);
-      Serial.println("LOW");
+      Serial.println("Bit com - LOW");
       localState = 2;
     }
     else if (localState == 2){
       if(com_maxi.receive()){
         com_maxi.printBuffer();
+        com_maxi.parseBuff();
         globalState = 7;
         localState = 0;
+        entradaEstadoError = true;
       }
     }
-    
-    //Si OK
-    /*
-    Serial.println("Paso al estado 7");
-    globalState = 7;
-    entradaEstadoError = true;*/
   }
 
   else if (globalState == 7){
@@ -226,6 +225,7 @@ void loop(){
       Serial.println(errorComunicRadar);
       Serial.print("errorComunicRF: ");
       Serial.println(errorComunicRF);
+      com_maxi.printError();
 
       entradaEstadoError = false;
     }
