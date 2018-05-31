@@ -97,6 +97,7 @@ void loop(){
     else{
       Serial.println("Paso al estado 5");
       globalState = 5;
+      arrivalState_time = millis();
     }
   }
   else if (globalState == 3){
@@ -125,6 +126,7 @@ void loop(){
       errorMotoresON = true;
       Serial.println("Paso al estado 5");
       globalState = 5;
+      arrivalState_time = millis();
     }
   }
 
