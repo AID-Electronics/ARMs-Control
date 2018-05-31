@@ -84,29 +84,24 @@ void loop(){
 
   if (globalState == 0){
     if (Serial.available()){
-      globalState = 1;
-      Serial.println("Paso al estado 1");
+      nextState(1);
     }
   }
   else if (globalState == 1){
     bool OK;
     OK = IMU_fija.setup();
     errorIMU = !OK;
-    globalState = 2;
-    Serial.println("Paso al estado 2");
+    nextState(2);
   }
   else if (globalState == 2){
     bool setupCAN_ok = setupCAN();
     errorCAN = !setupCAN_ok;
 
     if(setupCAN_ok){
-      globalState = 3;
-      Serial.println("Paso al estado 3");
+      nextState(3);
     }
     else{
-      Serial.println("Paso al estado 5");
-      globalState = 5;
-      arrivalState_time = millis();
+      nextState(5);
     }
   }
   else if (globalState == 3){
@@ -126,16 +121,13 @@ void loop(){
     if (tensionM1 > 23.5 && tensionM1 < 24.5){
       if (tensionM2 > 23.5 && tensionM2 < 24.5){
         errorMotoresON = false;
-        globalState = 4;
-        Serial.println("Paso al estado 4");
+        nextState(4);
       }
     }
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
-      Serial.println("Paso al estado 5");
-      globalState = 5;
-      arrivalState_time = millis();
+      nextState(5);
     }
   }
 
@@ -177,9 +169,7 @@ void loop(){
       errorMotoresSetup = true;
     }
     
-    Serial.println("Paso al estado 5");
-    globalState = 5;
-    arrivalState_time = millis();
+    nextState(5);
   }
   
   else if (globalState == 5){
@@ -191,10 +181,7 @@ void loop(){
     if (getOrientRF(&test)){
       errorComunicRF = false;
       Serial.println("\tRecepcion RF OK");
-      Serial.println("Paso al estado 6");
-      globalState = 6;
-      arrivalState_time = millis();
-      entradaEstado = true;
+      nextState(6);
     }
     else{
       //comprobar tiempo de espera
@@ -202,10 +189,7 @@ void loop(){
       if (inState_time > 5000){
         errorComunicRF = true;
         Serial.println("\tError Recepcion RF");
-        Serial.println("Paso al estado 6");
-        globalState = 6;
-        arrivalState_time = millis();
-        entradaEstado = true;
+        nextState(6);
       }
     }
   }
@@ -246,9 +230,8 @@ void loop(){
           com_maxi.errorCom = true;
         }
         errorComunicPLCs = false;
-        globalState = 7;
         localState = 0;
-        entradaEstado = true;
+        nextState(7);
       }
     }
     //Si no recibe nada despues de 5 segundos
