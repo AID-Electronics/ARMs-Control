@@ -33,6 +33,7 @@ bool errorMotoresSetup = false;
 bool errorComunicPLCs = false;
 bool errorComunicRF = false;
 
+bool entradaEstado = true;
 bool entradaEstadoError = true;
 
 void errorSolucionado (uint8_t estado){
@@ -43,6 +44,14 @@ void errorSolucionado (uint8_t estado){
       Serial.println (estado);
     }
   }
+}
+
+void nextState(uint8_t estado){
+  Serial.print ("Paso al estado ");
+  Serial.println (estado);
+  globalState = estado;
+  arrivalState_time = millis();
+  entradaEstado = true;
 }
 
 void setup(){
@@ -174,23 +183,29 @@ void loop(){
   }
   
   else if (globalState == 5){
+    if (entradaEstado){
+      Serial.println("Test comunicacion RF");
+      entradaEstado = false;
+    }
     Vector3D test;
     if (getOrientRF(&test)){
       errorComunicRF = false;
-      Serial.println("Recepcion RF OK");
+      Serial.println("\tRecepcion RF OK");
       Serial.println("Paso al estado 6");
       globalState = 6;
       arrivalState_time = millis();
+      entradaEstado = true;
     }
     else{
       //comprobar tiempo de espera
       inState_time = millis() - arrivalState_time;
       if (inState_time > 5000){
         errorComunicRF = true;
-        Serial.println("Error Recepcion RF");
+        Serial.println("\tError Recepcion RF");
         Serial.println("Paso al estado 6");
         globalState = 6;
         arrivalState_time = millis();
+        entradaEstado = true;
       }
     }
   }
@@ -233,7 +248,7 @@ void loop(){
         errorComunicPLCs = false;
         globalState = 7;
         localState = 0;
-        entradaEstadoError = true;
+        entradaEstado = true;
       }
     }
     //Si no recibe nada despues de 5 segundos
@@ -242,12 +257,12 @@ void loop(){
       errorComunicPLCs = true;
       globalState = 7;
       localState = 0;
-      entradaEstadoError = true;
+      entradaEstado = true;
     }
   }
 
   else if (globalState == 7){
-    if (entradaEstadoError == true){
+    if (entradaEstado){
       Serial.print("errorIMU: ");
       Serial.println(errorIMU);
       Serial.print("errorCAN: ");
@@ -262,7 +277,7 @@ void loop(){
       Serial.println(errorComunicRF);
       com_maxi.printError();
 
-      entradaEstadoError = false;
+      entradaEstado = false;
     }
     if (errorIMU){
       errorSolucionado (1);
