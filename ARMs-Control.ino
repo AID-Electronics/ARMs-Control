@@ -13,18 +13,24 @@
 
 #include "IMU.h"
 #include "Plataforma.h"
+#include "Comunicacion_MAXI.h"
 
 
 IMU IMU_fija;
 Plataforma platform;
+Comunicacion_MAXI com_maxi;
 
 uint8_t globalState;
+uint8_t localState;
+
+unsigned long arrivalState_time;
+unsigned long inState_time;
 
 bool errorIMU = false;
 bool errorCAN = false;
 bool errorMotoresON = false;
 bool errorMotoresSetup = false;
-bool errorComunicRadar = false;
+bool errorComunicPLCs = false;
 bool errorComunicRF = false;
 
 bool entradaEstadoError = true;
@@ -42,12 +48,21 @@ void errorSolucionado (uint8_t estado){
 void setup(){
   Serial.begin(1000000);
   Serial1.begin(4800);
+  Serial3.begin(115200);
   globalState = 0;
-  
+  localState = 0;
+
+  com_maxi.setup();
+
+  //Alimentacion motores
   pinMode(CONTROLLINO_R0, OUTPUT);
   pinMode(CONTROLLINO_R1, OUTPUT);
   digitalWrite(CONTROLLINO_R0, LOW);
   digitalWrite(CONTROLLINO_R1, LOW);
+  
+  //Alimentacion MAXI
+  pinMode(CONTROLLINO_R4, OUTPUT);
+  digitalWrite(CONTROLLINO_R4, LOW);
 
   Serial.println ("Setup Controllino Finalizado");
   Serial.println ("Pulse una tecla para continuar");
@@ -82,6 +97,7 @@ void loop(){
     else{
       Serial.println("Paso al estado 5");
       globalState = 5;
+      arrivalState_time = millis();
     }
   }
   else if (globalState == 3){
@@ -108,7 +124,9 @@ void loop(){
     if(globalState != 4){
       Serial.println("Motores sin alimentacion");
       errorMotoresON = true;
+      Serial.println("Paso al estado 5");
       globalState = 5;
+      arrivalState_time = millis();
     }
   }
 
@@ -144,15 +162,15 @@ void loop(){
     if (m1_Vel == velocidad && m2_Vel == velocidad){
       //Por ahora no tenemos en cuenta aceleraciones
       errorMotoresSetup = false;
-      Serial.println("Paso al estado 5");
-      globalState = 5;
     }
     else{
       Serial.println("Fallo setup motores");
-      Serial.println("Paso al estado 5");
       errorMotoresSetup = true;
-      globalState = 5;
     }
+    
+    Serial.println("Paso al estado 5");
+    globalState = 5;
+    arrivalState_time = millis();
   }
   
   else if (globalState == 5){
@@ -162,19 +180,70 @@ void loop(){
       Serial.println("Recepcion RF OK");
       Serial.println("Paso al estado 6");
       globalState = 6;
+      arrivalState_time = millis();
     }
     else{
       //comprobar tiempo de espera
-      errorComunicRF = true;
+      inState_time = millis() - arrivalState_time;
+      if (inState_time > 5000){
+        errorComunicRF = true;
+        Serial.println("Error Recepcion RF");
+        Serial.println("Paso al estado 6");
+        globalState = 6;
+        arrivalState_time = millis();
+      }
     }
   }
 
   else if (globalState == 6){
     //Test comunicacion MAXI
-    //Si OK
-    Serial.println("Paso al estado 7");
-    globalState = 7;
-    entradaEstadoError = true;
+    if (localState == 0){
+      com_maxi.resetMsg();
+      digitalWrite(CONTROLLINO_R4, HIGH);
+      if(com_maxi.receive()){
+        com_maxi.printBuffer();
+        if (com_maxi.buff[0] == 'E'){
+          com_maxi.parseBuff();
+        }
+        else {
+          Serial.println("Error: menseje no esperado");
+          com_maxi.errorCom = true;
+        }
+        localState = 1;
+      }
+    }
+    else if (localState == 1){
+      digitalWrite(pinEstado,HIGH);
+      Serial.println("Bit com - HIGH");
+      delay(100);
+      digitalWrite(pinEstado,LOW);
+      Serial.println("Bit com - LOW");
+      localState = 2;
+    }
+    else if (localState == 2){
+      if(com_maxi.receive()){
+        com_maxi.printBuffer();
+        if (com_maxi.buff[0] == 'C'){
+          com_maxi.parseBuff();
+        }
+        else{
+          Serial.println("Error: menseje no esperado");
+          com_maxi.errorCom = true;
+        }
+        errorComunicPLCs = false;
+        globalState = 7;
+        localState = 0;
+        entradaEstadoError = true;
+      }
+    }
+    //Si no recibe nada despues de 5 segundos
+    inState_time = millis() - arrivalState_time;
+    if (inState_time > 5000){
+      errorComunicPLCs = true;
+      globalState = 7;
+      localState = 0;
+      entradaEstadoError = true;
+    }
   }
 
   else if (globalState == 7){
@@ -187,10 +256,11 @@ void loop(){
       Serial.println(errorMotoresON);
       Serial.print("errorMotoresSetup: ");
       Serial.println(errorMotoresSetup);
-      Serial.print("errorComunicRadar: ");
-      Serial.println(errorComunicRadar);
+      Serial.print("errorComunicPLCs: ");
+      Serial.println(errorComunicPLCs);
       Serial.print("errorComunicRF: ");
       Serial.println(errorComunicRF);
+      com_maxi.printError();
 
       entradaEstadoError = false;
     }
@@ -209,7 +279,7 @@ void loop(){
     else if (errorComunicRF){
       errorSolucionado (5);
     }
-    else if (errorComunicRadar){
+    else if (errorComunicPLCs){
       errorSolucionado (6);
     }
     else {
@@ -263,6 +333,7 @@ void loop(){
   
   if (Serial.available()){
     if (Serial.read() == '0'){
+      Serial.print("STOP");
       while(1);
     }
   }
