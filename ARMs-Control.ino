@@ -30,7 +30,7 @@ bool errorIMU = false;
 bool errorCAN = false;
 bool errorMotoresON = false;
 bool errorMotoresSetup = false;
-bool errorComunicRadar = false;
+bool errorComunicPLCs = false;
 bool errorComunicRF = false;
 
 bool entradaEstadoError = true;
@@ -229,7 +229,7 @@ void loop(){
           Serial.println("Error: menseje no esperado");
           com_maxi.errorCom = true;
         }
-        errorComunicRadar = false;
+        errorComunicPLCs = false;
         globalState = 7;
         localState = 0;
         entradaEstadoError = true;
@@ -238,7 +238,7 @@ void loop(){
     //Si no recibe nada despues de 5 segundos
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
-      errorComunicRadar = true;
+      errorComunicPLCs = true;
       globalState = 7;
       localState = 0;
       entradaEstadoError = true;
@@ -255,8 +255,8 @@ void loop(){
       Serial.println(errorMotoresON);
       Serial.print("errorMotoresSetup: ");
       Serial.println(errorMotoresSetup);
-      Serial.print("errorComunicRadar: ");
-      Serial.println(errorComunicRadar);
+      Serial.print("errorComunicPLCs: ");
+      Serial.println(errorComunicPLCs);
       Serial.print("errorComunicRF: ");
       Serial.println(errorComunicRF);
       com_maxi.printError();
@@ -278,7 +278,7 @@ void loop(){
     else if (errorComunicRF){
       errorSolucionado (5);
     }
-    else if (errorComunicRadar){
+    else if (errorComunicPLCs){
       errorSolucionado (6);
     }
     else {
