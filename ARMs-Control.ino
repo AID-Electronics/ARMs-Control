@@ -198,6 +198,7 @@ void loop(){
   else if (globalState == 6){
     //Test comunicacion MAXI
     if (localState == 0){
+      com_maxi.resetMsg();
       digitalWrite(CONTROLLINO_R4, HIGH);
       if(com_maxi.receive()){
         com_maxi.printBuffer();

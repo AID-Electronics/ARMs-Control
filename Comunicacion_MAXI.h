@@ -38,6 +38,7 @@ public:
   bool printError();
   void printData();
   void requestData();
+  void resetMsg();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -224,5 +225,12 @@ void Comunicacion_MAXI::requestData(){
      msgReceived = true;
     }
   }
+}
+
+void Comunicacion_MAXI::resetMsg(){
+  digitalWrite(pinEstado,LOW);
+  digitalWrite(pinRequestData,HIGH);
+  delay(10);
+  digitalWrite(pinRequestData,LOW);
 }
 #endif
