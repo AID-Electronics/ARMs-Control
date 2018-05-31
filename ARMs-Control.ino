@@ -180,6 +180,7 @@ void loop(){
       Serial.println("Recepcion RF OK");
       Serial.println("Paso al estado 6");
       globalState = 6;
+      arrivalState_time = millis();
     }
     else{
       //comprobar tiempo de espera
@@ -189,6 +190,7 @@ void loop(){
         Serial.println("Error Recepcion RF");
         Serial.println("Paso al estado 6");
         globalState = 6;
+        arrivalState_time = millis();
       }
     }
   }
@@ -227,10 +229,19 @@ void loop(){
           Serial.println("Error: menseje no esperado");
           com_maxi.errorCom = true;
         }
+        errorComunicRadar = false;
         globalState = 7;
         localState = 0;
         entradaEstadoError = true;
       }
+    }
+    //Si no recibe nada despues de 5 segundos
+    inState_time = millis() - arrivalState_time;
+    if (inState_time > 5000){
+      errorComunicRadar = true;
+      globalState = 7;
+      localState = 0;
+      entradaEstadoError = true;
     }
   }
 
