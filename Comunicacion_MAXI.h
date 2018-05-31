@@ -37,6 +37,7 @@ public:
   void parseBuff();
   bool printError();
   void printData();
+  void requestData();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -209,5 +210,18 @@ void Comunicacion_MAXI::printData(){
   Serial.println(dron.ang);
   Serial.print("dron.intensidad: ");
   Serial.println(dron.intensidad);
+}
+
+void Comunicacion_MAXI::requestData(){
+  bool msgReceived = false;
+  digitalWrite(pinRequestData,HIGH);
+  delay (1);
+  digitalWrite(pinRequestData,LOW);
+  while (!msgReceived){
+    if (receive()){
+     parseBuff();
+     msgReceived = true;
+    }
+  }
 }
 #endif
