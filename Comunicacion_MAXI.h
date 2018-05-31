@@ -17,8 +17,8 @@ class Comunicacion_MAXI{
 public:
   char buff[bufferSize];
   char auxBuff[bufferSize];
-  int cont;
-  int nDato;
+  uint8_t cont;
+  uint8_t nDato;
   bool startMsg;
 
   bool errorMotor;
@@ -78,6 +78,7 @@ bool Comunicacion_MAXI::receive() {
     else if (token == ';'){
       buff[cont] = ',';
       buff[cont + 1] = '\0';
+      cont++;
       startMsg = false;
       return true;
     }
@@ -92,7 +93,7 @@ bool Comunicacion_MAXI::receive() {
 
 void Comunicacion_MAXI::printBuffer(){
   Serial.print(" Buffer: ");
-  for (int i = 0; i < bufferSize; i++){
+  for (int i = 0; i < cont; i++){
     Serial.print(buff[i]);
   }
   Serial.println();
