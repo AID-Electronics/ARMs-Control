@@ -48,6 +48,7 @@ void nextState(uint8_t estado){
   Serial.print ("Paso al estado ");
   Serial.println (estado);
   globalState = estado;
+  localState = 0;
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -228,7 +229,6 @@ void loop(){
           com_maxi.errorCom = true;
         }
         errorComunicPLCs = false;
-        localState = 0;
         nextState(7);
       }
     }
@@ -236,9 +236,7 @@ void loop(){
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
       errorComunicPLCs = true;
-      globalState = 7;
-      localState = 0;
-      entradaEstado = true;
+      nextState(7);
     }
   }
 
@@ -279,7 +277,7 @@ void loop(){
       errorSolucionado (6);
     }
     else {
-      globalState = 8;
+      nextState(8);
     }
   }
 
@@ -292,10 +290,7 @@ void loop(){
     Serial.println(serialBuff);
   
     if(calibState == 1){
-      
-
-      globalState = 9;
-      Serial.println("Paso al estado 9");
+      nextState(9);
     }
   }
 
@@ -311,8 +306,7 @@ void loop(){
     setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
     setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
-    Serial.println("Paso al estado 10");
-    globalState = 10;
+    nextState(10);
   }
 
   else if (globalState == 10){
@@ -329,8 +323,8 @@ void loop(){
   
   if (Serial.available()){
     if (Serial.read() == '0'){
-      Serial.print("STOP");
-      while(1);
+      Serial.println("STOP");
+      nextState(0);
     }
   }
 }
