@@ -93,7 +93,7 @@ bool Comunicacion_MAXI::receive() {
 }
 
 void Comunicacion_MAXI::printBuffer(){
-  Serial.print(" Buffer: ");
+  Serial.print("Buffer: ");
   for (int i = 0; i < cont; i++){
     Serial.print(buff[i]);
   }
@@ -193,11 +193,11 @@ void Comunicacion_MAXI::parseBuff(){
 }
 
 bool Comunicacion_MAXI::printError() {
-  Serial.print("errorMotor: ");
+  Serial.print("\terrorMotor: ");
   Serial.println(errorMotor);
-  Serial.print("errorRadar: ");
+  Serial.print("\terrorRadar: ");
   Serial.println(errorRadar);
-  Serial.print("errorCom: ");
+  Serial.print("\terrorCom: ");
   Serial.println(errorCom);
 }
 

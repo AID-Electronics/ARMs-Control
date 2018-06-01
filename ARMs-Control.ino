@@ -47,6 +47,7 @@ void errorSolucionado (uint8_t estado){
 void nextState(uint8_t estado){
   Serial.print ("Paso al estado ");
   Serial.println (estado);
+  Serial.println();
   globalState = estado;
   localState = 0;
   entradaEstado = true;
@@ -93,6 +94,10 @@ void loop(){
     nextState(2);
   }
   else if (globalState == 2){
+    if(entradaEstado){
+      Serial.println("Setup CANbus");
+      entradaEstado = false;
+    }
     bool setupCAN_ok = setupCAN();
     errorCAN = !setupCAN_ok;
 
@@ -104,6 +109,10 @@ void loop(){
     }
   }
   else if (globalState == 3){
+    if(entradaEstado){
+      Serial.println("Encendido de motores");
+      entradaEstado = false;
+    }
     //Encendido de motores
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
@@ -112,19 +121,20 @@ void loop(){
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
     
-    Serial.print("Tension M1: ");
+    Serial.print("\tTension M1: ");
     Serial.println(tensionM1);
-    Serial.print("Tension M2: ");
+    Serial.print("\tTension M2: ");
     Serial.println(tensionM2);
 
     if (tensionM1 > 23.5 && tensionM1 < 24.5){
       if (tensionM2 > 23.5 && tensionM2 < 24.5){
+        Serial.println("\tAlimentacion en rango");
         errorMotoresON = false;
         nextState(4);
       }
     }
     if(globalState != 4){
-      Serial.println("Motores sin alimentacion");
+      Serial.println("\tMotores sin alimentacion");
       errorMotoresON = true;
       nextState(5);
     }
@@ -195,16 +205,22 @@ void loop(){
 
   else if (globalState == 6){
     //Test comunicacion MAXI
+    if (entradaEstado){
+      Serial.println("Test comunicacion PLCs");
+      entradaEstado = false;
+    }
+
     if (localState == 0){
       com_maxi.resetMsg();
       digitalWrite(CONTROLLINO_R4, HIGH);
       if(com_maxi.receive()){
+        Serial.print("\t");
         com_maxi.printBuffer();
         if (com_maxi.buff[0] == 'E'){
           com_maxi.parseBuff();
         }
         else {
-          Serial.println("Error: menseje no esperado");
+          Serial.println("\tError: menseje no esperado");
           com_maxi.errorCom = true;
         }
         localState = 1;
@@ -212,20 +228,21 @@ void loop(){
     }
     else if (localState == 1){
       digitalWrite(pinEstado,HIGH);
-      Serial.println("Bit com - HIGH");
+      Serial.println("\tBit com - HIGH");
       delay(100);
       digitalWrite(pinEstado,LOW);
-      Serial.println("Bit com - LOW");
+      Serial.println("\tBit com - LOW");
       localState = 2;
     }
     else if (localState == 2){
       if(com_maxi.receive()){
+        Serial.print("\t");
         com_maxi.printBuffer();
         if (com_maxi.buff[0] == 'C'){
           com_maxi.parseBuff();
         }
         else{
-          Serial.println("Error: menseje no esperado");
+          Serial.println("\tError: menseje no esperado");
           com_maxi.errorCom = true;
         }
         errorComunicPLCs = false;
@@ -235,6 +252,7 @@ void loop(){
     //Si no recibe nada despues de 5 segundos
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
+      Serial.println("Error: respuesta no recibida");
       errorComunicPLCs = true;
       nextState(7);
     }
@@ -242,17 +260,19 @@ void loop(){
 
   else if (globalState == 7){
     if (entradaEstado){
-      Serial.print("errorIMU: ");
+      Serial.println("Errores durante configuracion");
+
+      Serial.print("\terrorIMU: ");
       Serial.println(errorIMU);
-      Serial.print("errorCAN: ");
+      Serial.print("\terrorCAN: ");
       Serial.println(errorCAN);
-      Serial.print("errorMotoresON: ");
+      Serial.print("\terrorMotoresON: ");
       Serial.println(errorMotoresON);
-      Serial.print("errorMotoresSetup: ");
+      Serial.print("\terrorMotoresSetup: ");
       Serial.println(errorMotoresSetup);
-      Serial.print("errorComunicPLCs: ");
+      Serial.print("\terrorComunicPLCs: ");
       Serial.println(errorComunicPLCs);
-      Serial.print("errorComunicRF: ");
+      Serial.print("\terrorComunicRF: ");
       Serial.println(errorComunicRF);
       com_maxi.printError();
 
