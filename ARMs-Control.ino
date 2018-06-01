@@ -39,9 +39,7 @@ bool entradaEstadoError = true;
 void errorSolucionado (uint8_t estado){
   if (Serial.available()){
     if (Serial.read() == 'C'){
-      globalState = estado;
-      Serial.print ("Paso al estado ");
-      Serial.println (estado);
+      nextState(estado);
     }
   }
 }
@@ -50,8 +48,8 @@ void nextState(uint8_t estado){
   Serial.print ("Paso al estado ");
   Serial.println (estado);
   globalState = estado;
-  arrivalState_time = millis();
   entradaEstado = true;
+  arrivalState_time = millis();
 }
 
 void setup(){
