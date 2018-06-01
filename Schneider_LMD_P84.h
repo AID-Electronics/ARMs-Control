@@ -18,16 +18,23 @@ union Paquete{
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
 
-void setupCAN(){
-  while (CAN_OK != CAN.begin(CAN_1000KBPS))  {            // init can bus : baudrate = 1000k
-    Serial.println("CAN BUS Shield init fail");
-    Serial.println(" Init CAN BUS Shield again");
-    delay(500);
+bool setupCAN(){
+  uint8_t cont = 0;
+  while (CAN_OK != CAN.begin(CAN_1000KBPS) && cont < 5)  {            // init can bus : baudrate = 1000k
+    Serial.println("\tCAN BUS Shield: Fallo inicializacion");
+    Serial.println("\tInit CAN BUS Shield again");
+    delay(1000);
+    cont++;
   }
-  Serial.println("CAN BUS Shield init ok!");
-  Serial.println();
-
-  delay(200);
+  if (cont < 5){
+    Serial.println("CAN BUS Shield init ok!");
+    Serial.println();
+    delay(200);
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 void traduce(byte *leng, byte *buf, unsigned long ID){
@@ -400,7 +407,7 @@ bool SetProfile(int profile, long ID ){
 }
 
 void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
-  Serial.println("Setup Motor");
+    
     //instrucciones de configuración
     SetAccel(Acel,ID_motor);
     setDeccel(Decel,ID_motor);
