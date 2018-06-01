@@ -55,7 +55,7 @@ void nextState(uint8_t estado){
 }
 
 void setup(){
-  Serial.begin(1000000);
+  Serial.begin(250000);
   Serial1.begin(4800);
   Serial3.begin(115200);
   globalState = 0;
