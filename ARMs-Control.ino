@@ -207,12 +207,13 @@ void loop(){
     //Test comunicacion MAXI
     if (entradaEstado){
       Serial.println("Test comunicacion PLCs");
+      com_maxi.resetMsg();
+      Serial.println("\tEncendido PLC MAXI");
+      digitalWrite(CONTROLLINO_R4, HIGH);
       entradaEstado = false;
     }
 
     if (localState == 0){
-      com_maxi.resetMsg();
-      digitalWrite(CONTROLLINO_R4, HIGH);
       if(com_maxi.receive()){
         Serial.print("\t");
         com_maxi.printBuffer();
@@ -252,7 +253,7 @@ void loop(){
     //Si no recibe nada despues de 5 segundos
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
-      Serial.println("Error: respuesta no recibida");
+      Serial.println("\tError: respuesta no recibida");
       errorComunicPLCs = true;
       nextState(7);
     }

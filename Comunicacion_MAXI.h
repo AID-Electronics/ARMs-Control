@@ -228,6 +228,7 @@ void Comunicacion_MAXI::requestData(){
 }
 
 void Comunicacion_MAXI::resetMsg(){
+  Serial.println("\tReset PLC MAXI");
   digitalWrite(pinEstado,LOW);
   digitalWrite(pinRequestData,HIGH);
   delay(10);
