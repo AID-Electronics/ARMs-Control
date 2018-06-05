@@ -217,9 +217,10 @@ void Comunicacion_MAXI::printData(){
 void Comunicacion_MAXI::requestData(){
   bool msgReceived = false;
   digitalWrite(pinRequestData,HIGH);
-  delay (1);
+  delay (5);
   digitalWrite(pinRequestData,LOW);
-  while (!msgReceived){
+  uint32_t comienzo = millis();
+  while (!msgReceived && millis() - comienzo < 100){
     if (receive()){
      parseBuff();
      msgReceived = true;
