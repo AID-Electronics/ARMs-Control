@@ -26,6 +26,9 @@ uint8_t localState;
 unsigned long arrivalState_time;
 unsigned long inState_time;
 
+unsigned long ahora;
+unsigned long antes;
+
 bool errorIMU = false;
 bool errorCAN = false;
 bool errorMotoresON = false;
@@ -327,12 +330,24 @@ void loop(){
     setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
     setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
 
+    delay(500);
     nextState(10);
   }
 
   else if (globalState == 10){
+    if(entradaEstado){
+      Serial.println("Compensacion Plataforma");
+      entradaEstado = false;
+    }
     IMU_fija.update();
     moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
+
+    ahora = millis();
+    if (ahora - antes > 500){
+      com_maxi.requestData();
+      com_maxi.printData();
+      antes = ahora;
+    }
   
     if(Serial.read()!=-1){
       IMU_fija.imprimirDatos();
@@ -349,4 +364,3 @@ void loop(){
     }
   }
 }
-
