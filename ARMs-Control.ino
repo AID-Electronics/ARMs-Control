@@ -41,8 +41,12 @@ bool entradaEstadoError = true;
 
 void errorSolucionado (uint8_t estado){
   if (Serial.available()){
-    if (Serial.read() == 'C'){
+    char token = Serial.read()
+    if (token == 'C'){
       nextState(estado);
+    }
+    else if (token == 'E'){ //Para pruebas
+      nextState(8);    //Se salta las comprobaciones de seguridad
     }
   }
 }
