@@ -27,7 +27,7 @@ unsigned long arrivalState_time;
 unsigned long inState_time;
 
 unsigned long ahora;
-unsigned long antes;
+unsigned long antes = 0;
 
 bool errorIMU = false;
 bool errorCAN = false;
@@ -41,7 +41,7 @@ bool entradaEstadoError = true;
 
 void errorSolucionado (uint8_t estado){
   if (Serial.available()){
-    char token = Serial.read()
+    char token = Serial.read();
     if (token == 'C'){
       nextState(estado);
     }
