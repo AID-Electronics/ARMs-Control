@@ -7,7 +7,7 @@
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
 unsigned char buffRespuesta[8];
-char str[20];
+unsigned long canID;
 
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
@@ -46,14 +46,14 @@ void sending( char buff[], long ID) {
     CAN.sendMsgBuf(ID, 0, 8, buff);
 }
 
-bool receive(bool observador = 0){
+bool receive(){
     if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
     
         CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
-        unsigned long ID = CAN.getCanId();
+        canID = CAN.getCanId();
         
         Serial.print("(RECEIVED)ID: ");        
-        Serial.print(ID,HEX);
+        Serial.print(canID,HEX);
 
        Serial.print(" / ");
 
@@ -68,10 +68,6 @@ bool receive(bool observador = 0){
           Serial.print(",");
         }
         Serial.println();
-        
-        if(observador == 1){
-          traduce(&len, buffRespuesta, ID);
-        }
         return true;
     }
     else {
