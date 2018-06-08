@@ -43,12 +43,11 @@ char serialToken;
 bool serialIn = false;
 
 void errorSolucionado (uint8_t estado){
-  if (Serial.available()){
-    char token = Serial.read();
-    if (token == 'C'){
+  if (serialIn){
+    if (serialToken == 'C'){
       nextState(estado);
     }
-    else if (token == 'E'){ //Para pruebas
+    else if (serialToken == 'E'){ //Para pruebas
       nextState(8);    //Se salta las comprobaciones de seguridad
     }
   }
