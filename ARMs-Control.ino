@@ -39,13 +39,15 @@ bool errorComunicRF = false;
 bool entradaEstado = true;
 bool entradaEstadoError = true;
 
+char serialToken;
+bool serialIn = false;
+
 void errorSolucionado (uint8_t estado){
-  if (Serial.available()){
-    char token = Serial.read();
-    if (token == 'C'){
+  if (serialIn){
+    if (serialToken == 'C'){
       nextState(estado);
     }
-    else if (token == 'E'){ //Para pruebas
+    else if (serialToken == 'E'){ //Para pruebas
       nextState(8);    //Se salta las comprobaciones de seguridad
     }
   }
@@ -89,8 +91,18 @@ long pos;
 
 void loop(){
 
+  //Lectura del serial PC
+  if (Serial.available()){
+    serialToken = Serial.read();
+    serialIn = true;
+  }
+  else{
+    serialIn = false;
+  }
+
+  //Máquina de estados
   if (globalState == 0){
-    if (Serial.available()){
+    if (serialIn){
       nextState(1);
     }
   }
@@ -357,17 +369,21 @@ void loop(){
       com_maxi.printData();
       antes = ahora;
     }
-  
-    if(Serial.read()!=-1){
-      IMU_fija.imprimirDatos();
-      IMU_fija.displayCalStatus();
-      IMU_fija.printTemp();
-      IMU_fija.print();
+    
+    if (serialIn) {
+      if (serialToken == '1'){
+        IMU_fija.imprimirDatos();
+        IMU_fija.displayCalStatus();
+        IMU_fija.printTemp();
+        IMU_fija.print();
+      }
     }
+    
   }
-  
-  if (Serial.available()){
-    if (Serial.read() == '0'){
+
+  //En paralelo al proceso principal
+  if (serialIn){
+    if (serialToken == '0'){
       Serial.println("STOP");
       nextState(0);
     }
