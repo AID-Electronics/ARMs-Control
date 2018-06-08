@@ -90,6 +90,8 @@ char a;
 long pos;
 
 void loop(){
+
+  //Lectura del serial PC
   if (Serial.available()){
     serialToken = Serial.read();
     serialIn = true;
@@ -98,6 +100,7 @@ void loop(){
     serialIn = false;
   }
 
+  //Máquina de estados
   if (globalState == 0){
     if (serialIn){
       nextState(1);
