@@ -7,7 +7,7 @@
 unsigned char Flag_Recv = 0;
 unsigned char len = 0;
 unsigned char buffRespuesta[8];
-unsigned long canID;
+uint32_t canID;
 
 
 MCP_CAN CAN(53);                                      // Set CS to pin 53
@@ -32,44 +32,42 @@ bool setupCAN(){
 }
 
 void sending( char buff[], long ID) {
+  /* Serial.print("(SENT)ID: ");
+  Serial.print(ID,HEX);
+  Serial.print(" / ");
   
-        Serial.print("(SENT)ID: ");
-        Serial.print(ID,HEX);
-        Serial.print(" / ");
-
-    for(int i=0; i<8;i++){
-      Serial.print(buff[i],HEX);
-      Serial.print(",");
-    }
-    Serial.print("\n");
+  for(int i=0; i<8;i++){
+    Serial.print(buff[i],HEX);
+    Serial.print(",");
+  }
+  Serial.print("\n"); */
     
-    CAN.sendMsgBuf(ID, 0, 8, buff);
+  CAN.sendMsgBuf(ID, 0, 8, buff);
 }
 
 bool receive(){
-    if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
-    
-        CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
-        canID = CAN.getCanId();
+  if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
+    CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
+    canID = CAN.getCanId();
         
-        Serial.print("(RECEIVED)ID: ");        
-        Serial.print(canID,HEX);
+    /* Serial.print("(RECEIVED)ID: ");        
+    Serial.print(canID,HEX);
 
-       Serial.print(" / ");
+    Serial.print(" / ");
 
-        for(int i = 0; i<len; i++){    // print the data
+    for(int i = 0; i<len; i++){    // print the data
         
-          if(buffRespuesta[i]==0){
-            Serial.print("00");
-          }
-          else{
-            Serial.print(buffRespuesta[i],HEX);
-          }
-          Serial.print(",");
-        }
-        Serial.println();
-        return true;
+      if(buffRespuesta[i]==0){
+        Serial.print("00");
+      }
+      else{
+        Serial.print(buffRespuesta[i],HEX);
+      }
+      Serial.print(",");
     }
+    Serial.println(); */
+    return true;
+  }
     else {
         return false;
     }
