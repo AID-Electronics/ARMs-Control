@@ -40,6 +40,7 @@ bool entradaEstado = true;
 bool entradaEstadoError = true;
 
 char serialToken;
+bool serialIn = false;
 
 void errorSolucionado (uint8_t estado){
   if (Serial.available()){
@@ -92,10 +93,14 @@ long pos;
 void loop(){
   if (Serial.available()){
     serialToken = Serial.read();
+    serialIn = true;
+  }
+  else{
+    serialIn = false;
   }
 
   if (globalState == 0){
-    if (Serial.available()){
+    if (serialIn){
       nextState(1);
     }
   }
@@ -362,20 +367,23 @@ void loop(){
       com_maxi.printData();
       antes = ahora;
     }
-
-    if (serialToken == '1'){
-      IMU_fija.imprimirDatos();
-      IMU_fija.displayCalStatus();
-      IMU_fija.printTemp();
-      IMU_fija.print();
+    
+    if (serialIn) {
+      if (serialToken == '1'){
+        IMU_fija.imprimirDatos();
+        IMU_fija.displayCalStatus();
+        IMU_fija.printTemp();
+        IMU_fija.print();
+      }
     }
     
   }
 
   //En paralelo al proceso principal
-  
-  if (serialToken == '0'){
-    Serial.println("STOP");
-    nextState(0);
+  if (serialIn){
+    if (serialToken == '0'){
+      Serial.println("STOP");
+      nextState(0);
+    }
   }
 }
