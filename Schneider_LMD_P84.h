@@ -2,40 +2,13 @@
 #define Schneider_LMD_P84_H
 
 #include <Arduino.h>
+#include "Canbus.h"
 
-#include <mcp_can.h>
-#include <SPI.h>
-
-unsigned char Flag_Recv = 0;
-unsigned char len = 0;
-unsigned char buffRespuesta[8];
-char str[20];
 
 union Paquete{
   byte b[4];
   int32_t i;
 };
-
-MCP_CAN CAN(53);                                      // Set CS to pin 53
-
-bool setupCAN(){
-  uint8_t cont = 0;
-  while (CAN_OK != CAN.begin(CAN_1000KBPS) && cont < 5)  {            // init can bus : baudrate = 1000k
-    Serial.println("\tCAN BUS Shield: Fallo inicializacion");
-    Serial.println("\tInit CAN BUS Shield again");
-    delay(1000);
-    cont++;
-  }
-  if (cont < 5){
-    Serial.println("CAN BUS Shield init ok!");
-    Serial.println();
-    delay(200);
-    return true;
-  }
-  else{
-    return false;
-  }
-}
 
 void traduce(byte *leng, byte *buf, unsigned long ID){
   bool envio = 0;   // Se pone a 1 cuando el receptor del mensaje es el motor
@@ -258,54 +231,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
 
 }
 
-void sending( char buff[], long ID) {
-  
-//        Serial.print("(SENT)ID: ");
-//        Serial.print(ID,HEX);
-//        Serial.print(" / ");
-//
-//    for(int i=0; i<8;i++){
-//      Serial.print(buff[i],HEX);
-//      Serial.print(",");
-//    }
-//    Serial.print("\n");
-    
-    CAN.sendMsgBuf(ID, 0, 8, buff);
-}
-
-bool receive(bool observador = 0){
-    if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
-    
-        CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
-        unsigned long ID = CAN.getCanId();
-        
-//        Serial.print("(RECEIVED)ID: ");        
-//        Serial.print(ID,HEX);
-//
-//       Serial.print(" / ");
-//
-//        for(int i = 0; i<len; i++){    // print the data
-//        
-//          if(buffRespuesta[i]==0){
-//            Serial.print("00");
-//          }
-//          else{
-//            Serial.print(buffRespuesta[i],HEX);
-//          }
-//          Serial.print(",");
-//        }
-//        Serial.println();
-        
-        if(observador == 1){
-          traduce(&len, buffRespuesta, ID);
-        }
-        return true;
-    }else
-    
-    return false;
-}
-
-bool comprobarRespuesta(){
+bool comprobarRespuesta(long ID){
   int flag_receive=0;
   int i=0;
   
@@ -317,7 +243,11 @@ bool comprobarRespuesta(){
   //Serial.println(i);
   
   if (flag_receive == 1){
-    if(buffRespuesta[0]==0x80){
+    if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
+      Serial.println("IDs no coinceden");
+      return false;
+    }
+    else if(buffRespuesta[0]==0x80){
       return false;
     }
     else if(buffRespuesta[0]==0x60){
@@ -338,12 +268,13 @@ bool EnviarMSG(char buff[], long ID){
   for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
     sending(buff,ID);
     
-    if(comprobarRespuesta() == 1){
+    if(comprobarRespuesta(ID) == 1){
       rec_OK = 1;
 //      Serial.println("MSG RECIBIDO CORRECTAMENTE");
 //      Serial.println("");
     }
     else {
+      limpiaBuffer();
 //      Serial.println("ERROR EN MSG");
 //      Serial.println("");
     }

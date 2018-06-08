@@ -125,6 +125,8 @@ void loop(){
     digitalWrite(CONTROLLINO_R1, HIGH);
     delay(1000);
 
+    limpiaBuffer();
+
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
     
