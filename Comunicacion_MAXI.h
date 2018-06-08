@@ -36,6 +36,7 @@ public:
   void printBuffer();
   void parseBuff();
   bool printError();
+  bool getError();
   void printData();
   void requestData();
   void resetMsg();
@@ -199,6 +200,11 @@ bool Comunicacion_MAXI::printError() {
   Serial.println(errorRadar);
   Serial.print("\terrorCom: ");
   Serial.println(errorCom);
+}
+
+bool Comunicacion_MAXI::getError(){
+  bool error = errorMotor || errorRadar || errorCom;
+  return error;
 }
 
 void Comunicacion_MAXI::printData(){

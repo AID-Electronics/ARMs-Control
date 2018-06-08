@@ -306,6 +306,9 @@ void loop(){
     else if (errorComunicPLCs){
       errorSolucionado (6);
     }
+    else if (com_maxi.getError()){
+      errorSolucionado (6);
+    }
     else {
       nextState(8);
     }
