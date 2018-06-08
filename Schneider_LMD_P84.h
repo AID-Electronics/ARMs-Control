@@ -231,7 +231,7 @@ void traduce(byte *leng, byte *buf, unsigned long ID){
 
 }
 
-bool comprobarRespuesta(){
+bool comprobarRespuesta(long ID){
   int flag_receive=0;
   int i=0;
   
@@ -243,7 +243,11 @@ bool comprobarRespuesta(){
   //Serial.println(i);
   
   if (flag_receive == 1){
-    if(buffRespuesta[0]==0x80){
+    if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
+      Serial.println("IDs no coinceden");
+      return false;
+    }
+    else if(buffRespuesta[0]==0x80){
       return false;
     }
     else if(buffRespuesta[0]==0x60){
@@ -264,7 +268,7 @@ bool EnviarMSG(char buff[], long ID){
   for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
     sending(buff,ID);
     
-    if(comprobarRespuesta() == 1){
+    if(comprobarRespuesta(ID) == 1){
       rec_OK = 1;
 //      Serial.println("MSG RECIBIDO CORRECTAMENTE");
 //      Serial.println("");
