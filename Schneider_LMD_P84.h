@@ -270,6 +270,7 @@ bool EnviarMSG(char buff[], long ID){
 //      Serial.println("");
     }
     else {
+      limpiaBuffer();
 //      Serial.println("ERROR EN MSG");
 //      Serial.println("");
     }

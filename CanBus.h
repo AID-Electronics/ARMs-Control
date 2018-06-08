@@ -76,9 +76,9 @@ bool receive(){
 }
 
 void limpiaBuffer(){
-  Serial.print("Limpieza Buffer");
+  Serial.println("Limpieza Buffer");
   while (receive());
-  Serial.print("Fin limpieza");
+  Serial.println("Fin limpieza");
 }
 
 #endif
