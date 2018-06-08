@@ -75,4 +75,10 @@ bool receive(){
     }
 }
 
+void limpiaBuffer(){
+  Serial.print("Limpieza Buffer");
+  while (receive());
+  Serial.print("Fin limpieza");
+}
+
 #endif
