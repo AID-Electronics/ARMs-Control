@@ -428,7 +428,6 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     Serial.print(accel);
     if (accel == Acel){
       Serial.println("\tOK");
-      bitError = false;
     }
     else{
       Serial.println("\tX");
@@ -441,7 +440,6 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     Serial.print(decel);
     if (decel == Decel){
       Serial.println("\tOK");
-      bitError = false;
     }
     else{
       Serial.println("\tX");
@@ -454,7 +452,6 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     Serial.print(vel);
     if (vel == MaxVel){
       Serial.println("\tOK");
-      bitError = false;
     }
     else{
       Serial.println("\tX");
