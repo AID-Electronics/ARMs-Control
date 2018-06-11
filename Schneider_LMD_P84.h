@@ -418,7 +418,7 @@ void requestBridgeTemp(long ID){
   return p.i;
 }
 
-void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
+bool setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
     bool bitError = false;
     //instrucciones de configuración
     //-- Aceleracion --
@@ -457,7 +457,12 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
       Serial.println("\tX");
       bitError = true;
     }
+    //-- % de corriente --
     SetCurrent(current, ID_motor);
+
+    if (bitError){
+      return false;
+    }
     
     //instrucciones de cambio de estado
     const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
@@ -467,6 +472,10 @@ void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     EnviarMSG(SwitchON,ID_motor);
     EnviarMSG(OpEnable,ID_motor);
     SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
+    
+    if (!bitError){
+      return true;
+    }
 }
 
 void setPolarity (long pasos, long ID){
