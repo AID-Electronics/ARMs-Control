@@ -425,36 +425,36 @@ bool setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     SetAccel(Acel,ID_motor);
     long accel = requestAccel(ID_motor);
     Serial.print("\tAceleracion: ");
-    Serial.print(accel);
+    Serial.println(accel);
     if (accel == Acel){
-      Serial.println("\tOK");
+      //Serial.println("\tOK");
     }
     else{
-      Serial.println("\tX");
+      //Serial.println("\tX");
       bitError = true;
     }
     //-- Deceleracion --
     setDeccel(Decel,ID_motor);
     long decel = requestDecel(ID_motor);
     Serial.print("\tDeceleracion: ");
-    Serial.print(decel);
+    Serial.println(decel);
     if (decel == Decel){
-      Serial.println("\tOK");
+      //Serial.println("\tOK");
     }
     else{
-      Serial.println("\tX");
+      //Serial.println("\tX");
       bitError = true;
     }
     //-- Velocidad maxima --
     maxVelocity(MaxVel, ID_motor);
     long vel = requestMaxVel(ID_motor);
     Serial.print("\tMax Velocity: ");
-    Serial.print(vel);
+    Serial.println(vel);
     if (vel == MaxVel){
-      Serial.println("\tOK");
+      //Serial.println("\tOK");
     }
     else{
-      Serial.println("\tX");
+      //Serial.println("\tX");
       bitError = true;
     }
     //-- % de corriente --
