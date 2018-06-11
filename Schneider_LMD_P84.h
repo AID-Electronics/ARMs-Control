@@ -337,24 +337,6 @@ bool SetProfile(int profile, long ID ){
   EnviarMSG(ProfileSet,ID);
 }
 
-void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
-    
-    //instrucciones de configuración
-    SetAccel(Acel,ID_motor);
-    setDeccel(Decel,ID_motor);
-    maxVelocity(MaxVel, ID_motor);
-    SetCurrent(current, ID_motor);
-    
-    //instrucciones de cambio de estado
-    const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
-    const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
-    const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
-    EnviarMSG(ReadytoSwitch,ID_motor);
-    EnviarMSG(SwitchON,ID_motor);
-    EnviarMSG(OpEnable,ID_motor);
-    SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
-}
-
 long requestPos(long ID){
   char leerPos[8]={0x40,0x62,0x60,0x00,0x00,0x00,0x00,0x00};
   EnviarMSG(leerPos,ID);
@@ -434,6 +416,60 @@ void requestBridgeTemp(long ID){
   p.b[2] = buffRespuesta[6];
   p.b[3] = buffRespuesta[7];
   return p.i;
+}
+
+void setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
+    bool bitError = false;
+    //instrucciones de configuración
+    //-- Aceleracion --
+    SetAccel(Acel,ID_motor);
+    long accel = requestAccel(ID_motor);
+    Serial.print("\tAceleracion: ");
+    Serial.print(accel);
+    if (accel == Acel){
+      Serial.println("\tOK");
+      bitError = false;
+    }
+    else{
+      Serial.println("\tX");
+      bitError = true;
+    }
+    //-- Deceleracion --
+    setDeccel(Decel,ID_motor);
+    long decel = requestDecel(ID_motor);
+    Serial.print("\tDeceleracion: ");
+    Serial.print(decel);
+    if (decel == Decel){
+      Serial.println("\tOK");
+      bitError = false;
+    }
+    else{
+      Serial.println("\tX");
+      bitError = true;
+    }
+    //-- Velocidad maxima --
+    maxVelocity(MaxVel, ID_motor);
+    long vel = requestMaxVel(ID_motor);
+    Serial.print("\tMax Velocity: ");
+    Serial.print(vel);
+    if (vel == MaxVel){
+      Serial.println("\tOK");
+      bitError = false;
+    }
+    else{
+      Serial.println("\tX");
+      bitError = true;
+    }
+    SetCurrent(current, ID_motor);
+    
+    //instrucciones de cambio de estado
+    const char ReadytoSwitch[]={0x2B,0x40,0x60,0x00,0x06,0x00,0x00,0x00};
+    const char SwitchON[]={0x2B,0x40,0x60,0x00,0x07,0x00,0x00,0x00};
+    const char OpEnable[]={0x2B,0x40,0x60,0x00,0x0F,0x00,0x00,0x00};
+    EnviarMSG(ReadytoSwitch,ID_motor);
+    EnviarMSG(SwitchON,ID_motor);
+    EnviarMSG(OpEnable,ID_motor);
+    SetProfile(1,ID_motor); //1=modo posición, 2=modo velocidad, 3=modo homing, 4=modo torque
 }
 
 void setPolarity (long pasos, long ID){
