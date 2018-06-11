@@ -325,10 +325,23 @@ void loop(){
     delay(500);
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
+    delay(1000);
       
     //Se vuelve a hacer el setup
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
+    Serial.println("Setup motores");
+    Serial.println("\tMotor 1");
+    bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    Serial.println("\tMotor 2");
+    bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+
+    if (m1 && m2){
+      Serial.println("Setup correcto");
+      errorMotoresSetup = false;
+    }
+    else{
+      Serial.println("Fallo setup motores");
+      errorMotoresSetup = true;
+    }
 
     delay(500);
     nextState(10);
