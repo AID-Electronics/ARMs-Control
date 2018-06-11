@@ -171,7 +171,7 @@ void loop(){
     long m1_Decel = requestDecel(ID_MOTOR_1);
     long m1_Vel = requestMaxVel(ID_MOTOR_1);
 
-    long m2_Accel = requestDecel(ID_MOTOR_2);
+    long m2_Accel = requestAccel(ID_MOTOR_2);
     long m2_Decel = requestDecel(ID_MOTOR_2);
     long m2_Vel = requestMaxVel(ID_MOTOR_2);
 
