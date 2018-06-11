@@ -164,34 +164,13 @@ void loop(){
   else if (globalState == 4){
     //Setup de motores
     Serial.println("Setup motores");
-    setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
-    setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+    Serial.println("\tMotor 1");
+    bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    Serial.println("\tMotor 2");
+    bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
 
-    long m1_Accel = requestAccel(ID_MOTOR_1);
-    long m1_Decel = requestDecel(ID_MOTOR_1);
-    long m1_Vel = requestMaxVel(ID_MOTOR_1);
-
-    long m2_Accel = requestAccel(ID_MOTOR_2);
-    long m2_Decel = requestDecel(ID_MOTOR_2);
-    long m2_Vel = requestMaxVel(ID_MOTOR_2);
-
-    
-    Serial.print("\tAceleracion: ");
-    Serial.println(m1_Accel);
-    Serial.print("\tDeceleracion: ");
-    Serial.println(m1_Decel);
-    Serial.print("\tMax Velocity: ");
-    Serial.println(m1_Vel);
-
-    Serial.print("\tAceleracion: ");
-    Serial.println(m2_Accel);
-    Serial.print("\tDeceleracion: ");
-    Serial.println(m2_Decel);
-    Serial.print("\tMax Velocity: ");
-    Serial.println(m2_Vel);
-
-    if (m1_Vel == velocidad && m2_Vel == velocidad){
-      //Por ahora no tenemos en cuenta aceleraciones
+    if (m1 && m2){
+      Serial.println("Setup correcto");
       errorMotoresSetup = false;
     }
     else{
