@@ -45,37 +45,39 @@ void sending( char buff[], long ID) {
   CAN.sendMsgBuf(ID, 0, 8, buff);
 }
 
-bool receive(){
+bool receive(bool printMsg = false){
   if(CAN_MSGAVAIL == CAN.checkReceive()){          // check if data coming
     CAN.readMsgBuf(&len, buffRespuesta);    // read data,  len: data length, buf: data buf
     canID = CAN.getCanId();
-        
-    /* Serial.print("(RECEIVED)ID: ");        
-    Serial.print(canID,HEX);
+    
+    if (printMsg){
+      Serial.print("(RECEIVED)ID: ");        
+      Serial.print(canID,HEX);
 
-    Serial.print(" / ");
+      Serial.print(" / ");
 
-    for(int i = 0; i<len; i++){    // print the data
+      for(int i = 0; i<len; i++){    // print the data
         
-      if(buffRespuesta[i]==0){
-        Serial.print("00");
+        if(buffRespuesta[i]==0){
+          Serial.print("00");
+        }
+        else{
+          Serial.print(buffRespuesta[i],HEX);
+        }
+        Serial.print(",");
       }
-      else{
-        Serial.print(buffRespuesta[i],HEX);
-      }
-      Serial.print(",");
+      Serial.println();
     }
-    Serial.println(); */
     return true;
   }
-    else {
-        return false;
-    }
+  else {
+    return false;
+  }
 }
 
 void limpiaBuffer(){
   Serial.println("Limpieza Buffer");
-  while (receive());
+  while (receive(1));
   Serial.println("Fin limpieza");
 }
 

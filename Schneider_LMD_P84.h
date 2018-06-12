@@ -236,7 +236,7 @@ bool comprobarRespuesta(long ID){
   int i=0;
   
   while(!flag_receive && i<50){
-    flag_receive=receive();
+    flag_receive=receive(1);
     i++;
   }
   
