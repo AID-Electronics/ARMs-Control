@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "Canbus.h"
 
-bool emergencia = false;
+bool emergCAN = false;
 
 union Paquete{
   byte b[4];
@@ -245,7 +245,7 @@ bool comprobarRespuesta(long ID){
   
   if (flag_receive == 1){
     if (canID == 0x90 || canID == 0x91){
-      emergencia = true;
+      emergCAN = true;
       return false;
     }
     if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
@@ -270,7 +270,7 @@ bool comprobarRespuesta(long ID){
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
-  for (int contError = 0; contError < 3 && !rec_OK && !emergencia; contError++){
+  for (int contError = 0; contError < 3 && !rec_OK && !emergCAN; contError++){
     sending(buff,ID);
     
     if(comprobarRespuesta(ID) == 1){
@@ -279,7 +279,7 @@ bool EnviarMSG(char buff[], long ID){
 //      Serial.println("");
     }
     else {
-      if (emergencia){
+      if (emergCAN){
         Serial.println("Mensaje emergencia CAN");
         delay(5);
       }
