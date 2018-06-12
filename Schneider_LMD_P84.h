@@ -560,8 +560,10 @@ bool compruebaCAN(){
   if (flag_receive){
     if(canID == 0x710 || canID == 0x711){
       Serial.println("Error solucionado");
+      delay (5);
+      limpiaBuffer();
       emerCAN = false;
-      retun true;
+      return true;
     }
   }
   return false;
