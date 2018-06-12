@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Canbus.h"
 
+bool emergencia = false;
 
 union Paquete{
   byte b[4];
@@ -243,6 +244,10 @@ bool comprobarRespuesta(long ID){
   //Serial.println(i);
   
   if (flag_receive == 1){
+    if (canID == 0x90 || canID == 0x91){
+      Serial.println("Mensaje emergencia CAN");
+      emergencia = true;
+    }
     if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
       Serial.println("IDs no coinceden");
       return false;
