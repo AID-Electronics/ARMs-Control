@@ -245,8 +245,8 @@ bool comprobarRespuesta(long ID){
   
   if (flag_receive == 1){
     if (canID == 0x90 || canID == 0x91){
-      Serial.println("Mensaje emergencia CAN");
       emergencia = true;
+      return false;
     }
     if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
       Serial.println("IDs no coinceden");
@@ -270,7 +270,7 @@ bool comprobarRespuesta(long ID){
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
-  for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
+  for (int contError = 0; contError < 3 && !rec_OK && !emergencia; contError++){
     sending(buff,ID);
     
     if(comprobarRespuesta(ID) == 1){
@@ -279,14 +279,15 @@ bool EnviarMSG(char buff[], long ID){
 //      Serial.println("");
     }
     else {
+      if (emergencia){
+        Serial.println("Mensaje emergencia CAN");
+        delay(5);
+      }
+      else{
+        Serial.println("ERROR EN MSG");
+      }
       limpiaBuffer();
-//      Serial.println("ERROR EN MSG");
-//      Serial.println("");
     }
-  }
-
-  if (rec_OK == 0){
-//    Serial.println ("Mensaje erroneo");
   }
   return rec_OK;
 }
