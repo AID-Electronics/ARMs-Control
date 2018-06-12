@@ -555,5 +555,17 @@ void moverRelatInmediato(long pasos,long ID){
   EnviarMSG(tipo_mov2,ID);
 }
 
+bool compruebaCAN(){
+  bool flag_receive = receive();
+  if (flag_receive){
+    if(canID == 0x710 || canID == 0x711){
+      Serial.println("Error solucionado");
+      emerCAN = false;
+      retun true;
+    }
+  }
+  return false;
+}
+
 
 #endif
