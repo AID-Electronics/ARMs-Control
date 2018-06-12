@@ -316,6 +316,9 @@ void loop(){
     if(calibState == 1){
       nextState(9);
     }
+    if (emergCAN){
+      nextState(20);
+    }
   }
 
   else if (globalState == 9){
@@ -371,6 +374,31 @@ void loop(){
       }
     }
     
+  }
+
+  else if (globalState == 20){
+     if(entradaEstado){
+      Serial.println("Estado error CAN");
+      entradaEstado = false;
+    }
+    bool resuelto = compruebaCAN();
+    if (resuelto){
+      Serial.println("Setup motores");
+      Serial.println("\tMotor 1");
+      bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+      Serial.println("\tMotor 2");
+      bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+
+      if (m1 && m2){
+        Serial.println("Setup correcto");
+        errorMotoresSetup = false;
+      }
+      else{
+        Serial.println("Fallo setup motores");
+        errorMotoresSetup = true;
+      }
+      nextState(8);
+    }
   }
 
   //En paralelo al proceso principal
