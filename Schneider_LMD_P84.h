@@ -578,6 +578,17 @@ bool compruebaCAN(){
       motor2_ok = true;
       Serial.println("Motor 2 OK");
     }
+    else if (canID == 0x90){
+      emergCAN = true;
+      motor1_ok = false;
+      Serial.println("Motor 1 NOT OK");
+    }
+    else if (canID == 0x91){
+      emergCAN = true;
+      motor2_ok = false;
+      Serial.println("Motor 2 NOT OK");
+    }
+      
     if (motor1_ok && motor2_ok){
       delay (100);
       limpiaBuffer();
