@@ -5,6 +5,10 @@
 #include "Canbus.h"
 
 bool emergCAN = false;
+bool motor1_ok = true;
+bool motor2_ok = true;
+//bool motor3_ok = true;
+//bool motor4_ok = true;
 
 union Paquete{
   byte b[4];
@@ -558,11 +562,18 @@ void moverRelatInmediato(long pasos,long ID){
 bool compruebaCAN(){
   bool flag_receive = receive();
   if (flag_receive){
-    if(canID == 0x710 || canID == 0x711){
-      Serial.println("Error solucionado");
-      delay (5);
+    if(canID == 0x710){
+      motor1_ok = true;
+      Serial.println("Motor 1 OK");
+    }
+    else if (canID == 0x711){
+      motor2_ok = true;
+      Serial.println("Motor 2 OK");
+    }
+    if (motor1_ok && motor2_ok){
+      delay (100);
       limpiaBuffer();
-      emerCAN = false;
+      emergCAN = false;
       return true;
     }
   }
