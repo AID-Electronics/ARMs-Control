@@ -414,7 +414,7 @@ long requestVin(long ID){
   return p.i;
 }
 
-void requestBoardTemp(long ID){
+long requestBoardTemp(long ID){
   char leerBoardTemp[8]={0x40,0x18,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerBoardTemp,ID);
   Paquete p;
@@ -425,7 +425,7 @@ void requestBoardTemp(long ID){
   return p.i;
 }
 
-void requestBridgeTemp(long ID){
+long requestBridgeTemp(long ID){
   char leerBridgeTemp[8]={0x40,0x19,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerBridgeTemp,ID);
   Paquete p;
