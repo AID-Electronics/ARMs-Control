@@ -399,6 +399,7 @@ void loop(){
         Serial.println("Fallo setup motores");
         errorMotoresSetup = true;
       }
+      delay(1000);
       nextState(8);
     }
   }
