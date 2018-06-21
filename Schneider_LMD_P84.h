@@ -4,6 +4,11 @@
 #include <Arduino.h>
 #include "Canbus.h"
 
+bool emergCAN = false;
+bool motor1_ok = true;
+bool motor2_ok = true;
+//bool motor3_ok = true;
+//bool motor4_ok = true;
 
 union Paquete{
   byte b[4];
@@ -243,6 +248,18 @@ bool comprobarRespuesta(long ID){
   //Serial.println(i);
   
   if (flag_receive == 1){
+    //Comprobamos emergencias
+    if (canID == 0x90){
+      emergCAN = true;
+      motor1_ok = false;
+      return false;
+    }
+    if (canID == 0x91){
+      emergCAN = true;
+      motor2_ok = false;
+      return false;
+    }
+
     if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
       Serial.println("IDs no coinceden");
       return false;
@@ -265,7 +282,7 @@ bool comprobarRespuesta(long ID){
 bool EnviarMSG(char buff[], long ID){
   bool rec_OK = 0; 
   
-  for (int contError = 0; contError < 3 && rec_OK == 0; contError++){
+  for (int contError = 0; contError < 3 && !rec_OK && !emergCAN; contError++){
     sending(buff,ID);
     
     if(comprobarRespuesta(ID) == 1){
@@ -274,14 +291,15 @@ bool EnviarMSG(char buff[], long ID){
 //      Serial.println("");
     }
     else {
-      limpiaBuffer();
-//      Serial.println("ERROR EN MSG");
-//      Serial.println("");
+      if (emergCAN){
+        Serial.println("Mensaje emergencia CAN");
+        delay(5);
+      }
+      else{
+        Serial.println("ERROR EN MSG");
+        limpiaBuffer();
+      }
     }
-  }
-
-  if (rec_OK == 0){
-//    Serial.println ("Mensaje erroneo");
   }
   return rec_OK;
 }
@@ -396,7 +414,7 @@ long requestVin(long ID){
   return p.i;
 }
 
-void requestBoardTemp(long ID){
+long requestBoardTemp(long ID){
   char leerBoardTemp[8]={0x40,0x18,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerBoardTemp,ID);
   Paquete p;
@@ -407,7 +425,7 @@ void requestBoardTemp(long ID){
   return p.i;
 }
 
-void requestBridgeTemp(long ID){
+long requestBridgeTemp(long ID){
   char leerBridgeTemp[8]={0x40,0x19,0x20,0x01,0x00,0x00,0x00,0x00};
   EnviarMSG(leerBridgeTemp,ID);
   Paquete p;
@@ -547,6 +565,38 @@ void moverRelatInmediato(long pasos,long ID){
   EnviarMSG(nPasos,ID);
   EnviarMSG(tipo_mov1,ID);
   EnviarMSG(tipo_mov2,ID);
+}
+
+bool compruebaCAN(){
+  bool flag_receive = receive();
+  if (flag_receive){
+    if(canID == 0x710){
+      motor1_ok = true;
+      Serial.println("Motor 1 OK");
+    }
+    else if (canID == 0x711){
+      motor2_ok = true;
+      Serial.println("Motor 2 OK");
+    }
+    else if (canID == 0x90){
+      emergCAN = true;
+      motor1_ok = false;
+      Serial.println("Motor 1 NOT OK");
+    }
+    else if (canID == 0x91){
+      emergCAN = true;
+      motor2_ok = false;
+      Serial.println("Motor 2 NOT OK");
+    }
+      
+    if (motor1_ok && motor2_ok){
+      delay (100);
+      limpiaBuffer();
+      emergCAN = false;
+      return true;
+    }
+  }
+  return false;
 }
 
 

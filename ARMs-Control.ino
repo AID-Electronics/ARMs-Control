@@ -147,15 +147,15 @@ void loop(){
     Serial.print("\tTension M2: ");
     Serial.println(tensionM2);
 
-    if (tensionM1 > 23.5 && tensionM1 < 24.5){
-      if (tensionM2 > 23.5 && tensionM2 < 24.5){
+    if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
+      if (tensionM2 > 47.5 && tensionM2 < 48.5){
         Serial.println("\tAlimentacion en rango");
         errorMotoresON = false;
         nextState(4);
       }
     }
     if(globalState != 4){
-      Serial.println("\tMotores sin alimentacion");
+      Serial.println("\tMotores fuera de rango");
       errorMotoresON = true;
       nextState(5);
     }
@@ -316,6 +316,9 @@ void loop(){
     if(calibState == 1){
       nextState(9);
     }
+    if (emergCAN){
+      nextState(20);
+    }
   }
 
   else if (globalState == 9){
@@ -325,10 +328,25 @@ void loop(){
     delay(500);
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
-      
+    delay(1000);
+
+    limpiaBuffer();
+    
     //Se vuelve a hacer el setup
-    setupMotor(ID_MOTOR_1,1000000,1000000,100,51200);
-    setupMotor(ID_MOTOR_2,1000000,1000000,100,51200);
+    Serial.println("Setup motores");
+    Serial.println("\tMotor 1");
+    bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    Serial.println("\tMotor 2");
+    bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+
+    if (m1 && m2){
+      Serial.println("Setup correcto");
+      errorMotoresSetup = false;
+    }
+    else{
+      Serial.println("Fallo setup motores");
+      errorMotoresSetup = true;
+    }
 
     delay(500);
     nextState(10);
@@ -358,6 +376,32 @@ void loop(){
       }
     }
     
+  }
+
+  else if (globalState == 20){
+     if(entradaEstado){
+      Serial.println("Estado error CAN");
+      entradaEstado = false;
+    }
+    bool resuelto = compruebaCAN();
+    if (resuelto){
+      Serial.println("Setup motores");
+      Serial.println("\tMotor 1");
+      bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+      Serial.println("\tMotor 2");
+      bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+
+      if (m1 && m2){
+        Serial.println("Setup correcto");
+        errorMotoresSetup = false;
+      }
+      else{
+        Serial.println("Fallo setup motores");
+        errorMotoresSetup = true;
+      }
+      delay(1000);
+      nextState(8);
+    }
   }
 
   //En paralelo al proceso principal
