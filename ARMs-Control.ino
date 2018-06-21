@@ -147,15 +147,15 @@ void loop(){
     Serial.print("\tTension M2: ");
     Serial.println(tensionM2);
 
-    if (tensionM1 > 23.5 && tensionM1 < 24.5){
-      if (tensionM2 > 23.5 && tensionM2 < 24.5){
+    if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
+      if (tensionM2 > 47.5 && tensionM2 < 48.5){
         Serial.println("\tAlimentacion en rango");
         errorMotoresON = false;
         nextState(4);
       }
     }
     if(globalState != 4){
-      Serial.println("\tMotores sin alimentacion");
+      Serial.println("\tMotores fuera de rango");
       errorMotoresON = true;
       nextState(5);
     }
