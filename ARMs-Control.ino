@@ -329,7 +329,9 @@ void loop(){
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
     delay(1000);
-      
+
+    limpiaBuffer();
+    
     //Se vuelve a hacer el setup
     Serial.println("Setup motores");
     Serial.println("\tMotor 1");
