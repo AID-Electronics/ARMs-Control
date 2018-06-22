@@ -35,7 +35,8 @@ unsigned long inState_time;
 unsigned long ahora;
 unsigned long antesC1 = 0;
 unsigned long antesC2 = 0;
-unsigned long lastCycle = 0;
+unsigned long ahoraC3;
+unsigned long antesC3 = 0;
 
 bool errorIMU = false;
 bool errorCAN = false;
@@ -447,6 +448,31 @@ void loop(){
   
   if (emergCAN){
     nextState(20);
+  }
+
+  ahoraC3 = millis();
+  if (ahoraC3 - antesC3 >= 1000){
+    antesC3 = ahoraC3;
+
+    //Datos para interfaz
+    if (globalState > 7){
+      //Temperaturas motores
+      Serial.print("#Temp: ");
+      Serial.print(requestBoardTemp(ID_MOTOR_1));
+      Serial.print(",");
+      Serial.print(requestBoardTemp(ID_MOTOR_2));
+      Serial.println(";");
+      
+      //IMU fija
+      Serial.print("#Orient: ");
+      Serial.print (IMU_fija.orientacion.x, 4);
+      Serial.print(",");
+      Serial.print (IMU_fija.orientacion.y, 4);
+      Serial.print(",");
+      Serial.print (IMU_fija.orientacion.z, 4);
+      Serial.println(";");
+    }
+    
   }
   
 }
