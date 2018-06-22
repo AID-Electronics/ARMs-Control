@@ -43,8 +43,8 @@ char serialToken;
 bool serialIn = false;
 
 // Offsets
-int32_t offset_alabeo;
-int32_t offset_cabeceo;
+double offset_alabeo;
+double offset_cabeceo;
 
 void errorSolucionado (uint8_t estado){
   if (serialIn){
