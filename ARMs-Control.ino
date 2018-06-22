@@ -33,7 +33,9 @@ unsigned long arrivalState_time;
 unsigned long inState_time;
 
 unsigned long ahora;
-unsigned long antes = 0;
+unsigned long antesC1 = 0;
+unsigned long antesC2 = 0;
+unsigned long lastCycle = 0;
 
 bool errorIMU = false;
 bool errorCAN = false;
@@ -374,15 +376,26 @@ void loop(){
       Serial.println(offset_alabeo);
       Serial.print("\toffset_cabeceo:");
       Serial.println(offset_cabeceo);
+
+      //Set temporizadores de ciclo
+      antesC1 = millis();
+      antesC2 = millis();
     }
-    IMU_fija.update();
-    moverMotores(IMU_fija.cabeceo - offset_cabeceo, IMU_fija.alabeo - offset_alabeo);
 
     ahora = millis();
-    if (ahora - antes > 500){
+
+    if (ahora - antesC1 > 20){
+      antesC1 = ahora;
+
+      IMU_fija.update();
+      moverMotores(IMU_fija.cabeceo - offset_cabeceo, IMU_fija.alabeo - offset_alabeo);
+    }
+
+    if (ahora - antesC2 > 500){
+      antesC2 = ahora;
+
       com_maxi.requestData();
       com_maxi.printData();
-      antes = ahora;
     }
     
     if (serialIn) {
