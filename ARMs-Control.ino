@@ -328,9 +328,6 @@ void loop(){
     if(calibState == 1){
       nextState(9);
     }
-    if (emergCAN){
-      nextState(20);
-    }
   }
 
   else if (globalState == 9){
@@ -359,9 +356,11 @@ void loop(){
       Serial.println("Fallo setup motores");
       errorMotoresSetup = true;
     }
-
     delay(500);
-    nextState(10);
+
+    if (!errorMotoresSetup){
+      nextState(10);
+    }
   }
 
   else if (globalState == 10){
@@ -431,7 +430,10 @@ void loop(){
         errorMotoresSetup = true;
       }
       delay(1000);
-      nextState(8);
+      
+      if (!errorMotoresSetup){
+        nextState(8);
+      }
     }
   }
 
@@ -442,4 +444,9 @@ void loop(){
       nextState(0);
     }
   }
+  
+  if (emergCAN){
+    nextState(20);
+  }
+  
 }
