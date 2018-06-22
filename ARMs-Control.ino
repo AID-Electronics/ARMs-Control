@@ -42,6 +42,10 @@ bool entradaEstadoError = true;
 char serialToken;
 bool serialIn = false;
 
+// Offsets
+double offset_alabeo;
+double offset_cabeceo;
+
 void errorSolucionado (uint8_t estado){
   if (serialIn){
     if (serialToken == 'C'){
@@ -356,9 +360,17 @@ void loop(){
     if(entradaEstado){
       Serial.println("Compensacion Plataforma");
       entradaEstado = false;
+
+      IMU_fija.update();
+      offset_alabeo = IMU_fija.alabeo;
+      offset_cabeceo = IMU_fija.cabeceo;
+      Serial.print("\toffset_alabeo:");
+      Serial.println(offset_alabeo);
+      Serial.print("\toffset_cabeceo:");
+      Serial.println(offset_cabeceo);
     }
     IMU_fija.update();
-    moverMotores(IMU_fija.cabeceo, IMU_fija.alabeo);
+    moverMotores(IMU_fija.cabeceo - offset_cabeceo, IMU_fija.alabeo - offset_alabeo);
 
     ahora = millis();
     if (ahora - antes > 500){
