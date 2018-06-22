@@ -7,9 +7,15 @@
 //#define ID_MOTOR_3 0x612
 //#define ID_MOTOR_4 0x613
 
-#define velocidad 5120
-#define aceleracion 1000000
-#define deceleracion 1000000
+//Para calibracion
+#define velCal 5120
+#define acelCal 10000
+#define decelCal 10000
+
+//Para Compensacion
+#define velocidad 512000
+#define aceleracion 1000
+#define deceleracion 1000
 
 #include "IMU.h"
 #include "Plataforma.h"
@@ -169,9 +175,9 @@ void loop(){
     //Setup de motores
     Serial.println("Setup motores");
     Serial.println("\tMotor 1");
-    bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    bool m1 = setupMotor(ID_MOTOR_1,acelCal,decelCal,100,velCal); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     Serial.println("\tMotor 2");
-    bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+    bool m2 = setupMotor(ID_MOTOR_2,acelCal,decelCal,100,velCal);
 
     if (m1 && m2){
       Serial.println("Setup correcto");
