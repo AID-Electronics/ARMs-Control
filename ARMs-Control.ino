@@ -364,6 +364,10 @@ void loop(){
       IMU_fija.update();
       offset_alabeo = IMU_fija.alabeo;
       offset_cabeceo = IMU_fija.cabeceo;
+      Serial.print("\toffset_alabeo:");
+      Serial.println(offset_alabeo);
+      Serial.print("\toffset_cabeceo:");
+      Serial.println(offset_cabeceo);
     }
     IMU_fija.update();
     moverMotores(IMU_fija.cabeceo - offset_cabeceo, IMU_fija.alabeo - offset_alabeo);
