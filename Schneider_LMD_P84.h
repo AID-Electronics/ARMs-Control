@@ -261,7 +261,7 @@ bool comprobarRespuesta(long ID){
     }
 
     if (ID != canID + 128){ //128 = 16*8 (ID is HEX)
-      Serial.println("IDs no coinceden");
+      //Serial.println("IDs no coinceden");
       return false;
     }
     else if(buffRespuesta[0]==0x80){
@@ -296,7 +296,7 @@ bool EnviarMSG(char buff[], long ID){
         delay(5);
       }
       else{
-        Serial.println("ERROR EN MSG");
+        //Serial.println("ERROR EN MSG");
         limpiaBuffer();
       }
     }
