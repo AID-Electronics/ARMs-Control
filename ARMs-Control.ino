@@ -369,6 +369,7 @@ void loop(){
       Serial.println("Compensacion Plataforma");
       entradaEstado = false;
 
+      //Medicion del offset respecto del horizonte de la estructura
       IMU_fija.update();
       offset_alabeo = IMU_fija.alabeo;
       offset_cabeceo = IMU_fija.cabeceo;
@@ -395,7 +396,7 @@ void loop(){
       antesC2 = ahora;
 
       com_maxi.requestData();
-      com_maxi.printData();
+      //com_maxi.printData();
     }
     
     if (serialIn) {
@@ -450,6 +451,7 @@ void loop(){
     nextState(20);
   }
 
+  //Ciclo 3 - Ejecucion cada 1 segundo
   ahoraC3 = millis();
   if (ahoraC3 - antesC3 >= 1000){
     antesC3 = ahoraC3;
@@ -474,6 +476,13 @@ void loop(){
 
       //Datos del dron 
       com_maxi.sendData2Interface();
+
+      //Estados de la máquina de estados
+      Serial.print("#States: ");
+      Serial.print (globalState);
+      Serial.print(",");
+      Serial.print (localState);
+      Serial.println(";");
     }
     
   }
