@@ -17,11 +17,13 @@
 #define aceleracion 1000
 #define deceleracion 1000
 
+#define pinResetIMU 2
+
 #include "IMU.h"
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
 
-#define pinResetIMU 2
+
 
 IMU IMU_fija;
 Plataforma platform;
@@ -374,16 +376,7 @@ void loop(){
       entradaEstado = false;
 
       //Medicion del offset respecto del horizonte de la estructura
-      bool accelOK = false;
-      while(!accelOK){
-        IMU_fija.update();
-        if (IMU_fija.isAccelDataCorrect()){
-          accelOK = true;
-        }
-        else{
-          IMU_fija.reset(pinResetIMU);
-        }
-      }
+      IMU_fija.getNewData();
 
       offset_alabeo = IMU_fija.alabeo;
       offset_cabeceo = IMU_fija.cabeceo;
