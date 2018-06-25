@@ -1,4 +1,6 @@
- #include "IMU.h"
+#include "IMU.h"
+
+#define pinReset 2
 
 IMU IMU_movil;
  int i=0;
@@ -6,6 +8,8 @@ IMU IMU_movil;
 void setup(){
     //Serial1.begin(4800);  
     Serial.begin(4800);
+    pinMode(pinReset,OUTPUT);
+    digitalWrite(pinReset,HIGH);
     IMU_movil.setup();
 
 }
@@ -30,6 +34,7 @@ void loop(){
 
     if(Serial.read()!=-1){
        IMU_movil.imprimirDatos();
+       IMU_movil.reset(pinReset);
     //IMU_movil.displayCalStatus();
     //IMU_movil.printTemp();
     //IMU_movil.print();
