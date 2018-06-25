@@ -41,12 +41,13 @@ public:
   bool setup();
   void displayCalStatus();
   int8_t printTemp();
-  void raw_accel();
+  void getRaw_accel();
   void update();
   void print();
   void imprimirDatos();
   void reset(int pinNumber);
   bool isAccelDataCorrect();
+  bool isOrientDataCorrect();
 };
 
 void IMU::displayCalStatus () {
@@ -172,7 +173,7 @@ void IMU::update(){
   cabeceo = orientacion.y * deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeo = orientacion.z * deg2rad;
 
-  raw_accel();
+  getRaw_accel();
 }
 
 void moverMotores(double cabeceo, double alabeo) {
@@ -191,7 +192,7 @@ void moverMotores(double cabeceo, double alabeo) {
   //mover(pasosMotor4,ID_MOTOR_4);
 }
 
-void IMU::raw_accel(){
+void IMU::getRaw_accel(){
   imu::Vector<3> acceleration = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
   
   accel.x = acceleration.x();
@@ -235,6 +236,7 @@ void IMU::print(){
 }
 
 void IMU::reset(int pinNumber){
+  Serial.println("Reset IMU");
   digitalWrite(pinNumber,LOW);
   delay(10);
   digitalWrite(pinNumber,HIGH);
@@ -244,6 +246,15 @@ void IMU::reset(int pinNumber){
 
 bool IMU::isAccelDataCorrect(){
   if (accel.x == 0.0 && accel.y == 0.0 && accel.z == 0.0){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+bool IMU::isOrientDataCorrect(){
+  if (orientacion.x == 0.0 && orientacion.y == 0.0 && orientacion.z == 0.0){
     return false;
   }
   else{
