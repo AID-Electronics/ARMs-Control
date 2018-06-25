@@ -36,6 +36,7 @@ public:
   void update();
   void print();
   void imprimirDatos();
+  void reset(int pinNumber);
 };
 
 void IMU::displayCalStatus () {
@@ -152,5 +153,12 @@ void IMU::print(){
   Serial.print (" ");
   Serial.print ("\tZ: ");
   Serial.println (accel.z,4);
+}
+
+void IMU::reset(int pinNumber){
+  digitalWrite(pinNumeber,LOW);
+  delay(10);
+  digiralWrite(pinNumber,HIGH);
+  setup();
 }
 #endif
