@@ -2,7 +2,6 @@
 #define IMU_H
 
 #include <Arduino.h>
-
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <Wire.h>
@@ -42,10 +41,14 @@ public:
   bool setup();
   void displayCalStatus();
   int8_t printTemp();
-  void raw_accel();
+  void getRaw_accel();
   void update();
   void print();
   void imprimirDatos();
+  void reset(int pinNumber);
+  bool isAccelDataCorrect();
+  bool isOrientDataCorrect();
+  void getNewData();
 };
 
 void IMU::displayCalStatus () {
@@ -171,7 +174,7 @@ void IMU::update(){
   cabeceo = orientacion.y * deg2rad; //No estoy demasiado seguro de que sea el eje correcto
   alabeo = orientacion.z * deg2rad;
 
-  raw_accel();
+  getRaw_accel();
 }
 
 void moverMotores(double cabeceo, double alabeo) {
@@ -190,7 +193,7 @@ void moverMotores(double cabeceo, double alabeo) {
   //mover(pasosMotor4,ID_MOTOR_4);
 }
 
-void IMU::raw_accel(){
+void IMU::getRaw_accel(){
   imu::Vector<3> acceleration = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
   
   accel.x = acceleration.x();
@@ -232,4 +235,45 @@ void IMU::print(){
   Serial.print ("\tZ: ");
   Serial.println (accel.z,4);
 }
+
+void IMU::reset(int pinNumber){
+  Serial.println("Reset IMU");
+  digitalWrite(pinNumber,LOW);
+  delay(10);
+  digitalWrite(pinNumber,HIGH);
+  setup();
+  delay(10);
+}
+
+bool IMU::isAccelDataCorrect(){
+  if (accel.x == 0.0 && accel.y == 0.0 && accel.z == 0.0){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+bool IMU::isOrientDataCorrect(){
+  if (orientacion.x == 0.0 && orientacion.y == 0.0 && orientacion.z == 0.0){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+void IMU::getNewData(){
+  bool dataOK = false;
+  while(!dataOK){
+    update();
+    if (isAccelDataCorrect()){  //&& isOrientDataCorrect() puede dar problemas
+      dataOK = true;            //en el caso que realmente estuviese a 0 la orient
+    }
+    else{
+      reset(pinResetIMU);
+    }
+  }
+}
+
 #endif

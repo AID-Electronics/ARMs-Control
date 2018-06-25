@@ -36,6 +36,8 @@ public:
   void update();
   void print();
   void imprimirDatos();
+  void reset(int pinNumber);
+  bool isAccelDataCorrect();
 };
 
 void IMU::displayCalStatus () {
@@ -152,5 +154,22 @@ void IMU::print(){
   Serial.print (" ");
   Serial.print ("\tZ: ");
   Serial.println (accel.z,4);
+}
+
+void IMU::reset(int pinNumber){
+  digitalWrite(pinNumber,LOW);
+  delay(10);
+  digitalWrite(pinNumber,HIGH);
+  setup();
+  delay(10);
+}
+
+bool IMU::isAccelDataCorrect(){
+  if (accel.x == 0.0 && accel.y == 0.0 && accel.z == 0.0){
+    return false;
+  }
+  else{
+    return true;
+  }
 }
 #endif
