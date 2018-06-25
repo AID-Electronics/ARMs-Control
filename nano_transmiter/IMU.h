@@ -156,9 +156,10 @@ void IMU::print(){
 }
 
 void IMU::reset(int pinNumber){
-  digitalWrite(pinNumeber,LOW);
+  digitalWrite(pinNumber,LOW);
   delay(10);
-  digiralWrite(pinNumber,HIGH);
+  digitalWrite(pinNumber,HIGH);
   setup();
+  delay(10);
 }
 #endif
