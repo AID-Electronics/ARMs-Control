@@ -5,7 +5,6 @@
 IMU IMU_movil;
 
 void setup(){
-    //Serial1.begin(4800);  
     Serial.begin(4800);
     pinMode(pinReset,OUTPUT);
     digitalWrite(pinReset,HIGH);
