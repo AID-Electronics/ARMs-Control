@@ -48,6 +48,7 @@ public:
   void reset(int pinNumber);
   bool isAccelDataCorrect();
   bool isOrientDataCorrect();
+  void getNewData();
 };
 
 void IMU::displayCalStatus () {
@@ -259,6 +260,19 @@ bool IMU::isOrientDataCorrect(){
   }
   else{
     return true;
+  }
+}
+
+void IMU::getNewData(){
+  bool dataOK = false;
+  while(!dataOK){
+    update();
+    if (isAccelDataCorrect()){  //&& isOrientDataCorrect() puede dar problemas
+      dataOK = true;            //en el caso que realmente estuviese a 0 la orient
+    }
+    else{
+      reset(pinResetIMU);
+    }
   }
 }
 
