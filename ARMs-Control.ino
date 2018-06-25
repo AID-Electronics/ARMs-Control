@@ -471,6 +471,9 @@ void loop(){
       Serial.print(",");
       Serial.print (IMU_fija.orientacion.z, 4);
       Serial.println(";");
+
+      //Datos del dron 
+      com_maxi.sendData2Interface();
     }
     
   }

@@ -40,6 +40,7 @@ public:
   void printData();
   void requestData();
   void resetMsg();
+  void sendData2Interface();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -241,4 +242,19 @@ void Comunicacion_MAXI::resetMsg(){
   delay(10);
   digitalWrite(pinRequestData,LOW);
 }
+
+void Comunicacion_MAXI::sendData2Interface(){
+  Serial.print("#Dron: ");
+  Serial.print(dron.id);
+  Serial.print(",");
+  Serial.print(dron.vel);
+  Serial.print(",");
+  Serial.print(dron.dist);
+  Serial.print(",");
+  Serial.print(dron.ang);
+  Serial.print(",");
+  Serial.print(dron.intensidad);
+  Serial.println(";");
+}
+
 #endif
