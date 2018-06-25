@@ -476,15 +476,14 @@ void loop(){
 
       //Datos del dron 
       com_maxi.sendData2Interface();
-
-      //Estados de la máquina de estados
-      Serial.print("#States: ");
-      Serial.print (globalState);
-      Serial.print(",");
-      Serial.print (localState);
-      Serial.println(";");
     }
-    
+
+    //Estados de la máquina de estados
+    Serial.print("#States: ");
+    Serial.print (globalState);
+    Serial.print(",");
+    Serial.print (localState);
+    Serial.println(";");
   }
   
 }
