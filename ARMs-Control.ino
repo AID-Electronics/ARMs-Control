@@ -375,6 +375,8 @@ void loop(){
       Serial.println("Compensacion Plataforma");
       entradaEstado = false;
 
+      com_maxi.setEstadoMarcha();
+
       //Medicion del offset respecto del horizonte de la estructura
       IMU_fija.getNewData();
 

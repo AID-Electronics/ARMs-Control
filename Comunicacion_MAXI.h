@@ -41,6 +41,7 @@ public:
   void requestData();
   void resetMsg();
   void sendData2Interface();
+  void setEstadoMarcha();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -257,4 +258,7 @@ void Comunicacion_MAXI::sendData2Interface(){
   Serial.println(";");
 }
 
+void Comunicacion_MAXI::setEstadoMarcha(){
+  digitalWrite(pinEstado,HIGH);
+}
 #endif
