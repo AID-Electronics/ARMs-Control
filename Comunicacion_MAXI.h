@@ -3,6 +3,7 @@
 
 #define pinEstado 2
 #define pinRequestData 3
+#define pinAterrizaje A10
 #define bufferSize 100
 
 typedef struct Objetivo{
@@ -42,6 +43,8 @@ public:
   void resetMsg();
   void sendData2Interface();
   void setEstadoMarcha();
+  void setEstadoParo();
+  bool objAterrizado();
 };
 
 Comunicacion_MAXI::Comunicacion_MAXI(){
@@ -65,6 +68,7 @@ void Comunicacion_MAXI::setup(){
   digitalWrite(pinEstado,LOW);
   pinMode(pinRequestData,OUTPUT);
   digitalWrite(pinRequestData,LOW);
+  pinMode(pinAterrizaje,INPUT);
 }
 
 bool Comunicacion_MAXI::receive() {
@@ -260,5 +264,18 @@ void Comunicacion_MAXI::sendData2Interface(){
 
 void Comunicacion_MAXI::setEstadoMarcha(){
   digitalWrite(pinEstado,HIGH);
+}
+
+void Comunicacion_MAXI::setEstadoParo(){
+  digitalWrite(pinEstado,LOW);
+}
+
+bool Comunicacion_MAXI::objAterrizado(){
+  if(digitalRead(pinAterrizaje)){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 #endif

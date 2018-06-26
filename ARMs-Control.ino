@@ -406,6 +406,10 @@ void loop(){
 
       com_maxi.requestData();
       //com_maxi.printData();
+      if (com_maxi.objAterrizado()){
+        com_maxi.setEstadoParo();
+        nextState(0);
+      }
     }
     
     if (serialIn) {
@@ -453,6 +457,7 @@ void loop(){
     if (serialToken == '0'){
       Serial.println("STOP");
       nextState(0);
+      com_maxi.setEstadoParo();
     }
   }
   
