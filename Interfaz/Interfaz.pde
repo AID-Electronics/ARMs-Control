@@ -5,6 +5,7 @@ Serial port;
 Button button1;
 Button button2;
 Button button3;
+Radar radar;
 
 void setup(){
   size(700,400);
@@ -24,6 +25,8 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
+  radar = new Radar(400,200,400,40);
+  
 }
 
 void draw(){
@@ -31,6 +34,7 @@ void draw(){
   button1.draw();
   button2.draw();
   button3.draw();
+  radar.draw();
 }
 
 void serialEvent(Serial port) {
