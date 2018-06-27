@@ -40,6 +40,7 @@ void draw(){
 void serialEvent(Serial port) {
   String str = trim(port.readString());
   println(str);
+  stringParse(str);
 }
 
 void mousePressed(){
@@ -51,5 +52,11 @@ void mousePressed(){
   }
   if (button3.isMouseOver()){
     port.write("0");
+  }
+}
+
+void stringParse(String str){
+  if (str.charAt(0) == '#'){
+    println("YES");
   }
 }
