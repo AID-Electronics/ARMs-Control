@@ -7,7 +7,7 @@ Button button2;
 Button button3;
 
 void setup(){
-  size(600,300);
+  size(700,400);
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 250000);
   port.bufferUntil('\n');
