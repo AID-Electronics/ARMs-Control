@@ -1,6 +1,8 @@
 import processing.serial.*;
 
 Serial port;
+String buff;
+boolean receivedString = false;
 
 Button button1;
 Button button2;
@@ -25,11 +27,19 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
-  radar = new Radar(400,200,400,40);
+  radar = new Radar(300,250,600,40);
   
 }
 
 void draw(){
+  if (receivedString){
+    print(buff);
+    stringParse(buff);
+    buff = "";
+    receivedString = false;
+  }
+  
+  
   background(200);
   button1.draw();
   button2.draw();
@@ -38,9 +48,9 @@ void draw(){
 }
 
 void serialEvent(Serial port) {
-  String str = trim(port.readString());
-  println(str);
-  stringParse(str);
+  buff += trim(port.readString());
+  buff += '\n';
+  receivedString = true;
 }
 
 void mousePressed(){
