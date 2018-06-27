@@ -64,9 +64,3 @@ void mousePressed(){
     port.write("0");
   }
 }
-
-void stringParse(String str){
-  if (str.charAt(0) == '#'){
-    println("YES");
-  }
-}
