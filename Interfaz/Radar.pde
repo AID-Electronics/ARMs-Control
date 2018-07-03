@@ -5,6 +5,8 @@ class Radar{
   int posX;
   int posY;
   
+  Objetivo obj;
+  
   Radar(int posX, int posY, float radio, float angAmplitud){
     this.posX = posX;
     this.posY = posY;
