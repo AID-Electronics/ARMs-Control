@@ -11,9 +11,16 @@ Radar radar;
 
 void setup(){
   size(700,400);
-  println(Serial.list());
-  port = new Serial (this, Serial.list()[0], 250000);
-  port.bufferUntil('\n');
+  
+  boolean serialError;
+  try{
+    println(Serial.list());
+    port = new Serial (this, Serial.list()[0], 250000);
+    port.bufferUntil('\n');
+  }
+  catch(ArrayIndexOutOfBoundsException a){
+    println("NOOOOOO");
+  } //<>//
   
   button1 = new Button (50,50,75,75);
   button1.text = "START";
