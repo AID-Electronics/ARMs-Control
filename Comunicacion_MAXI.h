@@ -255,7 +255,7 @@ void Comunicacion_MAXI::sendData2Interface(){
   Serial.print(dron.ang);
   Serial.print(",");
   Serial.print(dron.intensidad);
-  Serial.println(";");
+  Serial.println();
 }
 
 void Comunicacion_MAXI::setEstadoMarcha(){
