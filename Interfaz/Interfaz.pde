@@ -13,9 +13,18 @@ Radar radar;
 int globalState;
 int localState;
 
+//IMU plataforma
 float orientX;
 float orientY;
 float orientZ;
+
+//Objetivo radar
+int id;
+float velocidad;
+float distancia;
+float angulo;
+float intensidad;
+
 
 void setup(){
   size(700,400);
@@ -24,6 +33,8 @@ void setup(){
   buff = "#States: 10,0;";
   stringParse(buff);
   buff = "#Orient: 178.8125,0.1250,157.3750;";
+  stringParse(buff);
+  buff = "#Dron: 170,4.72,50.20,3.87,25291212.00;";
   stringParse(buff);
 
   println(Serial.list());

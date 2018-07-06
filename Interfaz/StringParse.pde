@@ -14,6 +14,10 @@ void stringParse(String str){
       String data = str.substring(charPos+2);
       parseOrientationString(data);
     }
+    else if (name.equals("Dron")){
+      String data = str.substring(charPos+2);
+      parseDronString(data);
+    }
   }
 }
 
@@ -27,4 +31,12 @@ void parseOrientationString(String str){
   orientX = float(list[0]);
   orientY = float(list[1]);
   orientZ = float(list[2]);
+}
+void parseDronString(String str){
+  String list[] = str.split(",");
+  id = int(list[0]);
+  velocidad = float(list[1]);
+  distancia = float(list[2]);
+  angulo = float(list[3]);
+  intensidad = float(list[4]);
 }
