@@ -15,6 +15,6 @@ void stringParse(String str){
 
 void parseStateString(String str){
   String list[] = str.split(",");
-  println(list[0]);
-  println(list[1]);
+  globalState = int(list[0]);
+  localState = int(list[1]);
 }

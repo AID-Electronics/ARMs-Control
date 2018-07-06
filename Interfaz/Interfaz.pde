@@ -9,8 +9,17 @@ Button button2;
 Button button3;
 Radar radar;
 
+//Datos PLC
+int globalState;
+int localState;
+
 void setup(){
   size(700,400);
+  
+  //Test String parse
+  buff = "#States: 10,0;";
+  stringParse(buff);
+
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 250000);
   port.bufferUntil('\n');
