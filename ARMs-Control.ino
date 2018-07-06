@@ -472,7 +472,7 @@ void loop(){
       Serial.print(requestBoardTemp(ID_MOTOR_1));
       Serial.print(",");
       Serial.print(requestBoardTemp(ID_MOTOR_2));
-      Serial.println(";");
+      Serial.println();
       
       //IMU fija
       Serial.print("#Orient: ");
@@ -481,7 +481,7 @@ void loop(){
       Serial.print (IMU_fija.orientacion.y, 4);
       Serial.print(",");
       Serial.print (IMU_fija.orientacion.z, 4);
-      Serial.println(";");
+      Serial.println();
 
       //Datos del dron 
       com_maxi.sendData2Interface();
@@ -492,7 +492,7 @@ void loop(){
     Serial.print (globalState);
     Serial.print(",");
     Serial.print (localState);
-    Serial.println(";");
+    Serial.println();
   }
   
 }

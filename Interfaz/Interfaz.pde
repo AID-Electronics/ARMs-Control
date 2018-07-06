@@ -8,10 +8,25 @@ Button button1;
 Button button2;
 Button button3;
 Radar radar;
+Objetivo dron;
+
+//Datos PLC
+int globalState;
+int localState;
+
+//IMU plataforma
+float orientX;
+float orientY;
+float orientZ;
+
+//Temperatura motores
+float tempM1;
+float tempM2;
 
 void setup(){
   size(700,400);
   
+
   boolean serialError;
   try{
     println(Serial.list());
