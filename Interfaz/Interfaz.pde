@@ -25,6 +25,9 @@ float distancia;
 float angulo;
 float intensidad;
 
+//Temperatura motores
+float tempM1;
+float tempM2;
 
 void setup(){
   size(700,400);
@@ -35,6 +38,8 @@ void setup(){
   buff = "#Orient: 178.8125,0.1250,157.3750;";
   stringParse(buff);
   buff = "#Dron: 170,4.72,50.20,3.87,25291212.00;";
+  stringParse(buff);
+  buff = "#Temp: 42.3,41.8";
   stringParse(buff);
 
   println(Serial.list());

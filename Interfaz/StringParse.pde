@@ -18,6 +18,10 @@ void stringParse(String str){
       String data = str.substring(charPos+2);
       parseDronString(data);
     }
+    else if (name.equals("Temp")){
+      String data = str.substring(charPos+2);
+      parseTempString(data);
+    }
   }
 }
 
@@ -39,4 +43,9 @@ void parseDronString(String str){
   distancia = float(list[2]);
   angulo = float(list[3]);
   intensidad = float(list[4]);
+}
+void parseTempString(String str){
+  String list[] = str.split(",");
+  tempM1 = float(list[0]);
+  tempM2 = float(list[1]);
 }
