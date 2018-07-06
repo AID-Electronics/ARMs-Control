@@ -32,16 +32,6 @@ float tempM2;
 void setup(){
   size(700,400);
   
-  //Test String parse
-  buff = "#States: 10,0;";
-  stringParse(buff);
-  buff = "#Orient: 178.8125,0.1250,157.3750;";
-  stringParse(buff);
-  buff = "#Dron: 170,4.72,50.20,3.87,25291212.00;";
-  stringParse(buff);
-  buff = "#Temp: 42.3,41.8";
-  stringParse(buff);
-
   println(Serial.list());
   port = new Serial (this, Serial.list()[0], 250000);
   port.bufferUntil('\n');
