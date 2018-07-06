@@ -8,6 +8,7 @@ Button button1;
 Button button2;
 Button button3;
 Radar radar;
+Objetivo dron;
 
 //Datos PLC
 int globalState;
@@ -17,13 +18,6 @@ int localState;
 float orientX;
 float orientY;
 float orientZ;
-
-//Objetivo radar
-int id;
-float velocidad;
-float distancia;
-float angulo;
-float intensidad;
 
 //Temperatura motores
 float tempM1;

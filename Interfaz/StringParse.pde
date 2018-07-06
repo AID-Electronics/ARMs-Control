@@ -38,11 +38,11 @@ void parseOrientationString(String str){
 }
 void parseDronString(String str){
   String list[] = str.split(",");
-  id = int(list[0]);
-  velocidad = float(list[1]);
-  distancia = float(list[2]);
-  angulo = float(list[3]);
-  intensidad = float(list[4]);
+  dron.id = int(list[0]);
+  dron.vel = float(list[1]);
+  dron.dist = float(list[2]);
+  dron.ang = float(list[3]);
+  dron.intensidad = float(list[4]);
 }
 void parseTempString(String str){
   String list[] = str.split(",");
