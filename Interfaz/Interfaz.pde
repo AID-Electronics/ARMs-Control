@@ -13,11 +13,17 @@ Radar radar;
 int globalState;
 int localState;
 
+float orientX;
+float orientY;
+float orientZ;
+
 void setup(){
   size(700,400);
   
   //Test String parse
   buff = "#States: 10,0;";
+  stringParse(buff);
+  buff = "#Orient: 178.8125,0.1250,157.3750;";
   stringParse(buff);
 
   println(Serial.list());
