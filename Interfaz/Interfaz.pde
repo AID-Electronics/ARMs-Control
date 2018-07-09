@@ -50,7 +50,9 @@ void setup(){
   button3.setColor(255,0,0);
   
   radar = new Radar(300,250,600,40);
-  
+  dron = new Objetivo();
+  dron.ang = -20;
+  dron.dist = 300;
 }
 
 void draw(){
@@ -60,13 +62,20 @@ void draw(){
     buff = "";
     receivedString = false;
   }
-  
+  dron.ang += 1;
+  if (dron.ang >= 20){
+    dron.ang = -20;
+  }
+  dron.dist -= 1;
+  if (dron.dist <= 0){
+    dron.dist = 300;
+  }
   
   background(200);
   button1.draw();
   button2.draw();
   button3.draw();
-  radar.draw();
+  radar.draw(dron);
 }
 
 void serialEvent(Serial port) {
