@@ -53,6 +53,7 @@ void setup(){
   dron = new Objetivo();
   dron.ang = -20;
   dron.dist = 300;
+  dron.id = 1;
 }
 
 void draw(){
