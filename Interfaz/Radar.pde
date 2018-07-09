@@ -5,8 +5,6 @@ class Radar{
   int posX;
   int posY;
   
-  Objetivo obj;
-  
   Radar(int posX, int posY, float radio, float angAmplitud){
     this.posX = posX;
     this.posY = posY;
@@ -14,7 +12,7 @@ class Radar{
     this.amplitud = radians(angAmplitud);
   }
   
-  void draw(){
+  void draw(Objetivo obj){
     noStroke();
     fill(50,255,50);
     arc(posX, posY, r, r, -amplitud/2, amplitud/2, PIE);
@@ -25,5 +23,7 @@ class Radar{
     stroke(0);
     noFill();
     arc(posX, posY, r, r, -amplitud/2, amplitud/2, PIE);
+    
+    obj.draw(posX,posY);
   }
 }

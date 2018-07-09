@@ -5,4 +5,11 @@ class Objetivo{
   float dist;
   float ang;
   float intensidad;
+  
+  void draw(float posRadarX, float posRadarY){
+    float posX = dist*cos(radians(ang));
+    float posY = dist*sin(radians(ang));
+    fill(255, 0, 0);
+    ellipse(posRadarX + posX, posRadarY + posY, 10, 10);
+  }
 }
