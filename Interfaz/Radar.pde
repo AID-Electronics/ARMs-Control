@@ -15,7 +15,15 @@ class Radar{
   }
   
   void draw(){
+    noStroke();
     fill(50,255,50);
+    arc(posX, posY, r, r, -amplitud/2, amplitud/2, PIE);
+    fill(0,240,0);
+    arc(posX, posY, r/3*2, r/3*2, -amplitud/2, amplitud/2, PIE);
+    fill(50,255,50);
+    arc(posX, posY, r/3, r/3, -amplitud/2, amplitud/2, PIE);
+    stroke(0);
+    noFill();
     arc(posX, posY, r, r, -amplitud/2, amplitud/2, PIE);
   }
 }

@@ -34,7 +34,7 @@ void setup(){
     port.bufferUntil('\n');
   }
   catch(ArrayIndexOutOfBoundsException a){
-    println("NOOOOOO");
+    println("PLC no conectado al PC");
   } //<>//
   
   button1 = new Button (50,50,75,75);
