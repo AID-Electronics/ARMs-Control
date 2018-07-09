@@ -9,6 +9,7 @@ Button button2;
 Button button3;
 Radar radar;
 Objetivo dron;
+Telemetria telemetria;
 
 //Datos PLC
 int globalState;
@@ -35,7 +36,7 @@ void setup(){
   }
   catch(ArrayIndexOutOfBoundsException a){
     println("PLC no conectado al PC");
-  } //<>//
+  }
   
   button1 = new Button (50,50,75,75);
   button1.text = "START";
@@ -51,9 +52,7 @@ void setup(){
   
   radar = new Radar(300,250,600,40);
   dron = new Objetivo();
-  dron.ang = -20;
-  dron.dist = 300;
-  dron.id = 1;
+  telemetria = new Telemetria(10,110);
 }
 
 void draw(){
@@ -63,20 +62,13 @@ void draw(){
     buff = "";
     receivedString = false;
   }
-  dron.ang += 1;
-  if (dron.ang >= 20){
-    dron.ang = -20;
-  }
-  dron.dist -= 1;
-  if (dron.dist <= 0){
-    dron.dist = 300;
-  }
   
   background(200);
   button1.draw();
   button2.draw();
   button3.draw();
   radar.draw(dron);
+  telemetria.draw();
 }
 
 void serialEvent(Serial port) {
