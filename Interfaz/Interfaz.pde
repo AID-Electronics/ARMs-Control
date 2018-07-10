@@ -52,7 +52,7 @@ void setup(){
   
   radar = new Radar(500,250,600,40);
   dron = new Objetivo();
-  telemetria = new Telemetria(10,110,120);
+  telemetria = new Telemetria(20,130,120);
 }
 
 void draw(){  

@@ -4,32 +4,40 @@ class Telemetria{
   float posX;
   float posY;
   float columnWidth;
+  float rowHeight;
+  int margenIzquierdo;
+  int distText2upperLimmit;
   StringList name;
   StringList data;
+  int textSize;
   
   Telemetria(float posX, float posY, float columnWidth){
     this.posX = posX;
     this.posY = posY;
     this.columnWidth = columnWidth;
-    font = createFont("Arial",14,true);
+    rowHeight = 23;
+    margenIzquierdo = 10;
+    distText2upperLimmit = 18;
+    
     name = new StringList();
     data = new StringList();
+    textSize = 16;
+    font = createFont("Arial",textSize,true);
     
     name.append("Dron");
     name.append(" - id");
     name.append(" - velocidad");
     name.append(" - distancia");
     name.append(" - angulo");
-    name.append("");
-    
-    name.append("Estado global");
-    name.append("Estado local");
-    name.append("");
     
     name.append("Orientacion plataforma");
     name.append(" - angX");
     name.append(" - angY");
     name.append(" - angZ");
+    
+    name.append("Estados");
+    name.append(" - global");
+    name.append(" - local");
   }
   
   void update(){
@@ -41,14 +49,13 @@ class Telemetria{
     data.append(str(dron.ang));
     data.append("");
     
-    data.append(str(globalState));
-    data.append(str(localState));
-    data.append("");
-    
-    data.append("");
     data.append(str(orientX));
     data.append(str(orientY));
     data.append(str(orientZ));
+    
+    data.append("");
+    data.append(str(globalState));
+    data.append(str(localState));
 
   }
   
@@ -56,13 +63,27 @@ class Telemetria{
     update();
     textAlign(LEFT);
     fill(0);
-    float dY = 16+3;
-    textFont(font,16);
+    float dY = rowHeight;
+    textFont(font,textSize);
+    
+    //Creacion de la tabla
+    
+    line(posX, posY, posX + columnWidth + 50, posY);
+    for (int i = 0; i<data.size(); i++){
+      strokeWeight(1);
+      line(posX, posY + dY * i, posX + columnWidth + 50, posY + dY * i);
+      if (i + 1 == data.size()){
+        line(posX, posY + dY + dY * i, posX + columnWidth + 50, posY + dY + dY * i);
+      }
+    }
+    
+    //Se rellena con los datos
     for (int i = 0; i<data.size(); i++){
       String str = name.get(i);
-      text(str, posX, posY + dY * i);
+      text(str, posX + margenIzquierdo, posY + distText2upperLimmit + dY * i);
       str = data.get(i);
-      text(str, posX + columnWidth, posY + dY * i);
-    }    
+      text(str, posX + columnWidth, posY + distText2upperLimmit + dY * i);
+      
+    }
   }
 }
