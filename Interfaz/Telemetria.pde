@@ -13,17 +13,23 @@ class Telemetria{
   }
   
   void update(){
-    String str[] = new String[5];
-    str[0] = "Dron";
-    str[1] = "id: " + dron.id;
-    str[2] = "velocidad: " + dron.vel;
-    str[3] = "distancia: " + dron.dist;
-    str[4] = "angulo: " + dron.ang;
-    
     data.clear();
-    for(int i = 0; i < 5; i++){
-      data.append(str[i]);
-    }
+    data.append("Dron");
+    data.append(" - id: " + dron.id);
+    data.append(" - velocidad: " + dron.vel);
+    data.append(" - distancia: " + dron.dist);
+    data.append(" - angulo: " + dron.ang);
+    data.append("");
+    
+    data.append("Estado global: " + globalState);
+    data.append("Estado local: " + localState);
+    data.append("");
+    
+    data.append("Orientacion plataforma");
+    data.append(" - angX = " + orientX);
+    data.append(" - angY = " + orientY);
+    data.append(" - angZ = " + orientZ);
+
   }
   
   void draw(){
@@ -32,7 +38,7 @@ class Telemetria{
     fill(0);
     float dY = 16;
     textFont(font,16);
-    for (int i = 0; i<5; i++){
+    for (int i = 0; i<data.size(); i++){
       String str = data.get(i);
       text(str, posX, posY + dY * i);
     }    
