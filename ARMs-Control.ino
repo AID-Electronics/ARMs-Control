@@ -470,7 +470,7 @@ void loop(){
 
   //Ciclo 3 - Ejecucion cada 1 segundo
   ahoraC3 = millis();
-  if (ahoraC3 - antesC3 >= 1000){
+  if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
 
     //Datos para interfaz

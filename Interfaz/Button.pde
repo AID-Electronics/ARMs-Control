@@ -77,7 +77,7 @@ class Button {
   
   boolean isPressed(){
     if (mousePressed == true && mouseOver){
-      scale = 0.9;
+      scale = 0.95;
       wasPressed = true;
       return true;
     }

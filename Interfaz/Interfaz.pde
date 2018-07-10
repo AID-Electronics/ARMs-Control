@@ -24,7 +24,7 @@ float tempM1;
 float tempM2;
 
 void setup(){
-  size(700,400);
+  size(1000,500);
   
 
   boolean serialError = false;
@@ -50,7 +50,7 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
-  radar = new Radar(300,250,600,40);
+  radar = new Radar(500,250,600,40);
   dron = new Objetivo();
   telemetria = new Telemetria(10,110);
 }
@@ -66,7 +66,7 @@ void draw(){
 
 void serialEvent(Serial port) {
   buff += port.readString();
-  print(buff);
+  //print(buff);
   stringParse(buff);
   buff = "";
 }
