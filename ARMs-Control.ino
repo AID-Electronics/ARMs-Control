@@ -60,7 +60,9 @@ double offset_cabeceo;
 
 void state2Interface(){
   Serial.print("#States: ");
-  Serial.println (globalState);
+  Serial.print(globalState);
+  Serial.print(",");
+  Serial.println(localState);
 }
 
 void errorSolucionado (uint8_t estado){
