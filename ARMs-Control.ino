@@ -58,6 +58,11 @@ bool serialIn = false;
 double offset_alabeo;
 double offset_cabeceo;
 
+void state2Interface(){
+  Serial.print("#States: ");
+  Serial.println (globalState);
+}
+
 void errorSolucionado (uint8_t estado){
   if (serialIn){
     if (serialToken == 'C'){
@@ -75,6 +80,7 @@ void nextState(uint8_t estado){
   Serial.println();
   globalState = estado;
   localState = 0;
+  state2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -83,8 +89,6 @@ void setup(){
   Serial.begin(250000);
   Serial1.begin(4800);
   Serial3.begin(115200);
-  globalState = 0;
-  localState = 0;
 
   com_maxi.setup();
 
@@ -103,6 +107,8 @@ void setup(){
 
   Serial.println ("Setup Controllino Finalizado");
   Serial.println ("Pulse una tecla para continuar");
+
+  nextState(0);
 }
 
 char a;
@@ -477,18 +483,18 @@ void loop(){
       //IMU fija
       IMU_fija.update();
       IMU_fija.orientacion2Interface();
-      
 
       //Datos del dron 
       com_maxi.sendData2Interface();
     }
 
     //Estados de la máquina de estados
+    /*
     Serial.print("#States: ");
     Serial.print (globalState);
     Serial.print(",");
     Serial.print (localState);
-    Serial.println();
+    Serial.println();*/
   }
   
 }
