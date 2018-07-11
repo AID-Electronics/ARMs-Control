@@ -3,7 +3,8 @@ class Telemetria{
   PFont font;
   float posX;
   float posY;
-  float columnWidth;
+  float nameColumnWidth;
+  float dataColumnWidth;
   float rowHeight;
   int margenIzquierdo;
   int distText2upperLimmit;
@@ -11,10 +12,11 @@ class Telemetria{
   StringList data;
   int textSize;
   
-  Telemetria(float posX, float posY, float columnWidth){
+  Telemetria(float posX, float posY){
     this.posX = posX;
     this.posY = posY;
-    this.columnWidth = columnWidth;
+    this.nameColumnWidth = 120;
+    this.dataColumnWidth = 70;
     rowHeight = 23;
     margenIzquierdo = 10;
     distText2upperLimmit = 18;
@@ -68,21 +70,24 @@ class Telemetria{
     
     //Creacion de la tabla
     
-    line(posX, posY, posX + columnWidth + 50, posY);
+    line(posX, posY, posX + nameColumnWidth + dataColumnWidth, posY);
     for (int i = 0; i<data.size(); i++){
       strokeWeight(1);
-      line(posX, posY + dY * i, posX + columnWidth + 50, posY + dY * i);
+      line(posX, posY + dY * i, posX + nameColumnWidth + dataColumnWidth, posY + dY * i);
       if (i + 1 == data.size()){
-        line(posX, posY + dY + dY * i, posX + columnWidth + 50, posY + dY + dY * i);
+        line(posX, posY + dY + dY * i, posX + nameColumnWidth + dataColumnWidth, posY + dY + dY * i);
       }
     }
+    line(posX, posY, posX, posY + rowHeight * data.size());
+    line(posX + nameColumnWidth, posY, posX + nameColumnWidth, posY + rowHeight * data.size());
+    line(posX + nameColumnWidth + dataColumnWidth, posY, posX + nameColumnWidth + dataColumnWidth, posY + rowHeight * data.size());
     
     //Se rellena con los datos
     for (int i = 0; i<data.size(); i++){
       String str = name.get(i);
       text(str, posX + margenIzquierdo, posY + distText2upperLimmit + dY * i);
       str = data.get(i);
-      text(str, posX + columnWidth, posY + distText2upperLimmit + dY * i);
+      text(str, posX + nameColumnWidth + margenIzquierdo, posY + distText2upperLimmit + dY * i);
       
     }
   }
