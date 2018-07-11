@@ -69,7 +69,9 @@ class Telemetria{
     textFont(font,textSize);
     
     //Creacion de la tabla
-    
+    fill(255);
+    rectMode(CORNER);
+    rect(posX, posY, nameColumnWidth + dataColumnWidth, rowHeight * data.size());
     line(posX, posY, posX + nameColumnWidth + dataColumnWidth, posY);
     for (int i = 0; i<data.size(); i++){
       strokeWeight(1);
@@ -83,6 +85,7 @@ class Telemetria{
     line(posX + nameColumnWidth + dataColumnWidth, posY, posX + nameColumnWidth + dataColumnWidth, posY + rowHeight * data.size());
     
     //Se rellena con los datos
+    fill(0);
     for (int i = 0; i<data.size(); i++){
       String str = name.get(i);
       text(str, posX + margenIzquierdo, posY + distText2upperLimmit + dY * i);
