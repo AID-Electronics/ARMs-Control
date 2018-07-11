@@ -144,7 +144,6 @@ void loop(){
       entradaEstado = false;
     }
     bool setupCAN_ok = setupCAN();
-    error.CAN = !setupCAN_ok;
 
     if(setupCAN_ok){
       error.CAN = off;

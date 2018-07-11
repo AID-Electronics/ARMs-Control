@@ -4,9 +4,10 @@
 #include <Arduino.h>
 #include "Comunicacion_MAXI.h"
 
+enum State { sinEvaluar, off, on };
+
 class Alarmas{
 public:
-    enum State { sinEvaluar, off, on };
     int totChecked;
     State IMU;
     State CAN;
@@ -37,16 +38,29 @@ Alarmas::Alarmas(){
 }
 
 void Alarmas::update(Comunicacion_MAXI& maxi){
-    motorTrif = maxi.errorMotor;
-    radar = maxi.errorRadar;
-    comPLCs = maxi.errorCom;
+    if(maxi.errorMotor){
+        motorTrif = on;
+    }
+    else{
+        motorTrif = off;
+    }
+
+    if(maxi.errorRadar){
+        radar = on;
+    }
+    else{
+        radar = off;
+    }
+
+    if(maxi.errorCom){
+        comPLCs = on;
+    }
+    else{
+        comPLCs = off;
+    }
 }
 
 void Alarmas::send2Interface(){
-
-    String alarms2interface;
-    convert2exportFormat(alarms2interface);
-
     Serial.print("#Alarms: ");
     Serial.print(totChecked);   Serial.print(",");
     Serial.print(IMU);          Serial.print(",");
