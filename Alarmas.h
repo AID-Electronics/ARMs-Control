@@ -6,15 +6,17 @@
 
 class Alarmas{
 public:
-    bool IMU;
-    bool CAN;
-    bool motoresON;
-    bool motoresSetup;
-    bool comunicPLCs;
-    bool comunicRF;
-    bool motorTrif;
-    bool radar;
-    bool comPLCs;
+    enum State { sinEvaluar, correcto, error };
+    int totChecked;
+    State IMU;
+    State CAN;
+    State motoresON;
+    State motoresSetup;
+    State comunicPLCs;
+    State comunicRF;
+    State motorTrif;
+    State radar;
+    State comPLCs;
 
     Alarmas();
     void update(Comunicacion_MAXI& maxi);
@@ -22,15 +24,16 @@ public:
 };
 
 Alarmas::Alarmas(){
-    IMU = false;
-    CAN = false;
-    motoresON = false;
-    motoresSetup = false;
-    comunicPLCs = false;
-    comunicRF = false;
-    motorTrif = false;
-    radar = false;
-    comPLCs = false;
+    totChecked = sinEvaluar;
+    IMU = sinEvaluar;
+    CAN = sinEvaluar;
+    motoresON = sinEvaluar;
+    motoresSetup = sinEvaluar;
+    comunicPLCs = sinEvaluar;
+    comunicRF = sinEvaluar;
+    motorTrif = sinEvaluar;
+    radar = sinEvaluar;
+    comPLCs = sinEvaluar;
 }
 
 void Alarmas::update(Comunicacion_MAXI& maxi){
