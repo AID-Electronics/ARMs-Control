@@ -9,6 +9,7 @@ Button button3;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
+Alarmas alarmas;
 
 //Datos PLC
 int globalState;
@@ -53,6 +54,7 @@ void setup(){
   radar = new Radar(500,250,600,40);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
+  alarmas = new Alarmas(300,200);
 }
 
 void draw(){  
@@ -62,6 +64,7 @@ void draw(){
   button3.draw();
   radar.draw(dron);
   telemetria.draw();
+  alarmas.draw();
 }
 
 void serialEvent(Serial port) {
