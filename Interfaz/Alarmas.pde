@@ -7,6 +7,7 @@ class Alarmas{
   float posY;
   StringList alarma;
   boolean[] estadosAlarma;
+  boolean alarmasRecibidas;
   
   Alarmas(float posX, float posY){
     this.posX = posX;
@@ -27,12 +28,21 @@ class Alarmas{
     alarma.append("Comunicacion PLCs S");
     
     estadosAlarma = new boolean[alarma.size()];
+    alarmasRecibidas = false;
   }
   
   void draw(){
     for (int i = 0; i < alarma.size(); i++){
-      fill(255,0,0);
-      ellipse(posX,posY + distText2upperLimmit - 7 + rowHeight * i,10,10);
+      if (alarmasRecibidas == false){
+        fill(150);
+      }
+      else if (estadosAlarma[i] == true){
+        fill(255,0,0);
+      }
+      else{
+        fill(0,255,0);
+      }
+      ellipse(posX,posY + distText2upperLimmit - 6 + rowHeight * i,10,10);
     }
     
     //Texto
