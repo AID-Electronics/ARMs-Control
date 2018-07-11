@@ -468,7 +468,7 @@ void loop(){
     nextState(20);
   }
 
-  //Ciclo 3 - Ejecucion cada 1 segundo
+  //Ciclo 3 - Ejecucion cada 0.5 segundos
   ahoraC3 = millis();
   if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
@@ -490,13 +490,18 @@ void loop(){
       com_maxi.sendData2Interface();
     }
 
-    //Estados de la máquina de estados
-    /*
-    Serial.print("#States: ");
-    Serial.print (globalState);
-    Serial.print(",");
-    Serial.print (localState);
-    Serial.println();*/
+    if (globalState > 0){
+      Serial.print("#Alarms: ");
+      Serial.print(errorIMU); Serial.print(",");
+      Serial.print(errorCAN); Serial.print(",");
+      Serial.print(errorMotoresON); Serial.print(",");
+      Serial.print(errorMotoresSetup); Serial.print(",");
+      Serial.print(errorComunicPLCs); Serial.print(",");
+      Serial.print(errorComunicRF); Serial.print(",");
+      Serial.print(com_maxi.errorMotor); Serial.print(",");
+      Serial.print(com_maxi.errorRadar); Serial.print(",");
+      Serial.println(com_maxi.errorCom);
+    }
   }
   
 }
