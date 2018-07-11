@@ -485,16 +485,8 @@ void loop(){
     }
 
     if (globalState > 0){
-      Serial.print("#Alarms: ");
-      Serial.print(error.IMU); Serial.print(",");
-      Serial.print(error.CAN); Serial.print(",");
-      Serial.print(error.motoresON); Serial.print(",");
-      Serial.print(error.motoresSetup); Serial.print(",");
-      Serial.print(error.comunicPLCs); Serial.print(",");
-      Serial.print(error.comunicRF); Serial.print(",");
-      Serial.print(com_maxi.errorMotor); Serial.print(",");
-      Serial.print(com_maxi.errorRadar); Serial.print(",");
-      Serial.println(com_maxi.errorCom);
+      error.update(com_maxi);
+      error.send2Interface();
     }
   }
   
