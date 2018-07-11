@@ -54,12 +54,6 @@ void parseAlarmString(String str){
   println(str);
   String list[] = str.split(",");
   for(int i = 0; i < 9; i++){
-    if(int(list[i]) == 1){
-      alarmas.estadosAlarma[i] = true;
-    }
-    else{
-      alarmas.estadosAlarma[i] = false;
-    }
+    alarmas.estadoAlarma[i] = int(list[i]);
   }
-  alarmas.alarmasRecibidas = true;
 }

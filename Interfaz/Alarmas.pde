@@ -1,3 +1,4 @@
+
 class Alarmas{
   PFont font;
   int textSize;
@@ -6,8 +7,7 @@ class Alarmas{
   float posX;
   float posY;
   StringList alarma;
-  boolean[] estadosAlarma;
-  boolean alarmasRecibidas;
+  int[] estadoAlarma;
   
   Alarmas(float posX, float posY){
     this.posX = posX;
@@ -27,16 +27,18 @@ class Alarmas{
     alarma.append("Radar");
     alarma.append("Comunicacion PLCs S");
     
-    estadosAlarma = new boolean[alarma.size()];
-    alarmasRecibidas = false;
+    estadoAlarma = new int[alarma.size()];
   }
   
   void draw(){
+    //if (globalState > 1){
+      //alarmaRecibida[0] = true;
+    //}
     for (int i = 0; i < alarma.size(); i++){
-      if (alarmasRecibidas == false){
+      if (estadoAlarma[i] == 0){
         fill(150);
       }
-      else if (estadosAlarma[i] == true){
+      else if (estadoAlarma[i] == 2){
         fill(255,0,0);
       }
       else{

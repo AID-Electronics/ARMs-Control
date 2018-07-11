@@ -475,6 +475,9 @@ void loop(){
     antesC3 = ahoraC3;
 
     //Datos para interfaz
+    error.update(com_maxi);
+    error.send2Interface();
+
     if (globalState > 7){
       //Temperaturas motores
       Serial.print("#Temp: ");
@@ -489,11 +492,6 @@ void loop(){
 
       //Datos del dron 
       com_maxi.sendData2Interface();
-    }
-
-    if (globalState > 0){
-      error.update(com_maxi);
-      error.send2Interface();
     }
   }
   
