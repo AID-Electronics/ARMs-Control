@@ -22,12 +22,13 @@
 #include "IMU.h"
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
-
+#include "Alarmas.h"
 
 
 IMU IMU_fija;
 Plataforma platform;
 Comunicacion_MAXI com_maxi;
+Alarmas error;
 
 uint8_t globalState;
 uint8_t localState;
@@ -40,13 +41,6 @@ unsigned long antesC1 = 0;
 unsigned long antesC2 = 0;
 unsigned long ahoraC3;
 unsigned long antesC3 = 0;
-
-bool errorIMU = false;
-bool errorCAN = false;
-bool errorMotoresON = false;
-bool errorMotoresSetup = false;
-bool errorComunicPLCs = false;
-bool errorComunicRF = false;
 
 bool entradaEstado = true;
 bool entradaEstadoError = true;
@@ -136,7 +130,7 @@ void loop(){
   else if (globalState == 1){
     bool OK;
     OK = IMU_fija.setup();
-    errorIMU = !OK;
+    error.IMU = !OK;
     nextState(2);
   }
   else if (globalState == 2){
@@ -145,7 +139,7 @@ void loop(){
       entradaEstado = false;
     }
     bool setupCAN_ok = setupCAN();
-    errorCAN = !setupCAN_ok;
+    error.CAN = !setupCAN_ok;
 
     if(setupCAN_ok){
       nextState(3);
@@ -177,13 +171,13 @@ void loop(){
     if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
       if (tensionM2 > 47.5 && tensionM2 < 48.5){
         Serial.println("\tAlimentacion en rango");
-        errorMotoresON = false;
+        error.motoresON = false;
         nextState(4);
       }
     }
     if(globalState != 4){
       Serial.println("\tMotores fuera de rango");
-      errorMotoresON = true;
+      error.motoresON = true;
       nextState(5);
     }
   }
@@ -198,11 +192,11 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      errorMotoresSetup = false;
+      error.motoresSetup = false;
     }
     else{
       Serial.println("Fallo setup motores");
-      errorMotoresSetup = true;
+      error.motoresSetup = true;
     }
     
     nextState(5);
@@ -215,7 +209,7 @@ void loop(){
     }
     Vector3D test;
     if (getOrientRF(&test)){
-      errorComunicRF = false;
+      error.comunicRF = false;
       Serial.println("\tRecepcion RF OK");
       nextState(6);
     }
@@ -223,7 +217,7 @@ void loop(){
       //comprobar tiempo de espera
       inState_time = millis() - arrivalState_time;
       if (inState_time > 5000){
-        errorComunicRF = true;
+        error.comunicRF = true;
         Serial.println("\tError Recepcion RF");
         nextState(6);
       }
@@ -273,7 +267,7 @@ void loop(){
           Serial.println("\tError: menseje no esperado");
           com_maxi.errorCom = true;
         }
-        errorComunicPLCs = false;
+        error.comunicPLCs = false;
         nextState(7);
       }
     }
@@ -281,7 +275,7 @@ void loop(){
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
       Serial.println("\tError: respuesta no recibida");
-      errorComunicPLCs = true;
+      error.comunicPLCs = true;
       nextState(7);
     }
   }
@@ -291,37 +285,37 @@ void loop(){
       Serial.println("Errores durante configuracion");
 
       Serial.print("\terrorIMU: ");
-      Serial.println(errorIMU);
+      Serial.println(error.IMU);
       Serial.print("\terrorCAN: ");
-      Serial.println(errorCAN);
+      Serial.println(error.CAN);
       Serial.print("\terrorMotoresON: ");
-      Serial.println(errorMotoresON);
+      Serial.println(error.motoresON);
       Serial.print("\terrorMotoresSetup: ");
-      Serial.println(errorMotoresSetup);
+      Serial.println(error.motoresSetup);
       Serial.print("\terrorComunicPLCs: ");
-      Serial.println(errorComunicPLCs);
+      Serial.println(error.comunicPLCs);
       Serial.print("\terrorComunicRF: ");
-      Serial.println(errorComunicRF);
+      Serial.println(error.comunicRF);
       com_maxi.printError();
 
       entradaEstado = false;
     }
-    if (errorIMU){
+    if (error.IMU){
       errorSolucionado (1);
     }
-    else if (errorCAN){
+    else if (error.CAN){
       errorSolucionado (2);
     }
-    else if (errorMotoresON){
+    else if (error.motoresON){
       errorSolucionado (3);
     }
-    else if (errorMotoresSetup){
+    else if (error.motoresSetup){
       errorSolucionado (4);
     }
-    else if (errorComunicRF){
+    else if (error.comunicRF){
       errorSolucionado (5);
     }
-    else if (errorComunicPLCs){
+    else if (error.comunicPLCs){
       errorSolucionado (6);
     }
     else if (com_maxi.getError()){
@@ -365,15 +359,15 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      errorMotoresSetup = false;
+      error.motoresSetup = false;
     }
     else{
       Serial.println("Fallo setup motores");
-      errorMotoresSetup = true;
+      error.motoresSetup = true;
     }
     delay(500);
 
-    if (!errorMotoresSetup){
+    if (!error.motoresSetup){
       nextState(10);
     }
   }
@@ -442,15 +436,15 @@ void loop(){
 
       if (m1 && m2){
         Serial.println("Setup correcto");
-        errorMotoresSetup = false;
+        error.motoresSetup = false;
       }
       else{
         Serial.println("Fallo setup motores");
-        errorMotoresSetup = true;
+        error.motoresSetup = true;
       }
       delay(1000);
       
-      if (!errorMotoresSetup){
+      if (!error.motoresSetup){
         nextState(8);
       }
     }
@@ -492,12 +486,12 @@ void loop(){
 
     if (globalState > 0){
       Serial.print("#Alarms: ");
-      Serial.print(errorIMU); Serial.print(",");
-      Serial.print(errorCAN); Serial.print(",");
-      Serial.print(errorMotoresON); Serial.print(",");
-      Serial.print(errorMotoresSetup); Serial.print(",");
-      Serial.print(errorComunicPLCs); Serial.print(",");
-      Serial.print(errorComunicRF); Serial.print(",");
+      Serial.print(error.IMU); Serial.print(",");
+      Serial.print(error.CAN); Serial.print(",");
+      Serial.print(error.motoresON); Serial.print(",");
+      Serial.print(error.motoresSetup); Serial.print(",");
+      Serial.print(error.comunicPLCs); Serial.print(",");
+      Serial.print(error.comunicRF); Serial.print(",");
       Serial.print(com_maxi.errorMotor); Serial.print(",");
       Serial.print(com_maxi.errorRadar); Serial.print(",");
       Serial.println(com_maxi.errorCom);
