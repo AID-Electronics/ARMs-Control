@@ -6,7 +6,7 @@
 
 class Alarmas{
 public:
-    enum State { sinEvaluar, correcto, error };
+    enum State { sinEvaluar, off, on };
     int totChecked;
     State IMU;
     State CAN;
@@ -43,7 +43,12 @@ void Alarmas::update(Comunicacion_MAXI& maxi){
 }
 
 void Alarmas::send2Interface(){
+
+    String alarms2interface;
+    convert2exportFormat(alarms2interface);
+
     Serial.print("#Alarms: ");
+    Serial.print(totChecked);   Serial.print(",");
     Serial.print(IMU);          Serial.print(",");
     Serial.print(CAN);          Serial.print(",");
     Serial.print(motoresON);    Serial.print(",");

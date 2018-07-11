@@ -128,9 +128,14 @@ void loop(){
     }
   }
   else if (globalState == 1){
-    bool OK;
-    OK = IMU_fija.setup();
-    error.IMU = !OK;
+    bool OK = IMU_fija.setup();
+    if (OK){
+      error.IMU = off;
+    }
+    else{
+      error.IMU = on;
+    }
+
     nextState(2);
   }
   else if (globalState == 2){
@@ -142,9 +147,11 @@ void loop(){
     error.CAN = !setupCAN_ok;
 
     if(setupCAN_ok){
+      error.CAN = off;
       nextState(3);
     }
     else{
+      error.CAN = on;
       nextState(5);
     }
   }
@@ -171,13 +178,13 @@ void loop(){
     if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
       if (tensionM2 > 47.5 && tensionM2 < 48.5){
         Serial.println("\tAlimentacion en rango");
-        error.motoresON = false;
+        error.motoresON = off;
         nextState(4);
       }
     }
     if(globalState != 4){
       Serial.println("\tMotores fuera de rango");
-      error.motoresON = true;
+      error.motoresON = on;
       nextState(5);
     }
   }
@@ -192,11 +199,11 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      error.motoresSetup = false;
+      error.motoresSetup = off;
     }
     else{
       Serial.println("Fallo setup motores");
-      error.motoresSetup = true;
+      error.motoresSetup = on;
     }
     
     nextState(5);
@@ -209,7 +216,7 @@ void loop(){
     }
     Vector3D test;
     if (getOrientRF(&test)){
-      error.comunicRF = false;
+      error.comunicRF = off;
       Serial.println("\tRecepcion RF OK");
       nextState(6);
     }
@@ -217,7 +224,7 @@ void loop(){
       //comprobar tiempo de espera
       inState_time = millis() - arrivalState_time;
       if (inState_time > 5000){
-        error.comunicRF = true;
+        error.comunicRF = on;
         Serial.println("\tError Recepcion RF");
         nextState(6);
       }
@@ -267,7 +274,7 @@ void loop(){
           Serial.println("\tError: menseje no esperado");
           com_maxi.errorCom = true;
         }
-        error.comunicPLCs = false;
+        error.comunicPLCs = off;
         nextState(7);
       }
     }
@@ -275,7 +282,7 @@ void loop(){
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
       Serial.println("\tError: respuesta no recibida");
-      error.comunicPLCs = true;
+      error.comunicPLCs = on;
       nextState(7);
     }
   }
@@ -359,15 +366,15 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      error.motoresSetup = false;
+      error.motoresSetup = off;
     }
     else{
       Serial.println("Fallo setup motores");
-      error.motoresSetup = true;
+      error.motoresSetup = on;
     }
     delay(500);
 
-    if (!error.motoresSetup){
+    if (error.motoresSetup == off){
       nextState(10);
     }
   }
@@ -436,15 +443,15 @@ void loop(){
 
       if (m1 && m2){
         Serial.println("Setup correcto");
-        error.motoresSetup = false;
+        error.motoresSetup = off;
       }
       else{
         Serial.println("Fallo setup motores");
-        error.motoresSetup = true;
+        error.motoresSetup = on;
       }
       delay(1000);
       
-      if (!error.motoresSetup){
+      if (error.motoresSetup == off){
         nextState(8);
       }
     }
