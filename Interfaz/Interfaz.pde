@@ -2,7 +2,6 @@ import processing.serial.*;
 
 Serial port;
 String buff;
-boolean receivedString = false;
 
 Button button1;
 Button button2;
@@ -25,10 +24,10 @@ float tempM1;
 float tempM2;
 
 void setup(){
-  size(700,400);
+  size(1000,500);
   
 
-  boolean serialError;
+  boolean serialError = false;
   try{
     println(Serial.list());
     port = new Serial (this, Serial.list()[0], 250000);
@@ -36,6 +35,7 @@ void setup(){
   }
   catch(ArrayIndexOutOfBoundsException a){
     println("PLC no conectado al PC");
+    serialError = true;
   }
   
   button1 = new Button (50,50,75,75);
@@ -50,19 +50,12 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
-  radar = new Radar(300,250,600,40);
+  radar = new Radar(500,250,600,40);
   dron = new Objetivo();
-  telemetria = new Telemetria(10,110);
+  telemetria = new Telemetria(20,130);
 }
 
-void draw(){
-  if (receivedString){
-    print(buff);
-    stringParse(buff);
-    buff = "";
-    receivedString = false;
-  }
-  
+void draw(){  
   background(200);
   button1.draw();
   button2.draw();
@@ -72,9 +65,10 @@ void draw(){
 }
 
 void serialEvent(Serial port) {
-  buff += trim(port.readString());
-  buff += '\n';
-  receivedString = true;
+  buff += port.readString();
+  //print(buff);
+  stringParse(buff);
+  buff = "";
 }
 
 void mousePressed(){

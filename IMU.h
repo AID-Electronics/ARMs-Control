@@ -49,6 +49,7 @@ public:
   bool isAccelDataCorrect();
   bool isOrientDataCorrect();
   void getNewData();
+  void orientacion2Interface();
 };
 
 void IMU::displayCalStatus () {
@@ -274,6 +275,16 @@ void IMU::getNewData(){
       reset(pinResetIMU);
     }
   }
+}
+
+void IMU::orientacion2Interface(){
+  Serial.print("#Orient: ");
+  Serial.print (orientacion.x, 4);
+  Serial.print(",");
+  Serial.print (orientacion.y, 4);
+  Serial.print(",");
+  Serial.print (orientacion.z, 4);
+  Serial.println();
 }
 
 #endif
