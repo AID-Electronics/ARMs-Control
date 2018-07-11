@@ -8,7 +8,6 @@ enum State { sinEvaluar, off, on };
 
 class Alarmas{
 public:
-    int totChecked;
     State IMU;
     State CAN;
     State motoresON;
@@ -20,12 +19,24 @@ public:
     State comPLCs;
 
     Alarmas();
+    void reset();
     void update(Comunicacion_MAXI& maxi);
     void send2Interface();
 };
 
 Alarmas::Alarmas(){
-    totChecked = sinEvaluar;
+    IMU = sinEvaluar;
+    CAN = sinEvaluar;
+    motoresON = sinEvaluar;
+    motoresSetup = sinEvaluar;
+    comunicPLCs = sinEvaluar;
+    comunicRF = sinEvaluar;
+    motorTrif = sinEvaluar;
+    radar = sinEvaluar;
+    comPLCs = sinEvaluar;
+}
+
+void Alarmas::reset(){
     IMU = sinEvaluar;
     CAN = sinEvaluar;
     motoresON = sinEvaluar;
@@ -62,7 +73,6 @@ void Alarmas::update(Comunicacion_MAXI& maxi){
 
 void Alarmas::send2Interface(){
     Serial.print("#Alarms: ");
-    Serial.print(totChecked);   Serial.print(",");
     Serial.print(IMU);          Serial.print(",");
     Serial.print(CAN);          Serial.print(",");
     Serial.print(motoresON);    Serial.print(",");

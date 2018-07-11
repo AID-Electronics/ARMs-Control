@@ -460,6 +460,7 @@ void loop(){
   if (serialIn){
     if (serialToken == '0'){
       Serial.println("STOP");
+      error.reset();
       nextState(0);
     }
   }
