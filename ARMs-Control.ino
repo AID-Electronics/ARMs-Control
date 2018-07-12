@@ -77,6 +77,7 @@ void nextState(uint8_t estado){
   globalState = estado;
   localState = 0;
   state2Interface();
+  error.send2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -135,7 +136,6 @@ void loop(){
     else{
       error.IMU = on;
     }
-
     nextState(2);
   }
   else if (globalState == 2){
@@ -204,7 +204,6 @@ void loop(){
       Serial.println("Fallo setup motores");
       error.motoresSetup = on;
     }
-    
     nextState(5);
   }
   
@@ -274,6 +273,7 @@ void loop(){
           com_maxi.errorCom = true;
         }
         error.comunicPLCs = off;
+        error.update(com_maxi);
         nextState(7);
       }
     }
@@ -282,6 +282,7 @@ void loop(){
     if (inState_time > 5000){
       Serial.println("\tError: respuesta no recibida");
       error.comunicPLCs = on;
+      error.update(com_maxi);
       nextState(7);
     }
   }
@@ -302,6 +303,7 @@ void loop(){
       Serial.println(error.comunicPLCs);
       Serial.print("\terrorComunicRF: ");
       Serial.println(error.comunicRF);
+      error.update(com_maxi);
       com_maxi.printError();
 
       entradaEstado = false;
@@ -475,8 +477,10 @@ void loop(){
     antesC3 = ahoraC3;
 
     //Datos para interfaz
-    error.update(com_maxi);
-    error.send2Interface();
+    if (globalState > 6){
+      error.update(com_maxi);
+      error.send2Interface();
+    }
 
     if (globalState > 7){
       //Temperaturas motores

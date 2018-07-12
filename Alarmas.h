@@ -77,8 +77,8 @@ void Alarmas::send2Interface(){
     Serial.print(CAN);          Serial.print(",");
     Serial.print(motoresON);    Serial.print(",");
     Serial.print(motoresSetup); Serial.print(",");
-    Serial.print(comunicPLCs);  Serial.print(",");
     Serial.print(comunicRF);    Serial.print(",");
+    Serial.print(comunicPLCs);  Serial.print(",");
     Serial.print(motorTrif);    Serial.print(",");
     Serial.print(radar);        Serial.print(",");
     Serial.println(comPLCs);
