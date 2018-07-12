@@ -19,6 +19,10 @@ void stringParse(String str){
       String data = str.substring(charPos+2);
       parseTempString(data);
     }
+    else if (name.equals("Alarms")){
+      String data = str.substring(charPos+2);
+      parseAlarmString(data);
+    }
   }
 }
 
@@ -45,4 +49,11 @@ void parseTempString(String str){
   String list[] = str.split(",");
   tempM1 = float(list[0]);
   tempM2 = float(list[1]);
+}
+void parseAlarmString(String str){
+  println(str);
+  String list[] = str.split(",");
+  for(int i = 0; i < 9; i++){
+    alarmas.estadoAlarma[i] = int(trim(list[i]));
+  }
 }
