@@ -45,7 +45,7 @@ void setup(){
   button1.setColor(0,255,0);
   
   button2 = new Button (150,50,75,75);
-  button2.text = "NOTOCAR";
+  button2.text = "CONTINUE";
   button2.setColor(255,150,50);
   
   button3 = new Button (250,50,75,75);
@@ -53,7 +53,7 @@ void setup(){
   button3.setColor(255,0,0);
   
   button4 = new Button (350,50,75,75);
-  button4.text = "CONTINUE";
+  button4.text = "NOTOCAR";
   button4.setColor(0,100,255);
   
   radar = new Radar(500,250,600,40);
@@ -85,12 +85,12 @@ void mousePressed(){
     port.write("1");
   }
   if (button2.isMouseOver()){
-    port.write("E");
+    port.write("C");
   }
   if (button3.isMouseOver()){
     port.write("0");
   }
   if (button4.isMouseOver()){
-    port.write("C");
+    port.write("E");
   }
 }

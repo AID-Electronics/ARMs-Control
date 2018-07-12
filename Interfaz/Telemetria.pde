@@ -15,8 +15,8 @@ class Telemetria{
   Telemetria(float posX, float posY){
     this.posX = posX;
     this.posY = posY;
-    this.nameColumnWidth = 120;
-    this.dataColumnWidth = 70;
+    this.nameColumnWidth = 160;
+    this.dataColumnWidth = 40;
     rowHeight = 23;
     margenIzquierdo = 10;
     distText2upperLimmit = 18;
