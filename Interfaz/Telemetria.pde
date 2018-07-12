@@ -40,6 +40,11 @@ class Telemetria{
     name.append("Estados");
     name.append(" - global");
     name.append(" - local");
+    
+    name.append("Temperatura");
+    name.append(" - motor 1");
+    name.append(" - motor 2");
+    
   }
   
   void update(){
@@ -58,6 +63,10 @@ class Telemetria{
     data.append("");
     data.append(str(globalState));
     data.append(str(localState));
+    
+    data.append("");
+    data.append(str(tempM1));
+    data.append(str(tempM2));
 
   }
   

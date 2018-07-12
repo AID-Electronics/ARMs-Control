@@ -7,6 +7,7 @@ Button button1;
 Button button2;
 Button button3;
 Button button4;
+Button button5;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -53,8 +54,12 @@ void setup(){
   button3.setColor(255,0,0);
   
   button4 = new Button (350,50,75,75);
-  button4.text = "NOTOCAR";
+  button4.text = "ATERRIZAJE";
   button4.setColor(0,100,255);
+  
+  button5 = new Button (450,50,75,75);
+  button5.text = "NOTOCAR";
+  button5.setColor(0,100,255);
   
   radar = new Radar(500,250,600,40);
   dron = new Objetivo();
@@ -68,6 +73,7 @@ void draw(){
   button2.draw();
   button3.draw();
   button4.draw();
+  button5.draw();
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
