@@ -6,6 +6,7 @@ String buff;
 Button button1;
 Button button2;
 Button button3;
+Button button4;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -51,6 +52,10 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
+  button4 = new Button (350,50,75,75);
+  button4.text = "CONTINUE";
+  button4.setColor(0,100,255);
+  
   radar = new Radar(500,250,600,40);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
@@ -62,6 +67,7 @@ void draw(){
   button1.draw();
   button2.draw();
   button3.draw();
+  button4.draw();
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
@@ -83,5 +89,8 @@ void mousePressed(){
   }
   if (button3.isMouseOver()){
     port.write("0");
+  }
+  if (button4.isMouseOver()){
+    port.write("C");
   }
 }
