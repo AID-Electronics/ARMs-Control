@@ -54,6 +54,6 @@ void parseAlarmString(String str){
   println(str);
   String list[] = str.split(",");
   for(int i = 0; i < 9; i++){
-    alarmas.estadoAlarma[i] = int(list[i]);
+    alarmas.estadoAlarma[i] = int(trim(list[i]));
   }
 }
