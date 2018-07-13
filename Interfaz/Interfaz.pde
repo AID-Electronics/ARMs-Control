@@ -71,7 +71,9 @@ void setup(){
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(250,130);
   gauge1 = new Gauge(500,500);
-  gauge1.setLimits(0,100);
+  gauge1.setLimits(0,300);
+  gauge1.setColor(185,92,200);
+  gauge1.setName("VELOCIDAD GIRO");
 }
 
 void draw(){  
