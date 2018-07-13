@@ -12,6 +12,7 @@ Radar radar;
 Objetivo dron;
 Telemetria telemetria;
 Alarmas alarmas;
+Gauge gauge1;
 
 //Datos PLC
 int globalState;
@@ -69,6 +70,10 @@ void setup(){
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(250,130);
+  gauge1 = new Gauge(500,500);
+  gauge1.setLimits(0,300);
+  gauge1.setColor(185,92,200);
+  gauge1.setName("VELOCIDAD GIRO");
 }
 
 void draw(){  
@@ -81,6 +86,7 @@ void draw(){
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
+  gauge1.draw(velGiro);
 }
 
 void serialEvent(Serial port) {
