@@ -29,6 +29,8 @@ public:
   bool comPLCs;
 
   Objetivo dron;
+  float velGiro;
+  int estado;
 
   Comunicacion_MAXI();
   void setup();
@@ -255,6 +257,12 @@ void Comunicacion_MAXI::sendData2Interface(){
   Serial.print(dron.ang);
   Serial.print(",");
   Serial.print(dron.intensidad);
+  Serial.println();
+
+  Serial.print("#Platform: ");
+  Serial.print(velGiro);
+  Serial.print(",");
+  Serial.print(estado);
   Serial.println();
 }
 
