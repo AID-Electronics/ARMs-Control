@@ -26,8 +26,12 @@ float orientZ;
 float tempM1;
 float tempM2;
 
+//Plataforma
+int state; //del maxi
+float velGiro;
+
 void setup(){
-  size(1000,500);
+  size(1000,600);
   
 
   boolean serialError = false;
@@ -96,7 +100,7 @@ void mousePressed(){
   if (button3.isMouseOver()){
     port.write("0");
   }
-  if (button4.isMouseOver()){
+  if (button5.isMouseOver()){
     port.write("E");
   }
 }

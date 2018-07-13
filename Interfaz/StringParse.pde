@@ -23,6 +23,10 @@ void stringParse(String str){
       String data = str.substring(charPos+2);
       parseAlarmString(data);
     }
+    else if (name.equals("Platform")){
+      String data = str.substring(charPos+2);
+      parsePlatformString(data);
+    }
   }
 }
 
@@ -51,9 +55,14 @@ void parseTempString(String str){
   tempM2 = float(list[1]);
 }
 void parseAlarmString(String str){
-  println(str);
   String list[] = str.split(",");
   for(int i = 0; i < 9; i++){
     alarmas.estadoAlarma[i] = int(trim(list[i]));
   }
+}
+void parsePlatformString(String str){
+  println(str);
+  String list[] = str.split(","); //<>//
+  velGiro = float(list[0]);
+  state = int(list[1]);
 }
