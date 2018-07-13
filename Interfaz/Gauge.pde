@@ -2,17 +2,18 @@
 class Gauge {
   float posX;
   float posY;
-  
   float innerDiameter;
   float outerDiameter;
-  
   float startAngle;
   float endAngle;
   
   float minValue;
   float maxValue;
-  
   float value;
+  
+  int red;
+  int green;
+  int blue;
   
   Gauge(float posX, float posY){
     this.posX = posX;
@@ -23,6 +24,9 @@ class Gauge {
     outerDiameter = 150;
     startAngle = radians(150);
     endAngle = radians(390);
+    red = 0;
+    green = 255;
+    blue = 0;
   }
   
   void setSize(float innerDiam, float outerDiam){
@@ -34,6 +38,11 @@ class Gauge {
     minValue = min;
     maxValue = max;
   }
+  void setColor(int r, int g, int b){
+    red = r;
+    green = g;
+    blue = b;
+  }
   
   void draw(float inputValue){
     value = map(inputValue,minValue,maxValue,150,390);
@@ -43,7 +52,7 @@ class Gauge {
     }
     
     noStroke();
-    fill(0,255,0);
+    fill(red,green,blue);
     arc(posX, posY, outerDiameter, outerDiameter, startAngle, value);
     noFill();
     stroke(0);
@@ -55,8 +64,6 @@ class Gauge {
     fill(200);
     noStroke();
     ellipse(posX, posY, innerDiameter-1, innerDiameter-1);
-    //line(posX, posY, posX + outerDiameter * cos(radians(150)), posY + outerDiameter * sin(radians(150)));
-    //line(posX, posY, posX + outerDiameter * cos(radians(390)), posY + outerDiameter * sin(radians(390)));
     strokeWeight(1);
     stroke(0);
   }
