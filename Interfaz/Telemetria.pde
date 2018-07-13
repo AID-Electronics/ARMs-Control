@@ -16,7 +16,7 @@ class Telemetria{
     this.posX = posX;
     this.posY = posY;
     this.nameColumnWidth = 160;
-    this.dataColumnWidth = 40;
+    this.dataColumnWidth = 60;
     rowHeight = 23;
     margenIzquierdo = 10;
     distText2upperLimmit = 18;
@@ -45,6 +45,9 @@ class Telemetria{
     name.append(" - motor 1");
     name.append(" - motor 2");
     
+    name.append(" Velocidad giro");
+    name.append(" Estado Maxi");
+    
   }
   
   void update(){
@@ -67,6 +70,9 @@ class Telemetria{
     data.append("");
     data.append(str(tempM1));
     data.append(str(tempM2));
+    
+    data.append(str(velGiro));
+    data.append(str(state));
 
   }
   
