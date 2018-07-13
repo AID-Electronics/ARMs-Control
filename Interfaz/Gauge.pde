@@ -15,18 +15,26 @@ class Gauge {
   int green;
   int blue;
   
+  PFont text;
+  int percent_textSize;
+  int value_textSize;
+  
   Gauge(float posX, float posY){
     this.posX = posX;
     this.posY = posY;
     
     //Default
-    innerDiameter = 100;
+    innerDiameter = 110;
     outerDiameter = 150;
     startAngle = radians(150);
     endAngle = radians(390);
     red = 0;
     green = 255;
     blue = 0;
+    
+    text = createFont("Arial",14,true);
+    percent_textSize = 20;
+    value_textSize = 30;
   }
   
   void setSize(float innerDiam, float outerDiam){
@@ -44,9 +52,19 @@ class Gauge {
     blue = b;
   }
   
+  float getPercentage(float inVal){
+    float result = map (inVal, minValue, maxValue, 0, 100);
+    if (result < 0){
+      return 0;
+    }
+    else if (result > 100){
+      return 100;
+    }
+    return result;
+  }
+  
   void draw(float inputValue){
-    value = map(inputValue,minValue,maxValue,150,390);
-    value = radians(value);
+    value = map(inputValue,minValue,maxValue,startAngle,endAngle);
     if (value > endAngle){
       value = endAngle;
     }
@@ -66,5 +84,18 @@ class Gauge {
     ellipse(posX, posY, innerDiameter-1, innerDiameter-1);
     strokeWeight(1);
     stroke(0);
+    
+    //Text
+    float percentage = getPercentage(inputValue);
+    fill(0);
+    textAlign(CENTER,CENTER);
+    String p = nf(percentage, 0, 1);
+    p += "%";
+    textFont(text,percent_textSize);
+    text(p,posX, posY);
+    
+    p = nf(inputValue, 0, 1);
+    textFont(text,value_textSize);
+    text(p,posX, posY+50);
   }
 }
