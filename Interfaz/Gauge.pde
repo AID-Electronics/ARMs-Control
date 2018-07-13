@@ -15,9 +15,11 @@ class Gauge {
   int green;
   int blue;
   
+  String name;
   PFont text;
   int percent_textSize;
   int value_textSize;
+  int name_textSize;
   
   Gauge(float posX, float posY){
     this.posX = posX;
@@ -33,8 +35,9 @@ class Gauge {
     blue = 0;
     
     text = createFont("Arial",14,true);
-    percent_textSize = 20;
+    percent_textSize = 16;
     value_textSize = 30;
+    name_textSize = 25;
   }
   
   void setSize(float innerDiam, float outerDiam){
@@ -50,6 +53,9 @@ class Gauge {
     red = r;
     green = g;
     blue = b;
+  }
+  void setName(String str){
+    name = str;
   }
   
   float getPercentage(float inVal){
@@ -92,10 +98,13 @@ class Gauge {
     String p = nf(percentage, 0, 1);
     p += "%";
     textFont(text,percent_textSize);
-    text(p,posX, posY);
+    text(p, posX, posY-30);
     
-    p = nf(inputValue, 0, 1);
+    String v = nf(inputValue, 0, 1);
     textFont(text,value_textSize);
-    text(p,posX, posY+50);
+    text(v, posX, posY);
+    
+    textFont(text,name_textSize);
+    text(name,posX, posY+60);
   }
 }
