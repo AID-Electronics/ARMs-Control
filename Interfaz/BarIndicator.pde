@@ -11,6 +11,9 @@ class BarIndicator{
   float maxValue;
   float value;
   
+  float startPos;
+  float endPos;
+  
   int red;
   int green;
   int blue;
@@ -20,6 +23,8 @@ class BarIndicator{
   BarIndicator(float posx, float posy){
     this.posX = posx;
     this.posY = posy;
+    this.startPos = 0;
+    this.endPos = sizeX;
   }
   BarIndicator(float posx, float posy, float sizex, float sizey){
     this.posX = posx;
@@ -30,6 +35,9 @@ class BarIndicator{
     this.red = 0;
     this.green = 100;
     this.blue = 100;
+    
+    this.startPos = 0;
+    this.endPos = sizeX;
   }
   void setSize(float sizex, float sizey){
     this.sizeX = sizex;
@@ -40,13 +48,22 @@ class BarIndicator{
     this.green = green;
     this.blue = blue;
   }
+  void setLimits(float min, float max){
+    this.minValue = min;
+    this.maxValue = max;
+  }
   
-  void draw(){
+  void draw(float inputValue){
+    value = map(inputValue,minValue,maxValue,startPos,endPos);
+    if (value > endPos){
+      value = endPos;
+    }
+    
     noStroke();
     fill(200);
     rect(posX,posY,sizeX,sizeY);
     fill(red,green,blue);
-    rect(posX,posY,mouseX,sizeY);
+    rect(posX,posY,value,sizeY);
     stroke(0);
     noFill();
     rect(posX,posY,sizeX,sizeY);

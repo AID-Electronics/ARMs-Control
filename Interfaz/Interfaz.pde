@@ -82,6 +82,7 @@ void setup(){
   gauge1.setName("VELOCIDAD GIRO");
   
   bar1 = new BarIndicator(700,500,200,15);
+  bar1.setLimits(0,500);
 }
 
 void draw(){  
@@ -96,7 +97,7 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
-  bar1.draw();
+  bar1.draw(mouseX);
 }
 
 void serialEvent(Serial port) {
