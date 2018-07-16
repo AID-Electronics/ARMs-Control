@@ -14,6 +14,7 @@ Objetivo dron;
 Telemetria telemetria;
 Alarmas alarmas;
 Gauge gauge1;
+BarIndicator bar1;
 
 //Datos PLC
 int globalState;
@@ -79,6 +80,8 @@ void setup(){
   gauge1.setLimits(0,300);
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO");
+  
+  bar1 = new BarIndicator(600,600,500,100);
 }
 
 void draw(){  
@@ -93,6 +96,8 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
+  //bar1.draw();
+  rect(700,500,200,15  );
 }
 
 void serialEvent(Serial port) {
