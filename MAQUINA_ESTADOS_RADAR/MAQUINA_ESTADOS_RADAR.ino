@@ -18,7 +18,7 @@ void enter_GL_State() {
  
 void setup_Radar()
 {
-
+    delay(100);
   
   if (inicializar_radar())
   {
@@ -123,13 +123,7 @@ sacar_Velocidad();
 
 CheckRST();
   
-  if (CheckSendData())
-  {
-    if(Count_Target_tiempoReal)
-    enviar_data_radar(closest_target);
-   else
-    enviar_data_radar(b);
-  }
+ 
     
 
 }
@@ -137,7 +131,7 @@ CheckRST();
 
 
 
-unsigned long working_t; ///////////////////////////////////////OJOOOOOOOOOOOOOOOOo
+
 void workingF() {
 
  
@@ -349,6 +343,7 @@ void init_Gl_variables()
   b.intensidad = 0.0f;
   VEL_GIRO = 0;
   working_t=0;
+  state_t=0;
 }
 
 void reset_States()
@@ -432,6 +427,14 @@ void loop() {
         break;
     }
   }
+
+if(millis()-state_t>1000)
+{
+  state_t=millis();
+  printState();
+  Serial.println((millis()-state_t));
+}
+  
 
 
 }

@@ -105,6 +105,7 @@ void CheckRST(){
           stby_flag=false;
           nextState=setupRadar; //antes era setupComs
           init_Gl_variables();
+          reset_RADAR();
         //  Serial.println("  SUCCES Setup");
           
          }

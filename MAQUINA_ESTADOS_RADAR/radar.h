@@ -325,8 +325,8 @@ float sacar_Velocidad(){
     cleanBuffer(packetBuffer); //VACIAMOS A CAD DE CARACTERES
     
     Udp.read(packetBuffer,packetSize); //LEEMOS PAQUETE
-    Serial.print("  PACKET SIZE: ");
-    Serial.println(packetSize);
+    //Serial.print("  PACKET SIZE: ");
+    //Serial.println(packetSize);
     
     if (!flag)      //La Primera vez que entramos en el LOOP guardamos el valor de la ID del mensaje para comprobar mas adelante errores
     {
@@ -352,7 +352,7 @@ float sacar_Velocidad(){
        
       if(Count_Target_tiempoReal<1) //NO ESTA PERO NO INFLUYE 
       {
-        Serial.println(" NO OBJ");
+       // Serial.println(" NO OBJ");
          return 0.1f;
          
       }
@@ -363,11 +363,13 @@ float sacar_Velocidad(){
 
     //  Serial.print("    HUHU");
      // print_target(closest_target);
-     Serial.print("DEVUELVO VELOCIDAD    ");
+    // Serial.print("DEVUELVO VELOCIDAD    ");
       return closest_target.velocidad; 
       }
       else
-      {Serial.print(" ERROR LECTURA RADAR "); return -7.5f;} // 16/07
+      {//Serial.print(" ERROR LECTURA RADAR "); 
+      
+      return -7.5f;} // 16/07
    }
    else{
            //////////////////////////////////////////////////////////////SI NO RECIBO PAQUETE
@@ -378,5 +380,8 @@ float sacar_Velocidad(){
  
 }
 
-
+void reset_RADAR()
+{
+  Udp.stop();
+}
 

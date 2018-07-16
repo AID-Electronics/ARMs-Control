@@ -12,6 +12,8 @@
 
 #define time_tol 2
 
+unsigned long working_t; ///////////////////////////////////////OJOOOOOOOOOOOOOOOOo
+unsigned long state_t;
 
 
 enum globalState{
