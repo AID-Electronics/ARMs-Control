@@ -63,39 +63,44 @@ int aterrizaje_t2;
 void printState(){
   switch (currentState) {
     case Standby:
-      Serial.print("Estado Global STANDBY,  ");
+      Serial.print("Estado Global: STANDBY,  ");
       break;
       case working:
-      Serial.print("Estado Global WORKING,  ");
+            Serial.print("Estado Global: WORKING,  ");
+            switch (state){
+                case activo_CON_OBJETIVO:
+                    Serial.print("Estado De trabajo: activo_CON_OBJETIVO,  ");
+                    switch (mstate){
+                        case acercandose:
+                        Serial.print("Estado De movimiento: acercandose,  ");
+                        break;
+                        case aterrizando:
+                        Serial.print("Estado De movimiento: aterrizando,  ");
+                        break;
+                        }
+                    break;
+                case activo_SIN_OBJETIVO:
+                Serial.print("Estado De trabajo: activo_SIN_OBJETIVO,  ");
+                break;
+            }
+
       break;
       case error:
-      Serial.print("Estado Global ERROR,  ");
+      Serial.print("Estado Global: ERROR,  ");
+      break;
+       case setupRadar:
+      Serial.print("Estado Global: setupRadar,  ");
+      break;
+       case setupMotor:
+      Serial.print("Estado Global: setupMotor,  ");
+      break;
+       case setupComs:
+      Serial.print("Estado Global: setupComs,  ");
       break;
     
      }
-     switch (state){
-    case activo_CON_OBJETIVO:
-      Serial.print("Estado De trabajo activo_CON_OBJETIVO,  ");
-      break;
-      case activo_SIN_OBJETIVO:
-      Serial.print("Estado De trabajo activo_SIN_OBJETIVO,  ");
-      break;
-      default:
-      Serial.print("Estado De trabajo WAAAT,  ");
-      break;
-    
-}
-switch (mstate){
-    case acercandose:
-      Serial.println("Estado De movimiento acercandose,  ");
-      break;
-      case aterrizando:
-      Serial.println("Estado De movimiento aterrizando,  ");
-      break;
-      default:
-      Serial.println("Estado De movimiento WAAAT,  ");
-      break;
-    
-}
+     Serial.println("");
+     
+
 }
 

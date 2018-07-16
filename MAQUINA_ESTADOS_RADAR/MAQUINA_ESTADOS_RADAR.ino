@@ -145,6 +145,8 @@ Serial.print(Count_Target_tiempoReal);
 Serial.print(" ");
 Serial.println(sacar_Velocidad());*/
 sacar_Velocidad();
+
+////////////////////////////////////////A LA HORA DE LA VERDAD LA SIGUIENTE FUNCION DESAPARECE
 if(Count_Target_tiempoReal)
 {
     if(((millis()-working_t)>500))
@@ -173,7 +175,7 @@ if(Count_Target_tiempoReal)
   
   
   
-  
+  //IMPORTANTE
   if(Count_Target_tiempoReal)//asignamos los datos leidos a la variable que se mandará al maestro
   {
     if(closest_target.velocidad>0)
@@ -184,7 +186,7 @@ if(Count_Target_tiempoReal)
     else
     Real_target=b;
   
-
+//IMPORTANTE
   if (digitalRead(pinState) == LOW)
   {
     nextState = Standby;
@@ -213,35 +215,38 @@ void acercandoseF() {
 
  
 
-  VEL_GIRO = sacar_Velocidad();
+//  VEL_GIRO = sacar_Velocidad();
   //  motor.moverMotor();
-  Serial.println(VEL_GIRO);
+ // Serial.println(VEL_GIRO);
 
-  if (closest_target.distancia <= Distacia_minima)
+  if (Real_target.distancia <= Distacia_minima && Real_target.distancia>0)
   {
      Serial.print(closest_target.distancia);
     Serial.println("Objetivo va a aterrizar");
     mstate = aterrizando;
-    aux_target = closest_target;
-    VEL_GIRO = aux_target.velocidad;
+    VEL_GIRO = Real_target.velocidad;
     motor.moverMotor(VEL_GIRO);
     return;
   }
-  else if (VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)
+  else if (Real_target.velocidad<1.0f && Real_target.distancia<1.0f && Real_target.ID<1)//VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)
   {
     Serial.print(VEL_GIRO);
      state = activo_SIN_OBJETIVO;
      Serial.println("VUELVO A activo_SIN_OBJETIVO");
   }
 
-  else if(VEL_GIRO<=-4.0f)
+  else
+    motor.moverMotor(VEL_GIRO);
+////////////////////////////////////////////////////////////// 09/07
+ /////////EL motor se queda fijado si le envio velocidad 0?
+
+
+/*
+  else if(VEL_GIRO<=-4.0f)           
   {
     Serial.print("  no recibo datos  ");
-  }
+  }*/
 
-////////////////////////////////////////////////////////////// 09/07
-  else
-    motor.moverMotor(VEL_GIRO); /////////EL motor se queda fijado si le envio velocidad 0?
 
     
 }
@@ -249,7 +254,7 @@ void acercandoseF() {
 void aterrizandoF() {
 
 
-  Serial.print(" Aterrizando ");
+  //Serial.print(" Aterrizando ");
   if (!aterrizaje_flag)
   {
     aterrizaje_t1 = millis();
@@ -319,7 +324,7 @@ void activo_sin() {
 
   //VEL_GIRO = sacar_Velocidad();
 
-  if (VEL_GIRO > 1)
+  if (Real_target.velocidad > 1)
     {state = activo_CON_OBJETIVO; Serial.print(VEL_GIRO); Serial.print("   VOY A activo_CON_OBJETIVO   ");}
   else
     motor.moverMotor(0); // para que se quede quieto.
@@ -432,7 +437,7 @@ if(millis()-state_t>1000)
 {
   state_t=millis();
   printState();
-  Serial.println((millis()-state_t));
+  
 }
   
 
