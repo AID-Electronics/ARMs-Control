@@ -138,12 +138,16 @@ void workingF() {
   
   
   
-printTargets();
+//printTargets();
 Serial.print(" ");
 Serial.print(Count_Target_tiempoReal);
 Serial.print(" ");
 Serial.println(sacar_Velocidad());
-print_target(closest_target);
+if(Count_Target_tiempoReal)
+{
+  Serial.print(" ESTE ES EL CLOSEST TARGET");
+  print_target(closest_target);
+}
 
   switch (state)
   {
@@ -157,12 +161,9 @@ print_target(closest_target);
   CheckRST();
   
   if (CheckSendData())
-  {
-    if(Count_Target_tiempoReal>0)
     enviar_data_radar(closest_target);
-   else
-    enviar_data_radar(b);
-  }
+  
+  
   
     
   
@@ -299,7 +300,7 @@ void activo_con() {
 
 void activo_sin() {
 
-  VEL_GIRO = sacar_Velocidad();
+  //VEL_GIRO = sacar_Velocidad();
 
   if (VEL_GIRO > 1)
     {state = activo_CON_OBJETIVO; Serial.print(VEL_GIRO); Serial.print("   VOY A activo_CON_OBJETIVO   ");}

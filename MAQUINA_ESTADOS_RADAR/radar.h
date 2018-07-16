@@ -55,6 +55,7 @@ Target Objetivos[TARGET_MAX_COUNT]; //Este es un vector con elnumero totales de 
 Target ObjetivosTiempoReal[IN_AIR_MAX_TARGETS]; // vecor con los objetivos localizados en el momento
 Target closest_target;
 Target aux_target;
+Target Real_target;
 
 
 //Velocidad a la que deberá girar la plataforma
@@ -91,7 +92,14 @@ int sacarID(byte buff[])                //funcion para sacar la ID del paquete c
     return id;
   
 }
-
+void vaciar_obj(Target &a)
+{
+  a.ID=0;
+  a.velocidad=0;
+  a.angulo=0;
+  a.distancia=0;
+  a.intensidad=0;
+}
 void cleanBuffer(byte buff[])           //Función para limpiar el buffer de datos despues de cada iteraccion
   {
     for(int i=0;i<strlen(buff);i++)
@@ -209,14 +217,14 @@ void printIP (IPAddress ad)  //función para imprimir la dirección IP
              }
           }
 
-          if(aux.velocidad >0)
-          {
+          //if(aux.velocidad >0) 
+         // {
             ObjetivosTiempoReal[cont_targets]=aux;
             cont_targets++;
-          }
+         // }
           
 
-          if(!flag_aux && aux.velocidad >0)
+          if(!flag_aux && aux.velocidad >0) // ESTO NOS SOBRA
           {
            Objetivos[Count_Target]=aux;
            Count_Target++;
@@ -238,7 +246,7 @@ for( int i = 0; i < cantidad; i++)
     {
         for( int j = i; j < cantidad; j++)
         {
-            if((a[i].distancia > a[j].distancia)&&(a[j].intensidad > intensidad_minima)) // La intensidad minima para considerar que el objeto detectado es el deseado
+            if((a[i].distancia > a[j].distancia)/*&&(a[j].intensidad > intensidad_minima*/) // La intensidad minima para considerar que el objeto detectado es el deseado
             {
                 aux = a[i];
                 a[i] = a[j];
@@ -311,10 +319,10 @@ float sacar_Velocidad(){
    //si hay paquete...
    if (packetSize)
    {
-
+    IPAddress remote = Udp.remoteIP();
     cleanBuffer(packetBuffer); //VACIAMOS A CAD DE CARACTERES
     
-    Udp.read(packetBuffer,packetSize); //Según la libreria 
+    Udp.read(packetBuffer,packetSize); //LEEMOS PAQUETE
 
     
     if (!flag)      //La Primera vez que entramos en el LOOP guardamos el valor de la ID del mensaje para comprobar mas adelante errores
@@ -323,7 +331,7 @@ float sacar_Velocidad(){
         flag=1;
     }
 
-    if(Aux==sacarID(packetBuffer))  //Comprobación de que no haya paquetes repetidos
+    if(Aux!=sacarID(packetBuffer))  //Comprobación de que no haya paquetes repetidos
     {                                                                                     //PUEDE DAR ERROR SI POR CASUALIDAD SE SALTA 1 PAQUETE (no debería pasar)
       //Serial.println("Pasamos a desglosar paquertes ");
       //Serial.println(" ");
@@ -339,9 +347,10 @@ float sacar_Velocidad(){
      // Serial.print("  Nº objetivos detectados:    ");
        //Serial.println(Count_Target_tiempoReal);
        
-      if(Count_Target_tiempoReal<1)
+      if(Count_Target_tiempoReal<1) //NO ESTA PERO NO INFLUYE 
       {
-         return 0.0f;
+        Serial.println(" NO OBJ");
+         return 0.1f;
          
       }
      
@@ -351,6 +360,7 @@ float sacar_Velocidad(){
 
     //  Serial.print("    HUHU");
      // print_target(closest_target);
+     Serial.print("DEVUELVO VELOCIDAD    ");
       return closest_target.velocidad; 
       }
       else
