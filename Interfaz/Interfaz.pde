@@ -98,7 +98,7 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
-  bar1.draw(mouseX);
+  bar1.draw(mouseX-100);
 }
 
 void serialEvent(Serial port) {

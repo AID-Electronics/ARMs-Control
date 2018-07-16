@@ -69,13 +69,27 @@ class BarIndicator{
       value = endPos;
     }
     
+    boolean isPositive;
+    float reff = posX + map(0,minValue,maxValue,startPos,endPos);
+    println(reff);
+    if (value < 0){
+      isPositive = false;
+    }
+    else{
+      isPositive = true;
+    }
+    
     noStroke();
     fill(200);
     rect(posX,posY,sizeX,sizeY);
     stroke(0);
     strokeWeight(1);
     fill(red,green,blue);
-    rect(posX,posY,value,sizeY);
+    if (isPositive){
+      rect(reff,posY,value,sizeY);
+    }else{
+      rect(reff,posY,value,sizeY);
+    }
     strokeWeight(1.5);
     noFill();
     rect(posX,posY,sizeX,sizeY);
