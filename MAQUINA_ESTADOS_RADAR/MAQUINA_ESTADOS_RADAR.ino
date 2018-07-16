@@ -46,7 +46,7 @@ void setup_Coms()
   int flag = 0;
   int present;
   int past;
-  Serial.println("Iniciando comunicaciones");
+  //Serial.println("Iniciando comunicaciones");
 
   if (!digitalRead(pinState)) {
 
@@ -119,7 +119,7 @@ void StandbyF() {
 
 sacar_Velocidad();
 //if(Count_Target_tiempoReal)
-printTargets();
+//printTargets();
 
 CheckRST();
   
@@ -134,19 +134,36 @@ CheckRST();
 
 }
 
+
+
+
+unsigned long working_t; ///////////////////////////////////////OJOOOOOOOOOOOOOOOOo
 void workingF() {
+
+ 
+  if (CheckSendData())              // COMPROBAR SI EL MAESTRO PIDE DATOS
+    enviar_data_radar(Real_target);
   
-  
-  
+  /*
 //printTargets();
 Serial.print(" ");
 Serial.print(Count_Target_tiempoReal);
 Serial.print(" ");
-Serial.println(sacar_Velocidad());
+Serial.println(sacar_Velocidad());*/
+sacar_Velocidad();
 if(Count_Target_tiempoReal)
 {
-  Serial.print(" ESTE ES EL CLOSEST TARGET");
-  print_target(closest_target);
+    if(((millis()-working_t)>500))
+    {
+
+      
+       working_t=millis();
+      Serial.print(" ESTE ES EL CLOSEST TARGET");
+      print_target(Real_target);
+     
+    
+    }
+  
 }
 
   switch (state)
@@ -158,14 +175,20 @@ if(Count_Target_tiempoReal)
 
   }
   
-  CheckRST();
-  
-  if (CheckSendData())
-    enviar_data_radar(closest_target);
+  CheckRST(); // COMANDO DEL RESET DESDE EL MAESTRO
   
   
   
-    
+  
+  if(Count_Target_tiempoReal)//asignamos los datos leidos a la variable que se mandará al maestro
+  {
+    if(closest_target.velocidad>0)
+      Real_target=closest_target;
+      else
+      Real_target=b;                                    
+  }
+    else
+    Real_target=b;
   
 
   if (digitalRead(pinState) == LOW)
@@ -325,6 +348,7 @@ void init_Gl_variables()
   b.angulo = 0.0f;
   b.intensidad = 0.0f;
   VEL_GIRO = 0;
+  working_t=0;
 }
 
 void reset_States()
@@ -336,7 +360,7 @@ void reset_States()
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(2000000);
   pinMode(pinState, INPUT);
   pinMode(pinData, INPUT);
   pinMode(pinAterrizaje, OUTPUT);
@@ -348,7 +372,6 @@ void setup() {
 
   init_Gl_variables();  // inicializamos las variables globales en esta función
  
-
 
 
 
@@ -395,6 +418,10 @@ void loop() {
         mstate = aterrizando;
         state = activo_CON_OBJETIVO;
         Serial.println("estoy en WORKING y va a aterrizar");
+        break;
+        
+        case '5':
+        enviar_data_radar(b);
         break;
 
         default:

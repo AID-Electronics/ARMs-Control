@@ -6,7 +6,7 @@
 #define pinRadar 9
 #define tiempoEspera 100
 #define tiempoEspera_reset 10
-#define tiempoEspera_data 5
+#define tiempoEspera_data 30
 #define tiempo_aterrizaje 6000
 #define tiempo_espera_postAterrizaje 1000
 

@@ -121,6 +121,7 @@ void CheckRST(){
 bool CheckSendData(){
     if((digitalRead(pinData)== HIGH) && !(data_flag))
       {
+        Serial.println("ME PIDE DATOS EL MASTER ");
         data_t1=millis();
         data_flag=true;
        }
@@ -130,17 +131,18 @@ bool CheckSendData(){
         data_t2=millis();
          if((data_t2-data_t1) > (tiempoEspera_data-time_tol) && (data_t2-data_t1)<(tiempoEspera_data + time_tol ))
          {
-       //   Serial.print(data_t2-data_t1);
+          Serial.print(data_t2-data_t1);
           data_flag=false;
+          Serial.println("  SUCCES DATA");
           return true;
-      //    Serial.println("  SUCCES DATA");
+          
           
          }
          else
          {
-        //  Serial.print(data_t2-data_t1);
+         Serial.print(data_t2-data_t1);
             data_flag=false;
-        //    Serial.println("  NOT SUCCES DATA");
+            Serial.println("  NOT SUCCES DATA");
             
             //Pendiente por ver el tratamiento de estos errores
          }

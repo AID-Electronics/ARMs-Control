@@ -70,7 +70,7 @@ EthernetUDP Udp;
 
 
 //DATA sendingData;  //Esto es lo que pasamos por RS485
-byte packetBuffer[UDP_TX_PACKET_MAX_SIZE*4];  //Lugar donde recibiremos datos
+byte packetBuffer[UDP_TX_PACKET_MAX_SIZE*7];  //Lugar donde recibiremos datos
 bool flag;  //Bandera para indicar si es el inicio del programa
 
 
@@ -246,7 +246,7 @@ for( int i = 0; i < cantidad; i++)
     {
         for( int j = i; j < cantidad; j++)
         {
-            if((a[i].distancia > a[j].distancia)/*&&(a[j].intensidad > intensidad_minima*/) // La intensidad minima para considerar que el objeto detectado es el deseado
+            if((a[i].distancia > a[j].distancia)/*&&(a[j].intensidad > intensidad_minima*/) // La intensidad minima para considerar si el objeto detectado es el deseado
             {
                 aux = a[i];
                 a[i] = a[j];
@@ -261,10 +261,12 @@ for( int i = 0; i < cantidad; i++)
            {
              aux=a[k];
              bandera=1;
+             return aux;
+
            }
       }//////////////////////////////////////////09/07 dudas
 
-
+  vaciar_obj(aux);
   return aux;
 
 }
@@ -323,7 +325,8 @@ float sacar_Velocidad(){
     cleanBuffer(packetBuffer); //VACIAMOS A CAD DE CARACTERES
     
     Udp.read(packetBuffer,packetSize); //LEEMOS PAQUETE
-
+    Serial.print("  PACKET SIZE: ");
+    Serial.println(packetSize);
     
     if (!flag)      //La Primera vez que entramos en el LOOP guardamos el valor de la ID del mensaje para comprobar mas adelante errores
     {
@@ -367,7 +370,7 @@ float sacar_Velocidad(){
       {Serial.print(" ERROR LECTURA RADAR "); return -7.5f;} // 16/07
    }
    else{
-           //////////////////////////////////////////////////////////////
+           //////////////////////////////////////////////////////////////SI NO RECIBO PAQUETE
            
            return -5.0F;
    }
