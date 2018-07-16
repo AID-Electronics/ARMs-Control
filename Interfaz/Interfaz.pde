@@ -82,7 +82,8 @@ void setup(){
   gauge1.setName("VELOCIDAD GIRO");
   
   bar1 = new BarIndicator(700,500,200,15);
-  bar1.setLimits(0,500);
+  bar1.setLimits(-10,10);
+  bar1.setColor(255,164,032);
 }
 
 void draw(){  

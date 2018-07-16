@@ -20,11 +20,18 @@ class BarIndicator{
   
   boolean type;
   
+  String name;
+  PFont text;
+  int limitText_size;
+  
   BarIndicator(float posx, float posy){
     this.posX = posx;
     this.posY = posy;
     this.startPos = 0;
     this.endPos = sizeX;
+    
+    text = createFont("Arial",14,true);
+    limitText_size = 16;
   }
   BarIndicator(float posx, float posy, float sizex, float sizey){
     this.posX = posx;
@@ -38,6 +45,9 @@ class BarIndicator{
     
     this.startPos = 0;
     this.endPos = sizeX;
+    
+    text = createFont("Arial",14,true);
+    limitText_size = 16;
   }
   void setSize(float sizex, float sizey){
     this.sizeX = sizex;
@@ -62,11 +72,22 @@ class BarIndicator{
     noStroke();
     fill(200);
     rect(posX,posY,sizeX,sizeY);
+    stroke(0);
+    strokeWeight(1);
     fill(red,green,blue);
     rect(posX,posY,value,sizeY);
-    stroke(0);
+    strokeWeight(1.5);
     noFill();
     rect(posX,posY,sizeX,sizeY);
+    strokeWeight(1);
     
+    //Text
+    fill(0);
+    textAlign(CENTER,BOTTOM);
+    String str = str(minValue);
+    textFont(text,limitText_size);
+    text(str, posX, posY);
+    str = str(maxValue);
+    text(str, posX + sizeX, posY);
   }
 }

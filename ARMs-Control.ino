@@ -309,21 +309,22 @@ void loop(){
       entradaEstado = false;
     }
     if (error.IMU){
+    if (error.IMU == on){
       errorSolucionado (1);
     }
-    else if (error.CAN){
+    else if (error.CAN == on){
       errorSolucionado (2);
     }
-    else if (error.motoresON){
+    else if (error.motoresON == on){
       errorSolucionado (3);
     }
-    else if (error.motoresSetup){
+    else if (error.motoresSetup == on){
       errorSolucionado (4);
     }
-    else if (error.comunicRF){
+    else if (error.comunicRF == on){
       errorSolucionado (5);
     }
-    else if (error.comunicPLCs){
+    else if (error.comunicPLCs == on){
       errorSolucionado (6);
     }
     else if (com_maxi.getError()){
@@ -479,6 +480,7 @@ void loop(){
   ahoraC3 = millis();
   if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
+    com_maxi.velGiro += 0.5;
 
     //Datos para interfaz
     if (globalState > 6){
