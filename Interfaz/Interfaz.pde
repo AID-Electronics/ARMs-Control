@@ -34,7 +34,7 @@ int state; //del maxi
 float velGiro;
 
 void setup(){
-  size(1000,600);
+  size(1100,600);
   
 
   boolean serialError = false;
@@ -98,7 +98,7 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
-  bar1.draw(mouseX-100);
+  bar1.draw(mouseX/10-100);
 }
 
 void serialEvent(Serial port) {

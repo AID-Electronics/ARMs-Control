@@ -43,8 +43,8 @@ class BarIndicator{
     this.green = 100;
     this.blue = 100;
     
-    this.startPos = 0;
-    this.endPos = sizeX;
+    this.startPos = posX;
+    this.endPos = posX + sizeX;
     
     text = createFont("Arial",14,true);
     limitText_size = 16;
@@ -67,17 +67,22 @@ class BarIndicator{
     value = map(inputValue,minValue,maxValue,startPos,endPos);
     if (value > endPos){
       value = endPos;
+    }else if (value < startPos){
+      value = startPos;
     }
     
     boolean isPositive;
-    float reff = posX + map(0,minValue,maxValue,startPos,endPos);
-    println(reff);
-    if (value < 0){
+    float reff = map(0,minValue,maxValue,startPos,endPos);
+    if (value < reff){
       isPositive = false;
     }
     else{
       isPositive = true;
     }
+    println(isPositive);
+    println(inputValue);
+    println(value);
+    println(reff);
     
     noStroke();
     fill(200);
@@ -87,8 +92,9 @@ class BarIndicator{
     fill(red,green,blue);
     if (isPositive){
       rect(reff,posY,value,sizeY);
+      println(value);
     }else{
-      rect(reff,posY,value,sizeY);
+      rect(value,posY,posX,sizeY);
     }
     strokeWeight(1.5);
     noFill();
