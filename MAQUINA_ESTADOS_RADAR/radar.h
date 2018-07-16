@@ -224,7 +224,7 @@ void printIP (IPAddress ad)  //función para imprimir la dirección IP
           flag_aux=0;
         }
 
-          Count_Target_tiempoReal=cont_targets;
+          Count_Target_tiempoReal=numObjetivos;
         
       }//*/
   }
@@ -304,8 +304,9 @@ void printTargets()
 }
 
 float sacar_Velocidad(){
+  
    int packetSize = Udp.parsePacket();
-
+  
 
    //si hay paquete...
    if (packetSize)
@@ -352,15 +353,16 @@ float sacar_Velocidad(){
      // print_target(closest_target);
       return closest_target.velocidad; 
       }
+      else
+      {Serial.print(" ERROR LECTURA RADAR "); return -7.5f;} // 16/07
    }
    else{
-           //////////////////////////////////////////////////////////////7
+           //////////////////////////////////////////////////////////////
            
            return -5.0F;
    }
 
-    // en el caso de no detectar nada o fallo supondremos que no va a aterrizar
-             // ningun dron por lo que enviamos velocidad=0.
+ 
 }
 
 

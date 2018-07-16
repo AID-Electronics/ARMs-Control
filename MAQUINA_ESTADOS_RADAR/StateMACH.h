@@ -58,6 +58,42 @@ int aterrizaje_t1;
 int aterrizaje_t2;
 
 
-
-
+void printState(){
+  switch (currentState) {
+    case Standby:
+      Serial.print("Estado Global STANDBY,  ");
+      break;
+      case working:
+      Serial.print("Estado Global WORKING,  ");
+      break;
+      case error:
+      Serial.print("Estado Global ERROR,  ");
+      break;
+    
+     }
+     switch (state){
+    case activo_CON_OBJETIVO:
+      Serial.print("Estado De trabajo activo_CON_OBJETIVO,  ");
+      break;
+      case activo_SIN_OBJETIVO:
+      Serial.print("Estado De trabajo activo_SIN_OBJETIVO,  ");
+      break;
+      default:
+      Serial.print("Estado De trabajo WAAAT,  ");
+      break;
+    
+}
+switch (mstate){
+    case acercandose:
+      Serial.println("Estado De movimiento acercandose,  ");
+      break;
+      case aterrizando:
+      Serial.println("Estado De movimiento aterrizando,  ");
+      break;
+      default:
+      Serial.println("Estado De movimiento WAAAT,  ");
+      break;
+    
+}
+}
 

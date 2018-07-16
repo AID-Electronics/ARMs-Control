@@ -118,7 +118,7 @@ void StandbyF() {
 
 
 sacar_Velocidad();
-if(Count_Target_tiempoReal)
+//if(Count_Target_tiempoReal)
 printTargets();
 
 CheckRST();
@@ -137,9 +137,13 @@ CheckRST();
 void workingF() {
   
   
-  if(Count_Target_tiempoReal)
+  
 printTargets();
-
+Serial.print(" ");
+Serial.print(Count_Target_tiempoReal);
+Serial.print(" ");
+Serial.println(sacar_Velocidad());
+print_target(closest_target);
 
   switch (state)
   {
@@ -189,11 +193,11 @@ void update_GL_State() {
 void acercandoseF() {
 
 
-  
+ 
 
   VEL_GIRO = sacar_Velocidad();
   //  motor.moverMotor();
-  //Serial.println(VEL_GIRO);
+  Serial.println(VEL_GIRO);
 
   if (closest_target.distancia <= Distacia_minima)
   {
@@ -212,7 +216,7 @@ void acercandoseF() {
      Serial.println("VUELVO A activo_SIN_OBJETIVO");
   }
 
-  else if(VEL_GIRO<=4.0f)
+  else if(VEL_GIRO<=-4.0f)
   {
     Serial.print("  no recibo datos  ");
   }
@@ -322,6 +326,12 @@ void init_Gl_variables()
   VEL_GIRO = 0;
 }
 
+void reset_States()
+{
+  currentState=Standby;
+  state = activo_SIN_OBJETIVO;
+  mstate = acercandose;
+}
 
 void setup() {
   // put your setup code here, to run once:
