@@ -465,6 +465,10 @@ void loop(){
       error.reset();
       nextState(0);
     }
+    if (serialToken == 'F'){
+      Serial.println("Salto a estado 10");
+      nextState(10);
+    }
   }
   
   if (emergCAN){

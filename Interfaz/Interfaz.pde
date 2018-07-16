@@ -8,6 +8,7 @@ Button button2;
 Button button3;
 Button button4;
 Button button5;
+Button button6;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -66,6 +67,10 @@ void setup(){
   button5.text = "NOTOCAR";
   button5.setColor(0,100,255);
   
+  button6 = new Button (550,50,75,75);
+  button6.text = "State10";
+  button6.setColor(0,100,100);
+  
   radar = new Radar(500,250,600,40);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
@@ -83,6 +88,7 @@ void draw(){
   button3.draw();
   button4.draw();
   button5.draw();
+  button6.draw();
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
@@ -108,5 +114,8 @@ void mousePressed(){
   }
   if (button5.isMouseOver()){
     port.write("E");
+  }
+  if (button6.isMouseOver()){
+    port.write("F");
   }
 }
