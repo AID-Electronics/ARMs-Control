@@ -42,9 +42,14 @@ class BarIndicator{
   }
   
   void draw(){
-    stroke(0);
-    strokeWeight(1);
-    fill(red,green,blue);
+    noStroke();
+    fill(200);
     rect(posX,posY,sizeX,sizeY);
+    fill(red,green,blue);
+    rect(posX,posY,mouseX,sizeY);
+    stroke(0);
+    noFill();
+    rect(posX,posY,sizeX,sizeY);
+    
   }
 }

@@ -81,7 +81,7 @@ void setup(){
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO");
   
-  bar1 = new BarIndicator(600,600,500,100);
+  bar1 = new BarIndicator(700,500,200,15);
 }
 
 void draw(){  
@@ -96,8 +96,7 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
-  //bar1.draw();
-  rect(700,500,200,15  );
+  bar1.draw();
 }
 
 void serialEvent(Serial port) {
