@@ -15,6 +15,8 @@ Telemetria telemetria;
 Alarmas alarmas;
 Gauge gauge1;
 BarIndicator bar1;
+BarIndicator bar2;
+BarIndicator bar3;
 
 //Datos PLC
 int globalState;
@@ -32,6 +34,9 @@ float tempM2;
 //Plataforma
 int state; //del maxi
 float velGiro;
+float accelX = 0;
+float accelY = 0;
+float accelZ = 0;
 
 void setup(){
   size(1100,600);
@@ -81,9 +86,15 @@ void setup(){
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO");
   
-  bar1 = new BarIndicator(700,500,200,15);
+  bar1 = new BarIndicator(700,450,200,15);
   bar1.setLimits(-10,10);
   bar1.setColor(255,164,032);
+  bar2 = new BarIndicator(700,500,200,15);
+  bar2.setLimits(-10,10);
+  bar2.setColor(255,164,032);
+  bar3 = new BarIndicator(700,550,200,15);
+  bar3.setLimits(-10,10);
+  bar3.setColor(255,164,032);
 }
 
 void draw(){  
@@ -98,7 +109,9 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(velGiro);
-  bar1.draw(mouseX/10-100);
+  bar1.draw(accelX);
+  bar2.draw(accelY);
+  bar3.draw(accelZ);
 }
 
 void serialEvent(Serial port) {
