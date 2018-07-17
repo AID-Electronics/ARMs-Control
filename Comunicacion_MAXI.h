@@ -227,7 +227,7 @@ void Comunicacion_MAXI::printData(){
 void Comunicacion_MAXI::requestData(){
   bool msgReceived = false;
   digitalWrite(pinRequestData,HIGH);
-  delay (5);
+  delay (30);
   digitalWrite(pinRequestData,LOW);
   uint32_t comienzo = millis();
   while (!msgReceived && millis() - comienzo < 100){

@@ -308,7 +308,6 @@ void loop(){
 
       entradaEstado = false;
     }
-    if (error.IMU){
     if (error.IMU == on){
       errorSolucionado (1);
     }
@@ -499,6 +498,9 @@ void loop(){
       //IMU fija
       IMU_fija.update();
       IMU_fija.orientacion2Interface();
+
+      //Imu movil
+      platform.sendAccel2Interface();
 
       //Datos del dron 
       com_maxi.sendData2Interface();
