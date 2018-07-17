@@ -82,10 +82,6 @@ class BarIndicator{
     else{
       isPositive = true;
     }
-    println(isPositive);
-    println(inputValue);
-    println(value);
-    println(reff);
     
     noStroke();
     fill(200);
