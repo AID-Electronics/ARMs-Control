@@ -77,7 +77,7 @@ void setup(){
   button6.text = "State10";
   button6.setColor(0,100,100);
   
-  radar = new Radar(600,250,600,40);
+  radar = new Radar(600,250,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(300,130);
