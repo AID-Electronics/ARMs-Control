@@ -91,10 +91,14 @@ class BarIndicator{
     strokeWeight(1);
     fill(red,green,blue);
     if (isPositive){
-      rect(reff,posY,value,sizeY);
+      rectMode(CORNERS);
+      rect(reff,posY,value,posY + sizeY);
       println(value);
+      rectMode(CORNER);
     }else{
-      rect(value,posY,posX,sizeY);
+      rectMode(CORNERS);
+      rect(value,posY, reff, posY+sizeY);
+      rectMode(CORNER);
     }
     strokeWeight(1.5);
     noFill();
