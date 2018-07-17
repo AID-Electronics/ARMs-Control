@@ -104,3 +104,12 @@ void printState(){
 
 }
 
+bool condición_objetivo_valido(Target a)
+{
+  if(a.velocidad>0)
+    if(a.intensidad> 345 && a.intensidad< 1345)
+      return true;
+
+  return false;
+}
+
