@@ -27,6 +27,10 @@ void stringParse(String str){
       String data = str.substring(charPos+2);
       parsePlatformString(data);
     }
+    else if (name.equals("Accel")){
+      String data = str.substring(charPos+2);
+      parseAccelString(data);
+    }
   }
 }
 
@@ -64,4 +68,10 @@ void parsePlatformString(String str){
   String list[] = str.split(","); //<>//
   velGiro = float(list[0]);
   state = int(list[1]);
+}
+void parseAccelString(String str){
+  String list[] = str.split(",");
+  accelX = float(list[0]);
+  accelY = float(list[1]);
+  accelZ = float(list[2]);
 }
