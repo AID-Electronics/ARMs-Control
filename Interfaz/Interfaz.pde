@@ -15,9 +15,7 @@ Objetivo dron;
 Telemetria telemetria;
 Alarmas alarmas;
 Gauge gauge1;
-BarIndicator bar1;
-BarIndicator bar2;
-BarIndicator bar3;
+Acelerometro accelPlatform;
 
 PImage logoAID;
 
@@ -89,20 +87,13 @@ void setup(){
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(350,130);
+  
   gauge1 = new Gauge(500,500);
   gauge1.setLimits(0,100);
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO (RPM)");
   
-  bar1 = new BarIndicator(700,450,200,15);
-  bar1.setLimits(-10,10);
-  bar1.setColor(255,164,032);
-  bar2 = new BarIndicator(700,500,200,15);
-  bar2.setLimits(-10,10);
-  bar2.setColor(255,164,032);
-  bar3 = new BarIndicator(700,550,200,15);
-  bar3.setLimits(-10,10);
-  bar3.setColor(255,164,032);
+  accelPlatform = new Acelerometro();
   
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
@@ -123,9 +114,7 @@ void draw(){
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(dron.vel);
-  bar1.draw(accelX);
-  bar2.draw(accelY);
-  bar3.draw(accelZ);
+  accelPlatform.draw();
 }
 
 void serialEvent(Serial port) {
