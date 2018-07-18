@@ -178,7 +178,7 @@ if(Count_Target_tiempoReal)
   //IMPORTANTE
   if(Count_Target_tiempoReal)//asignamos los datos leidos a la variable que se mandará al maestro
   {
-    if(closest_target.velocidad>0)
+    if(closest_target.velocidad<0)//18\07
       Real_target=closest_target;
       else
       Real_target=b;                                    
@@ -213,7 +213,6 @@ void update_GL_State() {
 void acercandoseF() {
 
 
- 
 
 //  VEL_GIRO = sacar_Velocidad();
   //  motor.moverMotor();
@@ -228,7 +227,7 @@ void acercandoseF() {
     motor.moverMotor(VEL_GIRO);
     return;
   }
-  else if (Real_target.velocidad<1.0f && Real_target.distancia<1.0f && Real_target.ID<1)//VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)
+  else if (Real_target.velocidad<1.0f && Real_target.distancia<1.0f && Real_target.ID<1)//VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)    Para cuanto tiene todo 0s.
   {
     Serial.print(VEL_GIRO);
      state = activo_SIN_OBJETIVO;
@@ -324,7 +323,7 @@ void activo_sin() {
 
   //VEL_GIRO = sacar_Velocidad();
 
-  if (Real_target.velocidad > 1)
+  if (Real_target.velocidad > 1)//18/07 
     {state = activo_CON_OBJETIVO; Serial.print(VEL_GIRO); Serial.print("   VOY A activo_CON_OBJETIVO   ");}
   else
     motor.moverMotor(0); // para que se quede quieto.
@@ -424,6 +423,10 @@ void loop() {
         enviar_data_radar(b);
         break;
 
+         case '6':
+        sendMSG("$E001;");
+        break;
+        
         default:
         nextState = setupRadar;
         Serial.println("VOY al comienzo");

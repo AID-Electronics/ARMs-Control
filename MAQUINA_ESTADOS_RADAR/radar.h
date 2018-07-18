@@ -257,7 +257,7 @@ for( int i = 0; i < cantidad; i++)
 
       for(int k=0;k< cantidad;k++)
       {
-        if(a[k].velocidad>0 && bandera==0)
+        if(a[k].velocidad<0 && bandera==0) // 17/07 parece que la datasheet esta incorrecta 
            {
              aux=a[k];
              bandera=1;
