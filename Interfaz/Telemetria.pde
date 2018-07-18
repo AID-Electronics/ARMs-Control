@@ -31,6 +31,7 @@ class Telemetria{
     name.append(" - velocidad");
     name.append(" - distancia");
     name.append(" - angulo");
+    name.append(" - intensidad");
     
     name.append("Orientacion plataforma");
     name.append(" - angX");
@@ -57,6 +58,7 @@ class Telemetria{
     data.append(str(dron.vel));
     data.append(str(dron.dist));
     data.append(str(dron.ang));
+    data.append(str(dron.intensidad));
     data.append("");
     
     data.append(str(orientX));

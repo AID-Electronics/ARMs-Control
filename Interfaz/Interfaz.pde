@@ -18,6 +18,8 @@ BarIndicator bar1;
 BarIndicator bar2;
 BarIndicator bar3;
 
+PImage logoAID;
+
 //Datos PLC
 int globalState;
 int localState;
@@ -82,7 +84,7 @@ void setup(){
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(300,130);
   gauge1 = new Gauge(500,500);
-  gauge1.setLimits(0,300);
+  gauge1.setLimits(0,100);
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO");
   
@@ -95,10 +97,14 @@ void setup(){
   bar3 = new BarIndicator(700,550,200,15);
   bar3.setLimits(-10,10);
   bar3.setColor(255,164,032);
+  
+  logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
 
 void draw(){  
   background(200);
+  //tint(255, 127);
+  //image(logoAID,600,0);
   button1.draw();
   button2.draw();
   button3.draw();
@@ -108,7 +114,7 @@ void draw(){
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
-  gauge1.draw(velGiro);
+  gauge1.draw(dron.vel);
   bar1.draw(accelX);
   bar2.draw(accelY);
   bar3.draw(accelZ);
