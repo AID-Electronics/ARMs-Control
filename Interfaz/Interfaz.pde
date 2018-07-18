@@ -93,7 +93,7 @@ void setup(){
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO (RPM)");
   
-  accelPlatform = new Acelerometro();
+  accelPlatform = new Acelerometro(900,550);
   
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
