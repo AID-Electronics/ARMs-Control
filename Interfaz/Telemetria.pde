@@ -53,7 +53,7 @@ class Telemetria{
     name.append(" Velocidad giro");
     name.append(" Estado Maxi");
     
-    units.append("Unidades");
+    units.append("Units");
     units.append("");
     units.append("km/h");
     units.append("m");

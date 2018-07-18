@@ -48,7 +48,7 @@ void parseOrientationString(String str){
 void parseDronString(String str){
   String list[] = str.split(",");
   dron.id = int(list[0]);
-  dron.vel = float(list[1]);
+  dron.vel = -float(list[1]);
   dron.dist = float(list[2]);
   dron.ang = float(list[3]);
   dron.intensidad = float(list[4]);

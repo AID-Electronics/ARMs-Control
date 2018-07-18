@@ -92,7 +92,6 @@ class BarIndicator{
     if (isPositive){
       rectMode(CORNERS);
       rect(reff,posY,value,posY + sizeY);
-      println(value);
       rectMode(CORNER);
     }else{
       rectMode(CORNERS);
