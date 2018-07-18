@@ -81,7 +81,7 @@ void setup(){
   button6.text = "State10";
   button6.setColor(0,100,100);
   
-  closeButton = new Button (displayWidth - 30,30,30,30);
+  closeButton = new Button (displayWidth - 30,10,50,30);
   closeButton.text = "Exit";
   closeButton.setColor(255,0,0);
   
