@@ -9,6 +9,7 @@ Button button3;
 Button button4;
 Button button5;
 Button button6;
+Button closeButton;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -41,7 +42,8 @@ float accelY = 0;
 float accelZ = 0;
 
 void setup(){
-  size(1100,600);
+  //size(1100,600);
+  fullScreen();
   
 
   boolean serialError = false;
@@ -79,10 +81,14 @@ void setup(){
   button6.text = "State10";
   button6.setColor(0,100,100);
   
+  closeButton = new Button (displayWidth - 30,30,30,30);
+  closeButton.text = "Exit";
+  closeButton.setColor(255,0,0);
+  
   radar = new Radar(600,250,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
-  alarmas = new Alarmas(300,130);
+  alarmas = new Alarmas(350,130);
   gauge1 = new Gauge(500,500);
   gauge1.setLimits(0,100);
   gauge1.setColor(185,92,200);
@@ -111,6 +117,8 @@ void draw(){
   button4.draw();
   button5.draw();
   button6.draw();
+  closeButton.draw();
+  
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
@@ -142,5 +150,8 @@ void mousePressed(){
   }
   if (button6.isMouseOver()){
     port.write("F");
+  }
+  if (closeButton.isMouseOver()){
+    exit();
   }
 }
