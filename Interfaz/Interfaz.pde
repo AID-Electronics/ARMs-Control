@@ -10,6 +10,7 @@ Button button4;
 Button button5;
 Button button6;
 Button closeButton;
+Button resetButton;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -84,6 +85,11 @@ void setup(){
   closeButton.setColor(255,0,0);
   closeButton.setVertex(5);
   
+  resetButton = new Button (displayWidth-60,displayHeight-60,60,60);
+  resetButton.text = "RESET";
+  resetButton.setColor(255,0,0);
+  resetButton.setVertex(15);
+  
   radar = new Radar(700,250,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
@@ -110,6 +116,7 @@ void draw(){
   button5.draw();
   button6.draw();
   closeButton.draw();
+  resetButton.draw();
   
   radar.draw(dron);
   telemetria.draw();
@@ -143,5 +150,8 @@ void mousePressed(){
   }
   if (closeButton.isMouseOver()){
     exit();
+  }
+  if (resetButton.isMouseOver()){
+    port.write("R");
   }
 }

@@ -82,6 +82,8 @@ void nextState(uint8_t estado){
   arrivalState_time = millis();
 }
 
+void (*resetFunc)(void) = 0;
+
 void setup(){
   Serial.begin(250000);
   Serial1.begin(4800);
@@ -473,6 +475,10 @@ void loop(){
     if (serialToken == 'F'){
       Serial.println("Salto a estado 10");
       nextState(10);
+    }
+    if (serialToken == 'R'){
+      Serial.println("Reset Controllino");
+      resetFunc();
     }
   }
   
