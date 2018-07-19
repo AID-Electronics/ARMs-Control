@@ -111,7 +111,7 @@ class BarIndicator{
     text(str, posX, posY);
     str = str(maxValue);
     text(str, posX + sizeX, posY);
-    str = str(inputValue);
+    str = nf(inputValue,0,3);
     textFont(text,value_size);
     text(str, posX + sizeX/2, posY);
   }
