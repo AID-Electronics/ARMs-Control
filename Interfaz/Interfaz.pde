@@ -9,14 +9,13 @@ Button button3;
 Button button4;
 Button button5;
 Button button6;
+Button closeButton;
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
 Alarmas alarmas;
 Gauge gauge1;
-BarIndicator bar1;
-BarIndicator bar2;
-BarIndicator bar3;
+Acelerometro accelPlatform;
 
 PImage logoAID;
 
@@ -41,7 +40,8 @@ float accelY = 0;
 float accelZ = 0;
 
 void setup(){
-  size(1100,600);
+  //size(1100,600);
+  fullScreen();
   
 
   boolean serialError = false;
@@ -79,24 +79,21 @@ void setup(){
   button6.text = "State10";
   button6.setColor(0,100,100);
   
+  closeButton = new Button (displayWidth - 30,10,50,30);
+  closeButton.text = "Exit";
+  closeButton.setColor(255,0,0);
+  
   radar = new Radar(600,250,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
-  alarmas = new Alarmas(300,130);
+  alarmas = new Alarmas(350,130);
+  
   gauge1 = new Gauge(500,500);
   gauge1.setLimits(0,100);
   gauge1.setColor(185,92,200);
-  gauge1.setName("VELOCIDAD GIRO");
+  gauge1.setName("VELOCIDAD GIRO (RPM)");
   
-  bar1 = new BarIndicator(700,450,200,15);
-  bar1.setLimits(-10,10);
-  bar1.setColor(255,164,032);
-  bar2 = new BarIndicator(700,500,200,15);
-  bar2.setLimits(-10,10);
-  bar2.setColor(255,164,032);
-  bar3 = new BarIndicator(700,550,200,15);
-  bar3.setLimits(-10,10);
-  bar3.setColor(255,164,032);
+  accelPlatform = new Acelerometro(900,550);
   
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
@@ -111,13 +108,13 @@ void draw(){
   button4.draw();
   button5.draw();
   button6.draw();
+  closeButton.draw();
+  
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
   gauge1.draw(dron.vel);
-  bar1.draw(accelX);
-  bar2.draw(accelY);
-  bar3.draw(accelZ);
+  accelPlatform.draw();
 }
 
 void serialEvent(Serial port) {
@@ -142,5 +139,8 @@ void mousePressed(){
   }
   if (button6.isMouseOver()){
     port.write("F");
+  }
+  if (closeButton.isMouseOver()){
+    exit();
   }
 }

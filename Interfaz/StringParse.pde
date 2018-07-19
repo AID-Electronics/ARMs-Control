@@ -49,6 +49,9 @@ void parseDronString(String str){
   String list[] = str.split(",");
   dron.id = int(list[0]);
   dron.vel = float(list[1]);
+  if (dron.vel != 0){
+    dron.vel = -dron.vel;
+  }
   dron.dist = float(list[2]);
   dron.ang = float(list[3]);
   dron.intensidad = float(list[4]);
@@ -74,4 +77,7 @@ void parseAccelString(String str){
   accelX = float(list[0]);
   accelY = float(list[1]);
   accelZ = float(list[2]);
+  accelX = map(accelX,0,10,0,9.8);
+  accelY = map(accelY,0,10,0,9.8);
+  accelZ = map(accelZ,0,10,0,9.8);
 }

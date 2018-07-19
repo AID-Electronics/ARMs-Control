@@ -37,7 +37,7 @@ class Gauge {
     text = createFont("Arial",14,true);
     percent_textSize = 16;
     value_textSize = 30;
-    name_textSize = 25;
+    name_textSize = 20;
   }
   
   void setSize(float innerDiam, float outerDiam){

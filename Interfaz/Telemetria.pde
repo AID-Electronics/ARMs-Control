@@ -5,24 +5,28 @@ class Telemetria{
   float posY;
   float nameColumnWidth;
   float dataColumnWidth;
+  float unitsColumnWidth;
   float rowHeight;
   int margenIzquierdo;
   int distText2upperLimmit;
   StringList name;
   StringList data;
+  StringList units;
   int textSize;
   
   Telemetria(float posX, float posY){
     this.posX = posX;
     this.posY = posY;
-    this.nameColumnWidth = 160;
-    this.dataColumnWidth = 60;
+    this.nameColumnWidth = 175;
+    this.dataColumnWidth = 85;
+    this.unitsColumnWidth = 60;
     rowHeight = 23;
     margenIzquierdo = 10;
     distText2upperLimmit = 18;
     
     name = new StringList();
     data = new StringList();
+    units = new StringList();
     textSize = 16;
     font = createFont("Arial",textSize,true);
     
@@ -49,6 +53,29 @@ class Telemetria{
     name.append(" Velocidad giro");
     name.append(" Estado Maxi");
     
+    units.append("Units");
+    units.append("");
+    units.append("km/h");
+    units.append("m");
+    units.append("deg");
+    units.append("");
+    units.append("");
+    
+    units.append("deg");
+    units.append("deg");
+    units.append("deg");
+    
+    units.append("");
+    units.append("");
+    units.append("");
+    
+    units.append("");
+    units.append("°C");
+    units.append("°C");
+    
+    units.append("");
+    units.append("");
+    
   }
   
   void update(){
@@ -58,12 +85,12 @@ class Telemetria{
     data.append(str(dron.vel));
     data.append(str(dron.dist));
     data.append(str(dron.ang));
-    data.append(str(dron.intensidad));
+    data.append(str(int(dron.intensidad)));
     data.append("");
     
-    data.append(str(orientX));
-    data.append(str(orientY));
-    data.append(str(orientZ));
+    data.append(nf(orientX,0,2));
+    data.append(nf(orientY,0,2));
+    data.append(nf(orientZ,0,2));
     
     data.append("");
     data.append(str(globalState));
@@ -88,13 +115,13 @@ class Telemetria{
     //Creacion de la tabla
     fill(255);
     rectMode(CORNER);
-    rect(posX, posY, nameColumnWidth + dataColumnWidth, rowHeight * data.size());
-    line(posX, posY, posX + nameColumnWidth + dataColumnWidth, posY);
+    rect(posX, posY, nameColumnWidth + dataColumnWidth + unitsColumnWidth, rowHeight * data.size());
+    line(posX, posY, posX + nameColumnWidth + dataColumnWidth + unitsColumnWidth, posY);
     for (int i = 0; i<data.size(); i++){
       strokeWeight(1);
-      line(posX, posY + dY * i, posX + nameColumnWidth + dataColumnWidth, posY + dY * i);
+      line(posX, posY + dY * i, posX + nameColumnWidth + dataColumnWidth + unitsColumnWidth, posY + dY * i);
       if (i + 1 == data.size()){
-        line(posX, posY + dY + dY * i, posX + nameColumnWidth + dataColumnWidth, posY + dY + dY * i);
+        line(posX, posY + dY + dY * i, posX + nameColumnWidth + dataColumnWidth + unitsColumnWidth, posY + dY + dY * i);
       }
     }
     line(posX, posY, posX, posY + rowHeight * data.size());
@@ -108,7 +135,8 @@ class Telemetria{
       text(str, posX + margenIzquierdo, posY + distText2upperLimmit + dY * i);
       str = data.get(i);
       text(str, posX + nameColumnWidth + margenIzquierdo, posY + distText2upperLimmit + dY * i);
-      
+      str = units.get(i);
+      text(str, posX + nameColumnWidth + dataColumnWidth + margenIzquierdo, posY + distText2upperLimmit + dY * i);
     }
   }
 }
