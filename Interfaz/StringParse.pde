@@ -77,4 +77,7 @@ void parseAccelString(String str){
   accelX = float(list[0]);
   accelY = float(list[1]);
   accelZ = float(list[2]);
+  accelX = map(accelX,0,10,0,9.8);
+  accelY = map(accelY,0,10,0,9.8);
+  accelZ = map(accelZ,0,10,0,9.8);
 }
