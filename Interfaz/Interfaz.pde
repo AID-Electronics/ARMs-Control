@@ -83,12 +83,12 @@ void setup(){
   closeButton.text = "Exit";
   closeButton.setColor(255,0,0);
   
-  radar = new Radar(600,250,400,40,150);
+  radar = new Radar(700,250,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
-  alarmas = new Alarmas(350,130);
+  alarmas = new Alarmas(400,130);
   
-  gauge1 = new Gauge(500,500);
+  gauge1 = new Gauge(500,610);
   gauge1.setLimits(0,100);
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO (RPM)");
