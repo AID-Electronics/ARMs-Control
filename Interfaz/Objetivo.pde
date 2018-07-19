@@ -32,10 +32,13 @@ class Objetivo{
       ellipse(posX, posY, 10, 10);
       
       //Text
-      data = "Vel:" + str(vel);
       fill(0);
+      textAlign(LEFT,TOP);
+      data = "Vel: " + str(vel);
       textFont(font,txtSize);
-      text(data, posX, posY);
+      text(data, posX, posY+5);
+      data = "Dist: " + str(dist);
+      text(data, posX, posY+5 + txtSize);
     }
   }
 }
