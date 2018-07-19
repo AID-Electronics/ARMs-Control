@@ -17,8 +17,8 @@ class Telemetria{
   Telemetria(float posX, float posY){
     this.posX = posX;
     this.posY = posY;
-    this.nameColumnWidth = 160;
-    this.dataColumnWidth = 80;
+    this.nameColumnWidth = 175;
+    this.dataColumnWidth = 85;
     this.unitsColumnWidth = 60;
     rowHeight = 23;
     margenIzquierdo = 10;
@@ -85,7 +85,7 @@ class Telemetria{
     data.append(str(dron.vel));
     data.append(str(dron.dist));
     data.append(str(dron.ang));
-    data.append(str(dron.intensidad));
+    data.append(str(int(dron.intensidad)));
     data.append("");
     
     data.append(nf(orientX,0,2));
