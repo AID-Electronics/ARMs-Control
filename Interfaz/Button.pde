@@ -9,6 +9,7 @@ class Button {
   
   PFont font;
   String text;
+  int textSize;
   
   //Color
   int r;
@@ -16,6 +17,7 @@ class Button {
   int b;
   
   float scale;
+  int vertex;
   boolean wasPressed;
   boolean mouseOver;
   
@@ -34,8 +36,9 @@ class Button {
     this.wasPressed = false;
     this.mouseOver = false;
     this.timesPressed = 0;
-    
-    font = createFont("Arial",14,true);
+    this.vertex = 15;
+    this.textSize = 14;
+    font = createFont("Arial",textSize,true);
   }
   
   void setColor(int red, int green, int blue){
@@ -48,6 +51,10 @@ class Button {
     text = txt;
   }
   
+  void setVertex(int dim){
+    this.vertex = dim;
+  }
+  
   void draw(){
     fill(r,g,b);
     //noStroke();
@@ -55,10 +62,10 @@ class Button {
     isPressed();
     isReleased();
     rectMode(CENTER);
-    rect(posX,posY,sizeX*scale,sizeY*scale, 5);
+    rect(posX,posY,sizeX*scale,sizeY*scale, vertex);
     fill(0);
     textAlign(CENTER,CENTER);
-    textFont(font);
+    textFont(font,textSize*scale);
     text(text,posX, posY);
     
   }

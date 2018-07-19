@@ -55,33 +55,34 @@ void setup(){
     serialError = true;
   }
   
-  button1 = new Button (50,50,75,75);
+  button1 = new Button (50,50,85,85);
   button1.text = "START";
   button1.setColor(0,255,0);
   
-  button2 = new Button (150,50,75,75);
+  button2 = new Button (150,50,85,85);
   button2.text = "CONTINUE";
   button2.setColor(255,150,50);
   
-  button3 = new Button (250,50,75,75);
+  button3 = new Button (250,50,85,85);
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
-  button4 = new Button (350,50,75,75);
+  button4 = new Button (350,50,85,85);
   button4.text = "ATERRIZAJE";
   button4.setColor(0,100,255);
   
-  button5 = new Button (450,50,75,75);
+  button5 = new Button (450,50,85,85);
   button5.text = "NOTOCAR";
   button5.setColor(0,100,255);
   
-  button6 = new Button (550,50,75,75);
+  button6 = new Button (550,50,85,85);
   button6.text = "State10";
   button6.setColor(0,100,100);
   
   closeButton = new Button (displayWidth - 30,10,50,30);
   closeButton.text = "Exit";
   closeButton.setColor(255,0,0);
+  closeButton.setVertex(5);
   
   radar = new Radar(700,250,400,40,150);
   dron = new Objetivo();
