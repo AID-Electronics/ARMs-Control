@@ -14,7 +14,7 @@ public:
   float ang;
   float intensidad;
 
-  void reset(){id = 0;}
+  void reset(){id = 0; vel = 0; dist = 0; ang = 0; intensidad = 0;}
 };
 
 class Comunicacion_MAXI{

@@ -470,9 +470,9 @@ void loop(){
     if (serialToken == '0'){
       Serial.println("STOP");
       error.reset();
-      nextState(0);
       com_maxi.setEstadoParo();
       com_maxi.dron.reset();
+      nextState(0);
     }
     if (serialToken == 'F'){
       Serial.println("Salto a estado 10");
