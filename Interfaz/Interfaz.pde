@@ -6,7 +6,7 @@ String buff;
 Button button1;
 Button button2;
 Button button3;
-Button button4;
+Button botonAterrizaje;
 Button button5;
 Button button6;
 Button closeButton;
@@ -68,9 +68,9 @@ void setup(){
   button3.text = "STOP";
   button3.setColor(255,0,0);
   
-  button4 = new Button (350,50,85,85);
-  button4.text = "ATERRIZAJE";
-  button4.setColor(0,100,255);
+  botonAterrizaje = new Button (350,50,85,85);
+  botonAterrizaje.text = "ATERRIZAJE";
+  botonAterrizaje.setColor(0,100,255);
   
   button5 = new Button (450,50,85,85);
   button5.text = "NOTOCAR";
@@ -112,7 +112,7 @@ void draw(){
   button1.draw();
   button2.draw();
   button3.draw();
-  button4.draw();
+  botonAterrizaje.draw();
   button5.draw();
   button6.draw();
   closeButton.draw();
@@ -141,6 +141,9 @@ void mousePressed(){
   }
   if (button3.isMouseOver()){
     port.write("0");
+  }
+  if (botonAterrizaje.isMouseOver()){
+    port.write("A");
   }
   if (button5.isMouseOver()){
     port.write("E");
