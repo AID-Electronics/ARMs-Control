@@ -57,11 +57,11 @@ void setup(){
   }
   
   button1 = new Button (50,50,85,85);
-  button1.text = "START";
+  button1.text = "ENCENDIDO";
   button1.setColor(0,255,0);
   
   button2 = new Button (150,50,85,85);
-  button2.text = "CONTINUE";
+  button2.text = "SYS TEST";
   button2.setColor(255,150,50);
   
   button3 = new Button (250,50,85,85);

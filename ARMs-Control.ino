@@ -483,9 +483,13 @@ void loop(){
       Serial.println("Reset Controllino");
       resetFunc();
     }
-    if (serialToken == 'A'){
-      Serial.print("El dron ha objAterrizado");
+    if (serialToken == 'A' && globalState == 10){
+      Serial.println("El dron ha objAterrizado");
       com_maxi.setEstadoParo();
+    }
+    if (serialToken == 'C' && globalState >= 7){
+      Serial.println("Test de sistemas");
+      nextState(1);
     }
   }
   
