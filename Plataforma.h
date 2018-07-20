@@ -20,6 +20,7 @@ public:
   bool sentido;
   bool eje;
   uint8_t calibState;
+  bool errorRecepcionRF;
 
   Plataforma();
   double getAccel();
@@ -41,6 +42,7 @@ Plataforma::Plataforma(){
   sentido = false;
   eje = false;
   calibState = 0;
+  errorRecepcionRF = false;
   
   zrad = 0;
   yrad = 0;
@@ -72,13 +74,21 @@ void Plataforma::cambiaEje(){
 
 bool Plataforma::calibrarPlat(){
   //Lectura de 10 acceleraciones y filtrado
+  errorRecepcionRF = false;
   int tot = 10;
   Vector3D aux[tot];
-  for(int i=0; i<tot; i++){
+  for(int i=0; i<tot && !errorRecepcionRF; i++){
     bool RF_ok = getOrientRF(&aux[i]);
-    while(RF_ok != 1){
+    uint32_t inicioRecepcion = millis();
+    while(RF_ok != 1 && !errorRecepcionRF){
       RF_ok = getOrientRF(&aux[i]);
+      if (millis() - inicioRecepcion > 1000){
+        errorRecepcionRF = true;
+      }
     }
+  }
+  if (errorRecepcionRF){
+    return false;
   }
   Vector3D media = V3D_media(aux,tot);
   setAccel(&media);
