@@ -406,6 +406,11 @@ void loop(){
     }
 
     ahora = millis();
+    
+    if (com_maxi.objAterrizado()){
+      com_maxi.setEstadoParo();
+      nextState(0);
+    }
 
     if (ahora - antesC1 > 20){
       antesC1 = ahora;
@@ -419,10 +424,6 @@ void loop(){
 
       com_maxi.requestData();
       //com_maxi.printData();
-      if (com_maxi.objAterrizado()){
-        com_maxi.setEstadoParo();
-        nextState(0);
-      }
     }
     
     if (serialIn) {
@@ -481,6 +482,10 @@ void loop(){
     if (serialToken == 'R'){
       Serial.println("Reset Controllino");
       resetFunc();
+    }
+    if (serialToken == 'A'){
+      Serial.print("El dron ha objAterrizado");
+      com_maxi.setEstadoParo();
     }
   }
   
