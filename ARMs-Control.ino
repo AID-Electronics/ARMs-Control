@@ -78,6 +78,7 @@ void nextState(uint8_t estado){
   localState = 0;
   state2Interface();
   error.send2Interface();
+  com_maxi.sendData2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -471,6 +472,7 @@ void loop(){
       error.reset();
       nextState(0);
       com_maxi.setEstadoParo();
+      com_maxi.dron.reset();
     }
     if (serialToken == 'F'){
       Serial.println("Salto a estado 10");
