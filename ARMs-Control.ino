@@ -339,7 +339,7 @@ void loop(){
 
   else if (globalState == 8){
     bool calibState;
-    calibState = platform.calibrarPlat();
+    calibState = platform.calibrarPlat(error.comunicRF);
 
     String serialBuff;
     serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;

@@ -1,6 +1,8 @@
 #ifndef PLATAFORMA_H
 #define PLATAFORMA_H
 
+#include "Alarmas.h"
+
 #define accel_switch 9.5
 #define sensibilidad 0.1
 
@@ -28,7 +30,7 @@ public:
   void setAccel(Vector3D *v);
   void invierteSentido();
   void cambiaEje();
-  bool calibrarPlat();
+  bool calibrarPlat(State& alarmState);
   void giraEje(float grados);
   void sendAccel2Interface();
 };
@@ -72,7 +74,7 @@ void Plataforma::cambiaEje(){
   eje = !eje;
 }
 
-bool Plataforma::calibrarPlat(){
+bool Plataforma::calibrarPlat(State& alarmState){
   //Lectura de 10 acceleraciones y filtrado
   errorRecepcionRF = false;
   int tot = 10;
@@ -88,7 +90,11 @@ bool Plataforma::calibrarPlat(){
     }
   }
   if (errorRecepcionRF){
+    alarmState = on;
     return false;
+  }
+  else{
+    alarmState = off;
   }
   Vector3D media = V3D_media(aux,tot);
   setAccel(&media);
