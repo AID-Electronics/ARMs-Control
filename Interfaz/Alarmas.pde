@@ -17,6 +17,7 @@ class Alarmas{
     rowHeight = 23;
     font = createFont("Arial",textSize,true);
     alarma = new StringList();
+    alarma.append("Puerto COM (PC<>PLC)");
     alarma.append("IMU");
     alarma.append("CANbus");
     alarma.append("Encendido Motores");
@@ -31,9 +32,11 @@ class Alarmas{
   }
   
   void draw(){
-    //if (globalState > 1){
-      //alarmaRecibida[0] = true;
-    //}
+    if (serialError){
+      estadoAlarma[0] = 2;
+    }else{
+      estadoAlarma[0] = 1;
+    }
     for (int i = 0; i < alarma.size(); i++){
       if (estadoAlarma[i] == 0){
         fill(150);

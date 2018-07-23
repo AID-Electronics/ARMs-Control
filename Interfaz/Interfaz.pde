@@ -2,6 +2,7 @@ import processing.serial.*;
 
 Serial port;
 String buff;
+boolean serialError = false;
 
 Button buttonEncendido;
 Button buttonTest;
@@ -46,8 +47,6 @@ void setup(){
   //size(1100,600);
   fullScreen();
   
-
-  boolean serialError = false;
   try{
     println(Serial.list());
     port = new Serial (this, Serial.list()[0], 250000);
