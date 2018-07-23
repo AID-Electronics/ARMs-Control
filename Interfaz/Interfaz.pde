@@ -132,10 +132,15 @@ void draw(){
 }
 
 void serialEvent(Serial port) {
-  buff += port.readString();
-  //print(buff);
-  stringParse(buff);
-  buff = "";
+  try{
+    buff += port.readString();
+    //print(buff);
+    stringParse(buff);
+    buff = "";
+  }catch(Exception e){
+    println("Error serial event");
+    serialError = true;
+  }
 }
 
 void mousePressed(){
