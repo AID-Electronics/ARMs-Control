@@ -129,9 +129,7 @@ void loop(){
 
   //Máquina de estados
   if (globalState == 0){
-    if (serialIn){
-      nextState(1);
-    }
+    //Espera a pulsador Encendido
   }
   else if (globalState == 1){
     bool OK = IMU_fija.setup();
@@ -471,7 +469,10 @@ void loop(){
 
   //En paralelo al proceso principal
   if (serialIn){
-    if (serialToken == '0'){
+    if (serialToken == '1'){
+      nextState(1);
+    }
+    if (serialToken == '0' && globalState > 7){
       Serial.println("STOP");
       nextState(7);
     }
