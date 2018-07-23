@@ -133,6 +133,7 @@ void draw(){
 
 void serialEvent(Serial port) {
   try{
+    serialError = false;
     buff += port.readString();
     //print(buff);
     stringParse(buff);
