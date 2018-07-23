@@ -473,10 +473,7 @@ void loop(){
   if (serialIn){
     if (serialToken == '0'){
       Serial.println("STOP");
-      error.reset();
-      com_maxi.setEstadoParo();
-      com_maxi.dron.reset();
-      nextState(0);
+      nextState(7);
     }
     if (serialToken == 'F'){
       Serial.println("Salto a estado 10");
@@ -484,6 +481,8 @@ void loop(){
     }
     if (serialToken == 'R'){
       Serial.println("Reset Controllino");
+      com_maxi.setEstadoParo();
+      com_maxi.dron.reset();
       resetFunc();
     }
     if (serialToken == 'A' && globalState == 10){
@@ -494,7 +493,7 @@ void loop(){
       Serial.println("Test de sistemas");
       nextState(1);
     }
-    if (serialToken == 'S' && globalState == 7 && !hayErrores){
+    if (serialToken == 'S' && globalState == 7){// && !hayErrores){
       if (calibracionRealizada){
         Serial.println("Compensacion");
         nextState(10);
