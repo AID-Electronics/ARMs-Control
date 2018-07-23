@@ -5,6 +5,7 @@ String buff;
 
 Button buttonEncendido;
 Button buttonTest;
+Button buttonStart;
 Button buttonStop;
 Button botonAterrizaje;
 Button closeButton;
@@ -65,11 +66,15 @@ void setup(){
   buttonTest.text = "SYS TEST";
   buttonTest.setColor(255,150,50);
   
-  buttonStop = new Button (250,50,85,85);
+  buttonStart = new Button (250,50,85,85);
+  buttonStart.text = "START";
+  buttonStart.setColor(200,255,50);
+  
+  buttonStop = new Button (350,50,85,85);
   buttonStop.text = "STOP";
   buttonStop.setColor(255,0,0);
   
-  botonAterrizaje = new Button (350,50,85,85);
+  botonAterrizaje = new Button (450,50,85,85);
   botonAterrizaje.text = "ATERRIZAJE";
   botonAterrizaje.setColor(0,100,255);
   
@@ -83,13 +88,13 @@ void setup(){
   resetButton.setColor(255,0,0);
   resetButton.setVertex(15);
   
-  buttonDebug1 = new Button (450,50,85,85);
-  buttonDebug1.text = "NOTOCAR";
-  buttonDebug1.setColor(0,100,255);
+  buttonDebug1 = new Button (650,50,85,85);
+  buttonDebug1.text = "State8";
+  buttonDebug1.setColor(10,200,255);
   
-  buttonDebug2 = new Button (550,50,85,85);
+  buttonDebug2 = new Button (750,50,85,85);
   buttonDebug2.text = "State10";
-  buttonDebug2.setColor(0,100,100);
+  buttonDebug2.setColor(50,100,100);
   
   radar = new Radar(700,250,400,40,150);
   dron = new Objetivo();
@@ -112,6 +117,7 @@ void draw(){
   //image(logoAID,600,0);
   buttonEncendido.draw();
   buttonTest.draw();
+  buttonStart.draw();
   buttonStop.draw();
   botonAterrizaje.draw();
   closeButton.draw();
@@ -139,6 +145,9 @@ void mousePressed(){
   }
   if (buttonTest.isMouseOver()){
     port.write("C");
+  }
+  if (buttonStart.isMouseOver()){
+    port.write("S");
   }
   if (buttonStop.isMouseOver()){
     port.write("0");
