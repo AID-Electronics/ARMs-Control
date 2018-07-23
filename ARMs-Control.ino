@@ -29,6 +29,8 @@ IMU IMU_fija;
 Plataforma platform;
 Comunicacion_MAXI com_maxi;
 Alarmas error;
+bool hayErrores = true;
+bool calibracionRealizada = false;
 
 uint8_t globalState;
 uint8_t localState;
@@ -333,7 +335,7 @@ void loop(){
       errorSolucionado (6);
     }
     else {
-      nextState(8);
+      hayErrores = false;
     }
   }
 
@@ -346,6 +348,7 @@ void loop(){
     Serial.println(serialBuff);
   
     if(calibState == 1){
+      calibracionRealizada = true;
       nextState(9);
     }
   }
@@ -490,6 +493,16 @@ void loop(){
     if (serialToken == 'C' && globalState >= 7){
       Serial.println("Test de sistemas");
       nextState(1);
+    }
+    if (serialToken == 'S' && globalState == 7 && !hayErrores){
+      if (calibracionRealizada){
+        Serial.println("Compensacion");
+        nextState(10);
+      }
+      else{
+        Serial.println("Calibracion");
+        nextState(8);
+      }
     }
   }
   
