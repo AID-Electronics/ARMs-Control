@@ -3,14 +3,15 @@ import processing.serial.*;
 Serial port;
 String buff;
 
-Button button1;
-Button button2;
-Button button3;
+Button buttonEncendido;
+Button buttonTest;
+Button buttonStop;
 Button botonAterrizaje;
-Button button5;
-Button button6;
 Button closeButton;
 Button resetButton;
+Button buttonDebug1;
+Button buttonDebug2;
+
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -56,29 +57,21 @@ void setup(){
     serialError = true;
   }
   
-  button1 = new Button (50,50,85,85);
-  button1.text = "ENCENDIDO";
-  button1.setColor(0,255,0);
+  buttonEncendido = new Button (50,50,85,85);
+  buttonEncendido.text = "ENCENDIDO";
+  buttonEncendido.setColor(0,255,0);
   
-  button2 = new Button (150,50,85,85);
-  button2.text = "SYS TEST";
-  button2.setColor(255,150,50);
+  buttonTest = new Button (150,50,85,85);
+  buttonTest.text = "SYS TEST";
+  buttonTest.setColor(255,150,50);
   
-  button3 = new Button (250,50,85,85);
-  button3.text = "STOP";
-  button3.setColor(255,0,0);
+  buttonStop = new Button (250,50,85,85);
+  buttonStop.text = "STOP";
+  buttonStop.setColor(255,0,0);
   
   botonAterrizaje = new Button (350,50,85,85);
   botonAterrizaje.text = "ATERRIZAJE";
   botonAterrizaje.setColor(0,100,255);
-  
-  button5 = new Button (450,50,85,85);
-  button5.text = "NOTOCAR";
-  button5.setColor(0,100,255);
-  
-  button6 = new Button (550,50,85,85);
-  button6.text = "State10";
-  button6.setColor(0,100,100);
   
   closeButton = new Button (displayWidth - 30,10,50,30);
   closeButton.text = "Exit";
@@ -89,6 +82,14 @@ void setup(){
   resetButton.text = "RESET";
   resetButton.setColor(255,0,0);
   resetButton.setVertex(15);
+  
+  buttonDebug1 = new Button (450,50,85,85);
+  buttonDebug1.text = "NOTOCAR";
+  buttonDebug1.setColor(0,100,255);
+  
+  buttonDebug2 = new Button (550,50,85,85);
+  buttonDebug2.text = "State10";
+  buttonDebug2.setColor(0,100,100);
   
   radar = new Radar(700,250,400,40,150);
   dron = new Objetivo();
@@ -109,14 +110,14 @@ void draw(){
   background(200);
   //tint(255, 127);
   //image(logoAID,600,0);
-  button1.draw();
-  button2.draw();
-  button3.draw();
+  buttonEncendido.draw();
+  buttonTest.draw();
+  buttonStop.draw();
   botonAterrizaje.draw();
-  button5.draw();
-  button6.draw();
   closeButton.draw();
   resetButton.draw();
+  buttonDebug1.draw();
+  buttonDebug2.draw();
   
   radar.draw(dron);
   telemetria.draw();
@@ -133,28 +134,28 @@ void serialEvent(Serial port) {
 }
 
 void mousePressed(){
-  if(button1.isMouseOver()){
+  if(buttonEncendido.isMouseOver()){
     port.write("1");
   }
-  if (button2.isMouseOver()){
+  if (buttonTest.isMouseOver()){
     port.write("C");
   }
-  if (button3.isMouseOver()){
+  if (buttonStop.isMouseOver()){
     port.write("0");
   }
   if (botonAterrizaje.isMouseOver()){
     port.write("A");
-  }
-  if (button5.isMouseOver()){
-    port.write("E");
-  }
-  if (button6.isMouseOver()){
-    port.write("F");
   }
   if (closeButton.isMouseOver()){
     exit();
   }
   if (resetButton.isMouseOver()){
     port.write("R");
+  }
+  if (buttonDebug1.isMouseOver()){
+    port.write("E");
+  }
+  if (buttonDebug2.isMouseOver()){
+    port.write("F");
   }
 }
