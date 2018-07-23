@@ -14,7 +14,7 @@ class Alarmas{
     this.posY = posY;
     textSize = 16;
     distText2upperLimmit = 18;
-    rowHeight = 23;
+    rowHeight = 30;
     font = createFont("Arial",textSize,true);
     alarma = new StringList();
     alarma.append("Puerto COM (PC<>PLC)");
