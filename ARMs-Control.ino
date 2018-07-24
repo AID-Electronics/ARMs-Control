@@ -81,6 +81,7 @@ void nextState(uint8_t estado){
   state2Interface();
   error.send2Interface();
   com_maxi.sendData2Interface();
+  platform.sendAccel2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -469,11 +470,12 @@ void loop(){
 
   //En paralelo al proceso principal
   if (serialIn){
-    if (serialToken == '1'){
+    if (serialToken == '1' && globalState == 0){
       nextState(1);
     }
     if (serialToken == '0' && globalState > 7){
       Serial.println("STOP");
+      com_maxi.setEstadoParo();
       nextState(7);
     }
     if (serialToken == 'F'){
@@ -514,7 +516,6 @@ void loop(){
   ahoraC3 = millis();
   if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
-    com_maxi.velGiro += 0.5;
 
     //Datos para interfaz
     if (globalState > 6){
