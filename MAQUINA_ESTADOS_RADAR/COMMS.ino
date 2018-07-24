@@ -24,8 +24,9 @@ void sendMSG(String buff) {
   //Envio sin recivo
   PORTJ = PORTJ & B10011111;
   PORTJ = PORTJ | B01100000;
-
+   digitalWrite(13, HIGH);
   Serial3.println(buff);
+  digitalWrite(13, LOW);
 }
 
 
@@ -45,7 +46,7 @@ void setupCOMMS() {
 void enviar_error_state()
 {
   String msg;
-  msg+="$E0001$;";
+  msg+="$E001$;";
   Serial.println(msg);
   sendMSG(msg);
   

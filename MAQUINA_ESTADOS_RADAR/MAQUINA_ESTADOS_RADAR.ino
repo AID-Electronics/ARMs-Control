@@ -217,25 +217,30 @@ void acercandoseF() {
 //  VEL_GIRO = sacar_Velocidad();
   //  motor.moverMotor();
  // Serial.println(VEL_GIRO);
+ 
 
   if (Real_target.distancia <= Distacia_minima && Real_target.distancia>0)
   {
      Serial.print(closest_target.distancia);
     Serial.println("Objetivo va a aterrizar");
     mstate = aterrizando;
-    VEL_GIRO = Real_target.velocidad;
+    VEL_GIRO = abs(Real_target.velocidad);
     motor.moverMotor(VEL_GIRO);
     return;
   }
-  else if (Real_target.velocidad<1.0f && Real_target.distancia<1.0f && Real_target.ID<1)//VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)    Para cuanto tiene todo 0s.
+  else if (Real_target.velocidad>-1.0f && Real_target.distancia<1.0f && Real_target.ID<1)//VEL_GIRO<=1.0 && VEL_GIRO>-3.0F)    Para cuanto tiene todo 0s.
   {
-    Serial.print(VEL_GIRO);
+    //Serial.print(VEL_GIRO);
      state = activo_SIN_OBJETIVO;
      Serial.println("VUELVO A activo_SIN_OBJETIVO");
   }
 
   else
+  {
+    VEL_GIRO = abs(Real_target.velocidad);
     motor.moverMotor(VEL_GIRO);
+  }
+    
 ////////////////////////////////////////////////////////////// 09/07
  /////////EL motor se queda fijado si le envio velocidad 0?
 
@@ -323,7 +328,7 @@ void activo_sin() {
 
   //VEL_GIRO = sacar_Velocidad();
 
-  if (Real_target.velocidad > 1)//18/07 
+  if (Real_target.velocidad < -1.0f)//18/07 
     {state = activo_CON_OBJETIVO; Serial.print(VEL_GIRO); Serial.print("   VOY A activo_CON_OBJETIVO   ");}
   else
     motor.moverMotor(0); // para que se quede quieto.
@@ -364,9 +369,10 @@ void setup() {
   pinMode(pinData, INPUT);
   pinMode(pinAterrizaje, OUTPUT);
   pinMode(pinRadar, OUTPUT);
+  pinMode(13, OUTPUT);
   digitalWrite(pinAterrizaje, LOW);
   digitalWrite(pinRadar, HIGH); // HAY QUE CAMBIARLO 09/07 En teoría lo alimentaremos solo en el estado de working
-
+  digitalWrite(13, LOW);
   //setupCOMMS();
 
   init_Gl_variables();  // inicializamos las variables globales en esta función
