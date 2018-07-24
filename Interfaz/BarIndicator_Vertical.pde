@@ -28,8 +28,8 @@ class BarIndicator_Vertical{
   BarIndicator_Vertical(float posx, float posy){
     this.posX = posx;
     this.posY = posy;
-    this.startPos = 0;
-    this.endPos = sizeX;
+    this.startPos = posY;
+    this.endPos = posY + sizeY;
     
     text = createFont("Arial",14,true);
     limitText_size = 16;
@@ -45,8 +45,8 @@ class BarIndicator_Vertical{
     this.green = 100;
     this.blue = 100;
     
-    this.startPos = posX;
-    this.endPos = posX + sizeX;
+    this.startPos = posY;
+    this.endPos = posY + sizeY;
     
     text = createFont("Arial",14,true);
     limitText_size = 16;
