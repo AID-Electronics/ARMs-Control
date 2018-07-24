@@ -19,6 +19,7 @@ Objetivo dron;
 Telemetria telemetria;
 Alarmas alarmas;
 Gauge gauge1;
+Gauge dronVelGuage;
 Acelerometro accelPlatform;
 
 PImage logoAID;
@@ -105,12 +106,18 @@ void setup(){
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO (RPM)");
   
-  accelPlatform = new Acelerometro(900,550);
+  dronVelGuage = new Gauge(800,610);
+  dronVelGuage.setLimits(0,50);
+  dronVelGuage.setColor(185,92,200);
+  dronVelGuage.setName("VELOCIDAD DRON (km/h)");
+  
+  accelPlatform = new Acelerometro(1000,550);
   
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
 
 void draw(){  
+  velGiro = dron.vel * 11.9366;
   background(200);
   //tint(255, 127);
   //image(logoAID,600,0);
@@ -127,7 +134,8 @@ void draw(){
   radar.draw(dron);
   telemetria.draw();
   alarmas.draw();
-  gauge1.draw(dron.vel);
+  gauge1.draw(velGiro);
+  dronVelGuage.draw(dron.vel);
   accelPlatform.draw();
 }
 
