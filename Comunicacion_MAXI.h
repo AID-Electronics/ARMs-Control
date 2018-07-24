@@ -30,6 +30,8 @@ public:
   bool comPLCs;
 
   Objetivo dron;
+  float velGiro;
+  int estado;
 
   Comunicacion_MAXI();
   void setup();
@@ -229,7 +231,7 @@ void Comunicacion_MAXI::printData(){
 void Comunicacion_MAXI::requestData(){
   bool msgReceived = false;
   digitalWrite(pinRequestData,HIGH);
-  delay (5);
+  delay (30);
   digitalWrite(pinRequestData,LOW);
   uint32_t comienzo = millis();
   while (!msgReceived && millis() - comienzo < 100){
@@ -259,7 +261,13 @@ void Comunicacion_MAXI::sendData2Interface(){
   Serial.print(dron.ang);
   Serial.print(",");
   Serial.print(dron.intensidad);
-  Serial.println(";");
+  Serial.println();
+
+  Serial.print("#Platform: ");
+  Serial.print(velGiro);
+  Serial.print(",");
+  Serial.print(estado);
+  Serial.println();
 }
 
 void Comunicacion_MAXI::setEstadoMarcha(){

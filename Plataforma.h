@@ -29,6 +29,7 @@ public:
   void cambiaEje();
   bool calibrarPlat();
   void giraEje(float grados);
+  void sendAccel2Interface();
 };
 
 Plataforma::Plataforma(){
@@ -203,4 +204,15 @@ void Plataforma::giraEje(float grados){
   //moverRelatEspera(pasosMotor4,ID_MOTOR_4);
     
 }
+
+void Plataforma::sendAccel2Interface(){
+  Serial.print("#Accel: ");
+  Serial.print(accel.x);
+  Serial.print(",");
+  Serial.print(accel.y);
+  Serial.print(",");
+  Serial.print(accel.z);
+  Serial.println();
+}
+
 #endif

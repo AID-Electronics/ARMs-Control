@@ -22,12 +22,13 @@
 #include "IMU.h"
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
-
+#include "Alarmas.h"
 
 
 IMU IMU_fija;
 Plataforma platform;
 Comunicacion_MAXI com_maxi;
+Alarmas error;
 
 uint8_t globalState;
 uint8_t localState;
@@ -41,13 +42,6 @@ unsigned long antesC2 = 0;
 unsigned long ahoraC3;
 unsigned long antesC3 = 0;
 
-bool errorIMU = false;
-bool errorCAN = false;
-bool errorMotoresON = false;
-bool errorMotoresSetup = false;
-bool errorComunicPLCs = false;
-bool errorComunicRF = false;
-
 bool entradaEstado = true;
 bool entradaEstadoError = true;
 
@@ -57,6 +51,13 @@ bool serialIn = false;
 // Offsets
 double offset_alabeo;
 double offset_cabeceo;
+
+void state2Interface(){
+  Serial.print("#States: ");
+  Serial.print(globalState);
+  Serial.print(",");
+  Serial.println(localState);
+}
 
 void errorSolucionado (uint8_t estado){
   if (serialIn){
@@ -75,16 +76,18 @@ void nextState(uint8_t estado){
   Serial.println();
   globalState = estado;
   localState = 0;
+  state2Interface();
+  error.send2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
+
+void (*resetFunc)(void) = 0;
 
 void setup(){
   Serial.begin(250000);
   Serial1.begin(4800);
   Serial3.begin(115200);
-  globalState = 0;
-  localState = 0;
 
   com_maxi.setup();
 
@@ -103,6 +106,8 @@ void setup(){
 
   Serial.println ("Setup Controllino Finalizado");
   Serial.println ("Pulse una tecla para continuar");
+
+  nextState(0);
 }
 
 char a;
@@ -126,9 +131,13 @@ void loop(){
     }
   }
   else if (globalState == 1){
-    bool OK;
-    OK = IMU_fija.setup();
-    errorIMU = !OK;
+    bool OK = IMU_fija.setup();
+    if (OK){
+      error.IMU = off;
+    }
+    else{
+      error.IMU = on;
+    }
     nextState(2);
   }
   else if (globalState == 2){
@@ -137,12 +146,13 @@ void loop(){
       entradaEstado = false;
     }
     bool setupCAN_ok = setupCAN();
-    errorCAN = !setupCAN_ok;
 
     if(setupCAN_ok){
+      error.CAN = off;
       nextState(3);
     }
     else{
+      error.CAN = on;
       nextState(5);
     }
   }
@@ -169,13 +179,13 @@ void loop(){
     if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
       if (tensionM2 > 47.5 && tensionM2 < 48.5){
         Serial.println("\tAlimentacion en rango");
-        errorMotoresON = false;
+        error.motoresON = off;
         nextState(4);
       }
     }
     if(globalState != 4){
       Serial.println("\tMotores fuera de rango");
-      errorMotoresON = true;
+      error.motoresON = on;
       nextState(5);
     }
   }
@@ -190,13 +200,12 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      errorMotoresSetup = false;
+      error.motoresSetup = off;
     }
     else{
       Serial.println("Fallo setup motores");
-      errorMotoresSetup = true;
+      error.motoresSetup = on;
     }
-    
     nextState(5);
   }
   
@@ -207,7 +216,7 @@ void loop(){
     }
     Vector3D test;
     if (getOrientRF(&test)){
-      errorComunicRF = false;
+      error.comunicRF = off;
       Serial.println("\tRecepcion RF OK");
       nextState(6);
     }
@@ -215,7 +224,7 @@ void loop(){
       //comprobar tiempo de espera
       inState_time = millis() - arrivalState_time;
       if (inState_time > 5000){
-        errorComunicRF = true;
+        error.comunicRF = on;
         Serial.println("\tError Recepcion RF");
         nextState(6);
       }
@@ -265,7 +274,8 @@ void loop(){
           Serial.println("\tError: menseje no esperado");
           com_maxi.errorCom = true;
         }
-        errorComunicPLCs = false;
+        error.comunicPLCs = off;
+        error.update(com_maxi);
         nextState(7);
       }
     }
@@ -273,7 +283,8 @@ void loop(){
     inState_time = millis() - arrivalState_time;
     if (inState_time > 5000){
       Serial.println("\tError: respuesta no recibida");
-      errorComunicPLCs = true;
+      error.comunicPLCs = on;
+      error.update(com_maxi);
       nextState(7);
     }
   }
@@ -283,37 +294,38 @@ void loop(){
       Serial.println("Errores durante configuracion");
 
       Serial.print("\terrorIMU: ");
-      Serial.println(errorIMU);
+      Serial.println(error.IMU);
       Serial.print("\terrorCAN: ");
-      Serial.println(errorCAN);
+      Serial.println(error.CAN);
       Serial.print("\terrorMotoresON: ");
-      Serial.println(errorMotoresON);
+      Serial.println(error.motoresON);
       Serial.print("\terrorMotoresSetup: ");
-      Serial.println(errorMotoresSetup);
+      Serial.println(error.motoresSetup);
       Serial.print("\terrorComunicPLCs: ");
-      Serial.println(errorComunicPLCs);
+      Serial.println(error.comunicPLCs);
       Serial.print("\terrorComunicRF: ");
-      Serial.println(errorComunicRF);
+      Serial.println(error.comunicRF);
+      error.update(com_maxi);
       com_maxi.printError();
 
       entradaEstado = false;
     }
-    if (errorIMU){
+    if (error.IMU == on){
       errorSolucionado (1);
     }
-    else if (errorCAN){
+    else if (error.CAN == on){
       errorSolucionado (2);
     }
-    else if (errorMotoresON){
+    else if (error.motoresON == on){
       errorSolucionado (3);
     }
-    else if (errorMotoresSetup){
+    else if (error.motoresSetup == on){
       errorSolucionado (4);
     }
-    else if (errorComunicRF){
+    else if (error.comunicRF == on){
       errorSolucionado (5);
     }
-    else if (errorComunicPLCs){
+    else if (error.comunicPLCs == on){
       errorSolucionado (6);
     }
     else if (com_maxi.getError()){
@@ -357,15 +369,15 @@ void loop(){
 
     if (m1 && m2){
       Serial.println("Setup correcto");
-      errorMotoresSetup = false;
+      error.motoresSetup = off;
     }
     else{
       Serial.println("Fallo setup motores");
-      errorMotoresSetup = true;
+      error.motoresSetup = on;
     }
     delay(500);
 
-    if (!errorMotoresSetup){
+    if (error.motoresSetup == off){
       nextState(10);
     }
   }
@@ -438,15 +450,15 @@ void loop(){
 
       if (m1 && m2){
         Serial.println("Setup correcto");
-        errorMotoresSetup = false;
+        error.motoresSetup = off;
       }
       else{
         Serial.println("Fallo setup motores");
-        errorMotoresSetup = true;
+        error.motoresSetup = on;
       }
       delay(1000);
       
-      if (!errorMotoresSetup){
+      if (error.motoresSetup == off){
         nextState(8);
       }
     }
@@ -456,8 +468,17 @@ void loop(){
   if (serialIn){
     if (serialToken == '0'){
       Serial.println("STOP");
+      error.reset();
       nextState(0);
       com_maxi.setEstadoParo();
+    }
+    if (serialToken == 'F'){
+      Serial.println("Salto a estado 10");
+      nextState(10);
+    }
+    if (serialToken == 'R'){
+      Serial.println("Reset Controllino");
+      resetFunc();
     }
   }
   
@@ -465,39 +486,36 @@ void loop(){
     nextState(20);
   }
 
-  //Ciclo 3 - Ejecucion cada 1 segundo
+  //Ciclo 3 - Ejecucion cada 0.5 segundos
   ahoraC3 = millis();
-  if (ahoraC3 - antesC3 >= 1000){
+  if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
+    com_maxi.velGiro += 0.5;
 
     //Datos para interfaz
+    if (globalState > 6){
+      error.update(com_maxi);
+      error.send2Interface();
+    }
+
     if (globalState > 7){
       //Temperaturas motores
       Serial.print("#Temp: ");
       Serial.print(requestBoardTemp(ID_MOTOR_1));
       Serial.print(",");
       Serial.print(requestBoardTemp(ID_MOTOR_2));
-      Serial.println(";");
+      Serial.println();
       
       //IMU fija
-      Serial.print("#Orient: ");
-      Serial.print (IMU_fija.orientacion.x, 4);
-      Serial.print(",");
-      Serial.print (IMU_fija.orientacion.y, 4);
-      Serial.print(",");
-      Serial.print (IMU_fija.orientacion.z, 4);
-      Serial.println(";");
+      IMU_fija.update();
+      IMU_fija.orientacion2Interface();
+
+      //Imu movil
+      platform.sendAccel2Interface();
 
       //Datos del dron 
       com_maxi.sendData2Interface();
     }
-
-    //Estados de la máquina de estados
-    Serial.print("#States: ");
-    Serial.print (globalState);
-    Serial.print(",");
-    Serial.print (localState);
-    Serial.println(";");
   }
   
 }
