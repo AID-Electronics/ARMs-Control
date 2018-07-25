@@ -65,6 +65,9 @@ class BarIndicator_Vertical{
     this.minValue = min;
     this.maxValue = max;
   }
+  void setName(String inString){
+    this.name = inString;
+  }
   
   void draw(float inputValue){
     value = map(-inputValue,minValue,maxValue,startPos,endPos);
@@ -105,5 +108,9 @@ class BarIndicator_Vertical{
     str = nf(inputValue,0,1);
     textFont(text,value_size);
     text(str, posX - 5, value);
+    
+    textAlign(CENTER,TOP);
+    textFont(text,20);
+    text(name, posX + sizeX/2, posY + sizeY + 10);
   }
 }
