@@ -76,6 +76,8 @@ class Gauge {
     }
     
     noStroke();
+    fill(150);
+    arc(posX, posY, outerDiameter, outerDiameter, startAngle, endAngle);
     fill(red,green,blue);
     arc(posX, posY, outerDiameter, outerDiameter, startAngle, value);
     noFill();
@@ -104,7 +106,8 @@ class Gauge {
     textFont(text,value_textSize);
     text(v, posX, posY);
     
+    textAlign(CENTER,TOP);
     textFont(text,name_textSize);
-    text(name,posX, posY+60);
+    text(name,posX, posY+50);
   }
 }

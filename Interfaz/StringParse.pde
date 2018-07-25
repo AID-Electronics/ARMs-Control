@@ -68,7 +68,7 @@ void parseAlarmString(String str){
   }
 }
 void parsePlatformString(String str){
-  String list[] = str.split(","); //<>//
+  String list[] = str.split(",");
   velGiro = float(list[0]);
   state = int(list[1]);
 }

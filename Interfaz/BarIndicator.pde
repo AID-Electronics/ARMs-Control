@@ -28,8 +28,8 @@ class BarIndicator{
   BarIndicator(float posx, float posy){
     this.posX = posx;
     this.posY = posy;
-    this.startPos = 0;
-    this.endPos = sizeX;
+    this.startPos = posY;
+    this.endPos = posY + sizeY;
     
     text = createFont("Arial",14,true);
     limitText_size = 16;

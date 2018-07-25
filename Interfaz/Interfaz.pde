@@ -97,22 +97,22 @@ void setup(){
   buttonDebug2.text = "State10";
   buttonDebug2.setColor(50,100,100);
   
-  radar = new Radar(700,250,400,40,150);
+  radar = new Radar(750,300,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(400,130);
   
-  gauge1 = new Gauge(500,610);
-  gauge1.setLimits(0,100);
+  gauge1 = new Gauge(650,610);
+  gauge1.setLimits(0,1000);
   gauge1.setColor(185,92,200);
-  gauge1.setName("VELOCIDAD GIRO (RPM)");
+  gauge1.setName("VELOCIDAD GIRO\n(RPM)");
   
-  dronVelGuage = new Gauge(800,610);
-  dronVelGuage.setLimits(0,50);
+  dronVelGuage = new Gauge(850,610);
+  dronVelGuage.setLimits(0,140);
   dronVelGuage.setColor(185,92,200);
-  dronVelGuage.setName("VELOCIDAD DRON (km/h)");
+  dronVelGuage.setName("VELOCIDAD DRON\n(km/h)");
   
-  accelPlatform = new Acelerometro(1000,550);
+  accelPlatform = new Acelerometro(1000,540);
   
   indic_errorSeg = new BarIndicator_Vertical(450,500,20,150);
   indic_errorSeg.setLimits(-100,100);
