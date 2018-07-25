@@ -237,6 +237,7 @@ void acercandoseF() {
 
   else
   {
+   
     VEL_GIRO = abs(Real_target.velocidad);
     motor.moverMotor(VEL_GIRO);
   }

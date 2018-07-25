@@ -1,13 +1,10 @@
+#include "defines.h"
 
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-#define TARGET_MAX_COUNT 100
-#define IN_AIR_MAX_TARGETS 20
-#define MAX_VEL 3000
-#define Distacia_minima 5
-#define intensidad_minima 50  //valores por ahora aleatorios
+ //valores por ahora aleatorios
 
 
 ///////////////////////////////////////////////////////////////////////////////////////

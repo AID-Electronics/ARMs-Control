@@ -1,16 +1,6 @@
-#include "radar.h"
-#include "motor_tri.h"
-#define pinState A0 // entrada digital para el cambio de estado 
-#define pinData A1
-#define pinAterrizaje 3
-#define pinRadar 9
-#define tiempoEspera 100
-#define tiempoEspera_reset 10
-#define tiempoEspera_data 30
-#define tiempo_aterrizaje 6000
-#define tiempo_espera_postAterrizaje 1000
 
-#define time_tol 2
+#include "motor_tri.h"
+
 
 unsigned long working_t; ///////////////////////////////////////OJOOOOOOOOOOOOOOOOo
 unsigned long state_t;

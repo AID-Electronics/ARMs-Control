@@ -1,7 +1,10 @@
+#include "radar.h"
 #include <SPI.h>
 #include <Controllino.h>
 
-#define VEL_TO_RPM 1.25  // 1 entre 0.8m que tiene de radio
+#define pi 3.141592
+
+#define VEL_TO_RPM 11.9366     //1.25  // 60 entre (0.8m que tiene de radio * 2*pi) = 60/(0.8*2*pi)
 
 
 
@@ -70,7 +73,7 @@ void Motor_tri::moverMotor(float vel){
 
    velocidad=velocidad*VEL_TO_RPM; //ya que la velocidad medida por el radar es lineal y la salida del motor es velocidad angular.
    
-   velocidad=map(velocidad,0,MAX_VEL,0,255);
+   velocidad=map(velocidad,0,MAX_VEL,0,255); //////////////////////////// HACER LA PRUEBA DE VELOCIDAD para determinar los parametros maximos de velocidad
   analogWrite(pinMotor,velocidad);
   
 }
