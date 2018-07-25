@@ -160,31 +160,33 @@ void serialEvent(Serial port) {
 }
 
 void mousePressed(){
-  if(buttonEncendido.isMouseOver()){
-    port.write("1");
-  }
-  if (buttonTest.isMouseOver()){
-    port.write("C");
-  }
-  if (buttonStart.isMouseOver()){
-    port.write("S");
-  }
-  if (buttonStop.isMouseOver()){
-    port.write("0");
-  }
-  if (botonAterrizaje.isMouseOver()){
-    port.write("A");
+  if (!serialError){
+    if(buttonEncendido.isMouseOver()){
+      port.write("1");
+    }
+    if (buttonTest.isMouseOver()){
+      port.write("C");
+    }
+    if (buttonStart.isMouseOver()){
+      port.write("S");
+    }
+    if (buttonStop.isMouseOver()){
+      port.write("0");
+    }
+    if (botonAterrizaje.isMouseOver()){
+      port.write("A");
+    }
+    if (resetButton.isMouseOver()){
+      port.write("R");
+    }
+    if (buttonDebug1.isMouseOver()){
+      port.write("E");
+    }
+    if (buttonDebug2.isMouseOver()){
+      port.write("F");
+    }
   }
   if (closeButton.isMouseOver()){
     exit();
-  }
-  if (resetButton.isMouseOver()){
-    port.write("R");
-  }
-  if (buttonDebug1.isMouseOver()){
-    port.write("E");
-  }
-  if (buttonDebug2.isMouseOver()){
-    port.write("F");
   }
 }
