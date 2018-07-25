@@ -78,7 +78,7 @@ class BarIndicator_Vertical{
     float reff = map(0,minValue,maxValue,startPos,endPos);
     
     noStroke();
-    fill(100);
+    fill(150);
     rect(posX,posY,sizeX,sizeY);
     stroke(0);
     strokeWeight(1);
@@ -86,5 +86,10 @@ class BarIndicator_Vertical{
     rectMode(CORNERS);
     rect(posX,reff, posX + sizeX, value);
     rectMode(CORNER);
+    
+    strokeWeight(1.5);
+    noFill();
+    rect(posX,posY,sizeX,sizeY);
+    strokeWeight(1);
   }
 }
