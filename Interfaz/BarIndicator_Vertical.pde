@@ -91,5 +91,19 @@ class BarIndicator_Vertical{
     noFill();
     rect(posX,posY,sizeX,sizeY);
     strokeWeight(1);
+    
+    //Text
+    fill(0);
+    textAlign(LEFT,CENTER);
+    String str = str(minValue);
+    textFont(text,limitText_size);
+    text(str, posX + sizeX + 5, posY + sizeY);
+    str = str(maxValue);
+    text(str, posX + sizeX + 5, posY);
+    
+    textAlign(RIGHT,CENTER);
+    str = nf(inputValue,0,1);
+    textFont(text,value_size);
+    text(str, posX - 5, value);
   }
 }
