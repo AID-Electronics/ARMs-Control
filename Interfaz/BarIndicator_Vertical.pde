@@ -67,7 +67,7 @@ class BarIndicator_Vertical{
   }
   
   void draw(float inputValue){
-    value = map(inputValue,minValue,maxValue,startPos,endPos);
+    value = map(-inputValue,minValue,maxValue,startPos,endPos);
     if (value > endPos){
       value = endPos;
     }else if (value < startPos){
@@ -91,11 +91,11 @@ class BarIndicator_Vertical{
     fill(red,green,blue);
     if (isPositive){
       rectMode(CORNERS);
-      rect(posX,value,posX+sizeX,reff);
+      rect(posX,reff, posX + sizeX, value);
       rectMode(CORNER);
     }else{
       rectMode(CORNERS);
-      rect(value,posY, reff, posY+sizeY);
+      rect(posX,reff, posX + sizeX, value);
       rectMode(CORNER);
     }
   }
