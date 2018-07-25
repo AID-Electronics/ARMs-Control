@@ -76,12 +76,6 @@ class BarIndicator_Vertical{
     
     boolean isPositive;
     float reff = map(0,minValue,maxValue,startPos,endPos);
-    if (value < reff){
-      isPositive = false;
-    }
-    else{
-      isPositive = true;
-    }
     
     noStroke();
     fill(100);
@@ -89,14 +83,8 @@ class BarIndicator_Vertical{
     stroke(0);
     strokeWeight(1);
     fill(red,green,blue);
-    if (isPositive){
-      rectMode(CORNERS);
-      rect(posX,reff, posX + sizeX, value);
-      rectMode(CORNER);
-    }else{
-      rectMode(CORNERS);
-      rect(posX,reff, posX + sizeX, value);
-      rectMode(CORNER);
-    }
+    rectMode(CORNERS);
+    rect(posX,reff, posX + sizeX, value);
+    rectMode(CORNER);
   }
 }
