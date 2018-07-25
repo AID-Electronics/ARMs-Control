@@ -21,6 +21,7 @@ Alarmas alarmas;
 Gauge gauge1;
 Gauge dronVelGuage;
 Acelerometro accelPlatform;
+BarIndicator_Vertical indic_errorSeg;
 
 PImage logoAID;
 
@@ -113,10 +114,15 @@ void setup(){
   
   accelPlatform = new Acelerometro(1000,550);
   
+  indic_errorSeg = new BarIndicator_Vertical(450,500,20,150);
+  indic_errorSeg.setLimits(-100,100);
+  indic_errorSeg.setColor(255,200,0);
+  indic_errorSeg.setName("ERROR\nSEGUIMIENTO");
+  
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
 
-void draw(){  
+void draw(){
   velGiro = dron.vel * 11.9366;
   background(200);
   //tint(255, 127);
@@ -137,6 +143,7 @@ void draw(){
   gauge1.draw(velGiro);
   dronVelGuage.draw(dron.vel);
   accelPlatform.draw();
+  indic_errorSeg.draw(mouseX-100);
 }
 
 void serialEvent(Serial port) {
