@@ -13,6 +13,7 @@ Button closeButton;
 Button resetButton;
 Button buttonDebug1;
 Button buttonDebug2;
+Button botonTensado;
 
 Radar radar;
 Objetivo dron;
@@ -97,6 +98,10 @@ void setup(){
   buttonDebug2.text = "State10";
   buttonDebug2.setColor(50,100,100);
   
+  botonTensado = new Button (850,50,85,85);
+  botonTensado.text = "TENSADO";
+  botonTensado.setColor(100,100,100);
+  
   radar = new Radar(750,300,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
@@ -136,6 +141,7 @@ void draw(){
   resetButton.draw();
   buttonDebug1.draw();
   buttonDebug2.draw();
+  botonTensado.draw();
   
   radar.draw(dron);
   telemetria.draw();
@@ -184,6 +190,9 @@ void mousePressed(){
     }
     if (buttonDebug2.isMouseOver()){
       port.write("F");
+    }
+    if (botonTensado.isMouseOver()){
+      port.write("T");
     }
   }
   if (closeButton.isMouseOver()){
