@@ -31,6 +31,7 @@ Comunicacion_MAXI com_maxi;
 Alarmas error;
 bool hayErrores = true;
 bool calibracionRealizada = false;
+bool tensarCables = false;
 
 uint8_t globalState;
 uint8_t localState;
@@ -502,6 +503,18 @@ void loop(){
     }
   }
 
+  else if (globalState == 100){
+    //Tensado de los cables
+    if (tensarCables){
+      long pasos = -500;
+      moverRelatInmediato(pasos, ID_MOTOR_1);
+      moverRelatInmediato(pasos, ID_MOTOR_2);
+      moverRelatInmediato(pasos, ID_MOTOR_3);
+      moverRelatInmediato(pasos, ID_MOTOR_4);
+      tensarCables = false;
+    }
+  }
+
   //En paralelo al proceso principal
   if (serialIn){
     if (serialToken == '1' && globalState == 0){
@@ -537,8 +550,11 @@ void loop(){
       }
       else{
         Serial.println("Calibracion");
-        nextState(8);
+        nextState(100);
       }
+    }
+    if (serialToken == 'T' && globalState == 100){
+      tensarCables = true;
     }
   }
   
