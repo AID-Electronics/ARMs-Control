@@ -190,8 +190,8 @@ void moverMotores(double cabeceo, double alabeo) {
   //AQUI iría la accion de movimiento
   moverAbsInmediato(pasosMotor1, ID_MOTOR_1);
   moverAbsInmediato(pasosMotor2, ID_MOTOR_2);
-  //mover(pasosMotor3,ID_MOTOR_3);
-  //mover(pasosMotor4,ID_MOTOR_4);
+  moverAbsInmediato(pasosMotor3, ID_MOTOR_3);
+  moverAbsInmediato(pasosMotor4, ID_MOTOR_4);
 }
 
 void IMU::getRaw_accel(){

@@ -101,8 +101,12 @@ void setup(){
   //Alimentacion motores
   pinMode(CONTROLLINO_R0, OUTPUT);
   pinMode(CONTROLLINO_R1, OUTPUT);
+  pinMode(CONTROLLINO_R2, OUTPUT);
+  pinMode(CONTROLLINO_R3, OUTPUT);
   digitalWrite(CONTROLLINO_R0, LOW);
   digitalWrite(CONTROLLINO_R1, LOW);
+  digitalWrite(CONTROLLINO_R2, LOW);
+  digitalWrite(CONTROLLINO_R3, LOW);
   
   //Alimentacion MAXI
   pinMode(CONTROLLINO_R4, OUTPUT);
@@ -166,23 +170,35 @@ void loop(){
     //Encendido de motores
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
+    digitalWrite(CONTROLLINO_R2, HIGH);
+    digitalWrite(CONTROLLINO_R3, HIGH);
     delay(1000);
 
     limpiaBuffer();
 
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
+    float tensionM3 = (float)requestVin(ID_MOTOR_3) / 10;
+    float tensionM4 = (float)requestVin(ID_MOTOR_4) / 10;
     
     Serial.print("\tTension M1: ");
     Serial.println(tensionM1);
     Serial.print("\tTension M2: ");
     Serial.println(tensionM2);
+    Serial.print("\tTension M3: ");
+    Serial.println(tensionM3);
+    Serial.print("\tTension M4: ");
+    Serial.println(tensionM4);
 
     if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
       if (tensionM2 > 47.5 && tensionM2 < 48.5){
-        Serial.println("\tAlimentacion en rango");
-        error.motoresON = off;
-        nextState(4);
+        if (tensionM3 > 47.5 && tensionM3 < 48.5){
+          if (tensionM4 > 47.5 && tensionM4 < 48.5){
+            Serial.println("\tAlimentacion en rango");
+            error.motoresON = off;
+            nextState(4);
+          }
+        }
       }
     }
     if(globalState != 4){
@@ -196,11 +212,15 @@ void loop(){
     //Setup de motores
     Serial.println("Setup motores");
     Serial.println("\tMotor 1");
-    bool m1 = setupMotor(ID_MOTOR_1,acelCal,decelCal,100,velCal); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    bool m1 = setupMotor(ID_MOTOR_1,acelCal,decelCal,100,velCal);
     Serial.println("\tMotor 2");
     bool m2 = setupMotor(ID_MOTOR_2,acelCal,decelCal,100,velCal);
+    Serial.println("\tMotor 2");
+    bool m3 = setupMotor(ID_MOTOR_3,acelCal,decelCal,100,velCal);
+    Serial.println("\tMotor 2");
+    bool m4 = setupMotor(ID_MOTOR_4,acelCal,decelCal,100,velCal);
 
-    if (m1 && m2){
+    if (m1 && m2 && m3 && m4){
       Serial.println("Setup correcto");
       error.motoresSetup = off;
     }
@@ -356,9 +376,13 @@ void loop(){
     //Apaga el motor y vuelve a encenderlo
     digitalWrite(CONTROLLINO_R0, LOW);
     digitalWrite(CONTROLLINO_R1, LOW);
+    digitalWrite(CONTROLLINO_R2, LOW);
+    digitalWrite(CONTROLLINO_R3, LOW);
     delay(500);
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
+    digitalWrite(CONTROLLINO_R2, HIGH);
+    digitalWrite(CONTROLLINO_R3, HIGH);
     delay(1000);
 
     limpiaBuffer();
