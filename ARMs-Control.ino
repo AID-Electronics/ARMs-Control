@@ -4,8 +4,8 @@
 
 #define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
-//#define ID_MOTOR_3 0x612
-//#define ID_MOTOR_4 0x613
+#define ID_MOTOR_3 0x612
+#define ID_MOTOR_4 0x613
 
 //Para calibracion
 #define velCal 5120
@@ -393,8 +393,12 @@ void loop(){
     bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     Serial.println("\tMotor 2");
     bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+    Serial.println("\tMotor 2");
+    bool m3 = setupMotor(ID_MOTOR_3,aceleracion,deceleracion,100,velocidad);
+    Serial.println("\tMotor 2");
+    bool m4 = setupMotor(ID_MOTOR_4,aceleracion,deceleracion,100,velocidad);
 
-    if (m1 && m2){
+    if (m1 && m2 && m3 && m4){
       Serial.println("Setup correcto");
       error.motoresSetup = off;
     }
@@ -475,8 +479,14 @@ void loop(){
       bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
       Serial.println("\tMotor 2");
       bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+      Serial.println("\tMotor 2");
+      bool m3 = setupMotor(ID_MOTOR_3,aceleracion,deceleracion,100,velocidad);
+      Serial.println("\tMotor 2");
+      bool m4 = setupMotor(ID_MOTOR_4,aceleracion,deceleracion,100,velocidad);
 
-      if (m1 && m2){
+
+
+      if (m1 && m2 && m3 && m4){
         Serial.println("Setup correcto");
         error.motoresSetup = off;
       }
@@ -553,6 +563,10 @@ void loop(){
       Serial.print(requestBoardTemp(ID_MOTOR_1));
       Serial.print(",");
       Serial.print(requestBoardTemp(ID_MOTOR_2));
+      Serial.print(",");
+      Serial.print(requestBoardTemp(ID_MOTOR_3));
+      Serial.print(",");
+      Serial.print(requestBoardTemp(ID_MOTOR_4));
       Serial.println();
       
       //IMU fija
