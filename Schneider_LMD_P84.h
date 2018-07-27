@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include "Canbus.h"
 
+#define holdCurrent_percent 60
+
 bool emergCAN = false;
 bool motor1_ok = true;
 bool motor2_ok = true;
@@ -311,6 +313,13 @@ bool SetCurrent (int porcentaje, long ID){
   return EnviarMSG(SetcurrentUSE,ID);
 }
 
+bool setHoldCurrent (int porcentaje, long ID){
+  Paquete p;
+  p.i = porcentaje;
+  char holdCurrent[]={0x2F,0x05,0x22,0x00,p.b[0],0x00,0x00,0x00};
+  return EnviarMSG(holdCurrent,ID);
+}
+
 bool maxVelocity (long velocity, long ID){
   Paquete p;
   p.i = velocity;
@@ -436,6 +445,17 @@ long requestBridgeTemp(long ID){
   return p.i;
 }
 
+long requestHoldCurrent(long ID){
+  char leerHoldCurrent[8]={0x40,0x05,0x22,0x00,0x00,0x00,0x00,0x00};
+  EnviarMSG(leerHoldCurrent,ID);
+  Paquete p;
+  p.b[0] = buffRespuesta[4];
+  p.b[1] = buffRespuesta[5];
+  p.b[2] = buffRespuesta[6];
+  p.b[3] = buffRespuesta[7];
+  return p.i;
+}
+
 bool setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel ){
     bool bitError = false;
     //instrucciones de configuración
@@ -477,6 +497,11 @@ bool setupMotor(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_
     }
     //-- % de corriente --
     SetCurrent(current, ID_motor);
+    setHoldCurrent(holdCurrent_percent,ID_motor);
+    long hCurrent = requestHoldCurrent(ID_motor);
+    Serial.print("\tholdCurrent: ");
+    Serial.println(hCurrent);
+  
 
     if (bitError){
       return false;
