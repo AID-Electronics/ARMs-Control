@@ -553,6 +553,12 @@ void loop(){
         nextState(100);
       }
     }
+    if (serialToken == 'T' && globalState == 100){
+      vecesTensadoM1++;
+      vecesTensadoM2++;
+      vecesTensadoM3++;
+      vecesTensadoM4++;
+    }
     if (serialToken == '6' && globalState == 100){
       vecesTensadoM1++;
     }
