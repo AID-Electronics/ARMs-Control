@@ -31,7 +31,10 @@ Comunicacion_MAXI com_maxi;
 Alarmas error;
 bool hayErrores = true;
 bool calibracionRealizada = false;
-bool tensarCables = false;
+int vecesTensadoM1 = 0;
+int vecesTensadoM2 = 0;
+int vecesTensadoM3 = 0;
+int vecesTensadoM4 = 0;
 
 uint8_t globalState;
 uint8_t localState;
@@ -180,7 +183,7 @@ void loop(){
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
     float tensionM3 = (float)requestVin(ID_MOTOR_3) / 10;
-    float tensionM4 = (float)requestVin(ID_MOTOR_4) / 10;
+    float tensionM4 = (float)requestVin(ID_MOTOR_4) / 10; 
     
     Serial.print("\tTension M1: ");
     Serial.println(tensionM1);
@@ -505,14 +508,11 @@ void loop(){
 
   else if (globalState == 100){
     //Tensado de los cables
-    if (tensarCables){
       long pasos = -500;
-      moverRelatInmediato(pasos, ID_MOTOR_1);
-      moverRelatInmediato(pasos, ID_MOTOR_2);
-      moverRelatInmediato(pasos, ID_MOTOR_3);
-      moverRelatInmediato(pasos, ID_MOTOR_4);
-      tensarCables = false;
-    }
+      moverAbsInmediato(pasos * vecesTensadoM1, ID_MOTOR_1);
+      moverAbsInmediato(pasos * vecesTensadoM2, ID_MOTOR_2);
+      moverAbsInmediato(pasos * vecesTensadoM3, ID_MOTOR_3);
+      moverAbsInmediato(pasos * vecesTensadoM4, ID_MOTOR_4);
   }
 
   //En paralelo al proceso principal
@@ -546,15 +546,29 @@ void loop(){
     if (serialToken == 'S' && globalState == 7){// && !hayErrores){
       if (calibracionRealizada){
         Serial.println("Compensacion");
-        nextState(10);
+        nextState(100);//10
       }
       else{
         Serial.println("Calibracion");
         nextState(100);
       }
     }
-    if (serialToken == 'T' && globalState == 100){
-      tensarCables = true;
+    if (serialToken == '6' && globalState == 100){
+      vecesTensadoM1++;
+    }
+    if (serialToken == '7' && globalState == 100){
+      vecesTensadoM2++;
+    }
+    if (serialToken == '8' && globalState == 100){
+      vecesTensadoM3++;
+    }
+    if (serialToken == '9' && globalState == 100){
+      vecesTensadoM4++;
+    }
+    
+    if (serialToken == 'E'){
+      Serial.println("Envio al estado 8");
+      nextState(8);
     }
   }
   
