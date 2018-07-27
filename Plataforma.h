@@ -154,12 +154,12 @@ bool Plataforma::calibrarPlat(State& alarmState){
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
     
-    giraEje(1);
+    giraEje(2);
     
     return false;  
   }
   else if (presentError > sensibilidad){
-    giraEje(1);
+    giraEje(2);
     
     return false;
   }

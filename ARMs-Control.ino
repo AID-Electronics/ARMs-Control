@@ -513,6 +513,9 @@ void loop(){
       moverAbsInmediato(pasos * vecesTensadoM2, ID_MOTOR_2);
       moverAbsInmediato(pasos * vecesTensadoM3, ID_MOTOR_3);
       moverAbsInmediato(pasos * vecesTensadoM4, ID_MOTOR_4);
+      Vector3D aux;
+      getOrientRF(&aux);
+      platform.setAccel(&aux);
   }
 
   //En paralelo al proceso principal

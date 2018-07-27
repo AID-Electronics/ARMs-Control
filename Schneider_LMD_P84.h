@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "Canbus.h"
 
-#define holdCurrent_percent 60
+#define holdCurrent_percent 100
 
 bool emergCAN = false;
 bool motor1_ok = true;
