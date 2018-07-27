@@ -571,6 +571,24 @@ void loop(){
     if (serialToken == '9' && globalState == 100){
       vecesTensadoM4++;
     }
+    if (serialToken == 'Y' && globalState == 100){
+      vecesTensadoM1--;
+      vecesTensadoM2--;
+      vecesTensadoM3--;
+      vecesTensadoM4--;
+    }
+    if (serialToken == '2' && globalState == 100){
+      vecesTensadoM1--;
+    }
+    if (serialToken == '3' && globalState == 100){
+      vecesTensadoM2--;
+    }
+    if (serialToken == '4' && globalState == 100){
+      vecesTensadoM3--;
+    }
+    if (serialToken == '5' && globalState == 100){
+      vecesTensadoM4--;
+    }
     
     if (serialToken == 'E'){
       Serial.println("Envio al estado 8");

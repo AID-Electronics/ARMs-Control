@@ -20,6 +20,12 @@ Button botonTensado2;
 Button botonTensado3;
 Button botonTensado4;
 
+Button botonDestensado;
+Button botonDestensado1;
+Button botonDestensado2;
+Button botonDestensado3;
+Button botonDestensado4;
+
 Radar radar;
 Objetivo dron;
 Telemetria telemetria;
@@ -123,6 +129,26 @@ void setup(){
   botonTensado4.text = "M4";
   botonTensado4.setColor(100,100,100);
   
+  botonDestensado =  new Button (1150,50+80,75,75);
+  botonDestensado.text = "Destensado";
+  botonDestensado.setColor(100,100,100);
+  
+  botonDestensado1 = new Button (1150,50,75,75);
+  botonDestensado1.text = "M1";
+  botonDestensado1.setColor(100,100,100);
+  
+  botonDestensado2 = new Button (1150+80,50+80,75,75);
+  botonDestensado2.text = "M2";
+  botonDestensado2.setColor(100,100,100);
+  
+  botonDestensado3 = new Button (1150,50+80+80,75,75);
+  botonDestensado3.text = "M3";
+  botonDestensado3.setColor(100,100,100);
+  
+  botonDestensado4 = new Button (1150-80,50+80,75,75);
+  botonDestensado4.text = "M4";
+  botonDestensado4.setColor(100,100,100);
+  
   radar = new Radar(750,300,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
@@ -162,11 +188,18 @@ void draw(){
   resetButton.draw();
   buttonDebug1.draw();
   buttonDebug2.draw();
+  
   botonTensado.draw();
   botonTensado1.draw();
   botonTensado2.draw();
   botonTensado3.draw();
   botonTensado4.draw();
+  
+  botonDestensado.draw();
+  botonDestensado1.draw();
+  botonDestensado2.draw();
+  botonDestensado3.draw();
+  botonDestensado4.draw();
   
   radar.draw(dron);
   telemetria.draw();
@@ -230,6 +263,21 @@ void mousePressed(){
     }
     if (botonTensado4.isMouseOver()){
       port.write("9");
+    }
+    if (botonDestensado.isMouseOver()){
+      port.write("Y");
+    }
+    if (botonDestensado1.isMouseOver()){
+      port.write("2");
+    }
+    if (botonDestensado2.isMouseOver()){
+      port.write("3");
+    }
+    if (botonDestensado3.isMouseOver()){
+      port.write("4");
+    }
+    if (botonDestensado4.isMouseOver()){
+      port.write("5");
     }
   }
   if (closeButton.isMouseOver()){
