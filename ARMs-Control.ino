@@ -526,7 +526,6 @@ void loop(){
 
   else if (globalState == 101){
     //Tensado automatico
-    long pasos = -100;
     int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasosTensadoAuto);
     int estadoM2 = tensadoM1.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
     int estadoM3 = tensadoM1.tensaCable(ID_MOTOR_3, pasosTensadoAuto);

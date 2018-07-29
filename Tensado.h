@@ -23,6 +23,8 @@ class Tensado {
         estadoTensado = 0;
     }
     int tensaCable(long ID, long pasos);
+    void printStatus(long ID);
+
 };
 
 int Tensado::tensaCable(long ID, long pasos){
@@ -36,6 +38,7 @@ int Tensado::tensaCable(long ID, long pasos){
             posMasTenso = posActual;                                    //la pos mas tensa es la mas negativa
         }
         else if (posActual > posAnterior){
+            posMasTenso = posAnterior;
         }
     }
     else if (limiteConocido && posActual + pasos < posMasTenso){
@@ -44,6 +47,7 @@ int Tensado::tensaCable(long ID, long pasos){
     else if (!limiteConocido){
         posAnterior = requestPos(ID);
         moverRelatInmediato(pasos, ID);
+        delay(esperaMovimiento);
         posActual = requestPos(ID);
         
         if (posActual < posAnterior){
@@ -55,8 +59,22 @@ int Tensado::tensaCable(long ID, long pasos){
             estadoTensado = 1;
         }
     }
-    
+    printStatus(ID);
     return estadoTensado;
+}
+
+void Tensado::printStatus(long ID){
+    Serial.print(ID,HEX);
+    Serial.print(",");
+    Serial.print(posAnterior);
+    Serial.print(",");
+    Serial.print(posActual);
+    Serial.print(",");
+    Serial.print(posMasTenso);
+    Serial.print(",");
+    Serial.print(limiteConocido);
+    Serial.print(",");
+    Serial.println(estadoTensado);
 }
 
 #endif
