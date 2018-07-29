@@ -7,6 +7,8 @@
 #define ID_MOTOR_3 0x612
 #define ID_MOTOR_4 0x613
 
+#define pasosTensadoAuto -100
+
 //Para calibracion
 #define velCal 5120
 #define acelCal 10000
@@ -525,10 +527,10 @@ void loop(){
   else if (globalState == 101){
     //Tensado automatico
     long pasos = -100;
-    int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasos);
-    int estadoM2 = tensadoM1.tensaCable(ID_MOTOR_2, pasos);
-    int estadoM3 = tensadoM1.tensaCable(ID_MOTOR_3, pasos);
-    int estadoM4 = tensadoM1.tensaCable(ID_MOTOR_4, pasos);
+    int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasosTensadoAuto);
+    int estadoM2 = tensadoM1.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
+    int estadoM3 = tensadoM1.tensaCable(ID_MOTOR_3, pasosTensadoAuto);
+    int estadoM4 = tensadoM1.tensaCable(ID_MOTOR_4, pasosTensadoAuto);
 
     if (estadoM1 == 2 && estadoM2 == 2 && estadoM3 == 2 && estadoM4 == 2){
       Serial.println("Tensado terminado");
@@ -573,6 +575,9 @@ void loop(){
         Serial.println("Calibracion");
         nextState(100);
       }
+    }
+    if (serialToken == 'U' && globalState == 100){
+      nextState(101);
     }
     if (serialToken == 'T' && globalState == 100){
       vecesTensadoM1++;
