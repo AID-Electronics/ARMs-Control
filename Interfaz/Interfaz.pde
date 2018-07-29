@@ -14,6 +14,8 @@ Button resetButton;
 Button buttonDebug1;
 Button buttonDebug2;
 
+Button botonTensadoAuto;
+
 Button botonTensado;
 Button botonTensado1;
 Button botonTensado2;
@@ -33,7 +35,6 @@ Alarmas alarmas;
 Gauge gauge1;
 Gauge dronVelGuage;
 Acelerometro accelPlatform;
-BarIndicator_Vertical indic_errorSeg;
 
 PImage logoAID;
 
@@ -102,74 +103,73 @@ void setup(){
   resetButton.setVertex(15);
   
   buttonDebug1 = new Button (650,50,85,85);
-  buttonDebug1.text = "State8";
+  buttonDebug1.text = "Calibrar";
   buttonDebug1.setColor(10,200,255);
   
   buttonDebug2 = new Button (750,50,85,85);
-  buttonDebug2.text = "State10";
+  buttonDebug2.text = "Radar";
   buttonDebug2.setColor(50,100,100);
   
-  botonTensado =  new Button (850,50+80,75,75);
+  botonTensadoAuto =  new Button (1200,75,75,75);
+  botonTensadoAuto.text = "Tens.Auto";
+  botonTensadoAuto.setColor(24, 226, 35);
+  
+  botonTensado =  new Button (1200,200+80,75,75);
   botonTensado.text = "Tensado";
   botonTensado.setColor(100,100,100);
   
-  botonTensado1 = new Button (850,50,75,75);
+  botonTensado1 = new Button (1200,200,75,75);
   botonTensado1.text = "M1";
   botonTensado1.setColor(100,100,100);
   
-  botonTensado2 = new Button (850+80,50+80,75,75);
+  botonTensado2 = new Button (1200+80,200+80,75,75);
   botonTensado2.text = "M2";
   botonTensado2.setColor(100,100,100);
   
-  botonTensado3 = new Button (850,50+80+80,75,75);
+  botonTensado3 = new Button (1200,200+80+80,75,75);
   botonTensado3.text = "M3";
   botonTensado3.setColor(100,100,100);
   
-  botonTensado4 = new Button (850-80,50+80,75,75);
+  botonTensado4 = new Button (1200-80,200+80,75,75);
   botonTensado4.text = "M4";
   botonTensado4.setColor(100,100,100);
   
-  botonDestensado =  new Button (1150,50+80,75,75);
+  botonDestensado =  new Button (1200,500+80,75,75);
   botonDestensado.text = "Destensado";
   botonDestensado.setColor(100,100,100);
   
-  botonDestensado1 = new Button (1150,50,75,75);
+  botonDestensado1 = new Button (1200,500,75,75);
   botonDestensado1.text = "M1";
   botonDestensado1.setColor(100,100,100);
   
-  botonDestensado2 = new Button (1150+80,50+80,75,75);
+  botonDestensado2 = new Button (1200+80,500+80,75,75);
   botonDestensado2.text = "M2";
   botonDestensado2.setColor(100,100,100);
   
-  botonDestensado3 = new Button (1150,50+80+80,75,75);
+  botonDestensado3 = new Button (1200,500+80+80,75,75);
   botonDestensado3.text = "M3";
   botonDestensado3.setColor(100,100,100);
   
-  botonDestensado4 = new Button (1150-80,50+80,75,75);
+  botonDestensado4 = new Button (1200-80,500+80,75,75);
   botonDestensado4.text = "M4";
   botonDestensado4.setColor(100,100,100);
   
-  radar = new Radar(750,300,400,40,150);
+  radar = new Radar(600,300,400,40,150);
   dron = new Objetivo();
   telemetria = new Telemetria(20,130);
   alarmas = new Alarmas(400,130);
   
-  gauge1 = new Gauge(650,610);
+  gauge1 = new Gauge(450,610);
   gauge1.setLimits(0,1000);
   gauge1.setColor(185,92,200);
   gauge1.setName("VELOCIDAD GIRO\n(RPM)");
   
-  dronVelGuage = new Gauge(850,610);
+  dronVelGuage = new Gauge(650,610);
   dronVelGuage.setLimits(0,140);
   dronVelGuage.setColor(185,92,200);
   dronVelGuage.setName("VELOCIDAD DRON\n(km/h)");
   
-  accelPlatform = new Acelerometro(1000,540);
-  
-  indic_errorSeg = new BarIndicator_Vertical(450,500,20,150);
-  indic_errorSeg.setLimits(-100,100);
-  indic_errorSeg.setColor(255,200,0);
-  indic_errorSeg.setName("ERROR\nSEGUIMIENTO");
+  accelPlatform = new Acelerometro(800,540);
   
   logoAID = loadImage("C:/Users/AID_1/Desktop/AID-Logo.png");
 }
@@ -189,6 +189,8 @@ void draw(){
   buttonDebug1.draw();
   buttonDebug2.draw();
   
+  botonTensadoAuto.draw();
+  
   botonTensado.draw();
   botonTensado1.draw();
   botonTensado2.draw();
@@ -207,7 +209,6 @@ void draw(){
   gauge1.draw(velGiro);
   dronVelGuage.draw(dron.vel);
   accelPlatform.draw();
-  indic_errorSeg.draw(mouseX-100);
 }
 
 void serialEvent(Serial port) {
@@ -248,6 +249,9 @@ void mousePressed(){
     }
     if (buttonDebug2.isMouseOver()){
       port.write("F");
+    }
+    if (botonTensadoAuto.isMouseOver()){
+      port.write("U");
     }
     if (botonTensado.isMouseOver()){
       port.write("T");
