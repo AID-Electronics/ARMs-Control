@@ -35,6 +35,10 @@ int vecesTensadoM1 = 0;
 int vecesTensadoM2 = 0;
 int vecesTensadoM3 = 0;
 int vecesTensadoM4 = 0;
+Tensado tensadoM1;
+Tensado tensadoM2;
+Tensado tensadoM3;
+Tensado tensadoM4;
 
 uint8_t globalState;
 uint8_t localState;
@@ -521,7 +525,15 @@ void loop(){
   else if (globalState == 101){
     //Tensado automatico
     long pasos = -100;
-    
+    int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasos);
+    int estadoM2 = tensadoM1.tensaCable(ID_MOTOR_2, pasos);
+    int estadoM3 = tensadoM1.tensaCable(ID_MOTOR_3, pasos);
+    int estadoM4 = tensadoM1.tensaCable(ID_MOTOR_4, pasos);
+
+    if (estadoM1 == 2 && estadoM2 == 2 && estadoM3 == 2 && estadoM4 == 2){
+      Serial.println("Tensado terminado");
+      nextState(7);
+    }
   }
 
   //En paralelo al proceso principal

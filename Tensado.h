@@ -43,8 +43,8 @@ int Tensado::tensaCable(long ID, long pasos){
         moverRelatInmediato(pasos, ID);
         posActual = requestPos(ID);
         
-        if (posActual < posAnterior){                                   //Como el tensado es con pasos negativos, 
-            posMasTenso = posActual;                                    //la pos mas tensa es la mas negativa
+        if (posActual < posAnterior){
+            posMasTenso = posActual;
         }
         else if (posActual > posAnterior){
             posMasTenso = posAnterior;
