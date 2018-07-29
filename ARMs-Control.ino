@@ -518,6 +518,12 @@ void loop(){
       platform.setAccel(&aux);
   }
 
+  else if (globalState == 101){
+    //Tensado automatico
+    long pasos = -100;
+    
+  }
+
   //En paralelo al proceso principal
   if (serialIn){
     if (serialToken == '1' && globalState == 0){
