@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include "Schneider_LMD_P84.h"
 
+#define esperaMovimiento 500
+
 class Tensado {
     long posAnterior;
     long posActual;
@@ -27,6 +29,7 @@ int Tensado::tensaCable(long ID, long pasos){
     if (limiteConocido && posActual + pasos > posMasTenso){
         posAnterior = requestPos(ID);
         moverRelatInmediato(pasos, ID);
+        delay(esperaMovimiento);
         posActual = requestPos(ID);
 
         if (posActual < posAnterior && posActual < posMasTenso){        //Como el tensado es con pasos negativos, 
