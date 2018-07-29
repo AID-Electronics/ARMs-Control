@@ -25,6 +25,7 @@
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
 #include "Alarmas.h"
+#include "Tensado.h"
 
 
 IMU IMU_fija;

@@ -7,6 +7,7 @@
 #define esperaMovimiento 500
 
 class Tensado {
+public:
     long posAnterior;
     long posActual;
     long posMasTenso;
