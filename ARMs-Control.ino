@@ -528,9 +528,9 @@ void loop(){
   else if (globalState == 101){
     //Tensado automatico
     int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasosTensadoAuto);
-    int estadoM2 = tensadoM1.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
-    int estadoM3 = tensadoM1.tensaCable(ID_MOTOR_3, pasosTensadoAuto);
-    int estadoM4 = tensadoM1.tensaCable(ID_MOTOR_4, pasosTensadoAuto);
+    int estadoM2 = tensadoM2.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
+    int estadoM3 = tensadoM3.tensaCable(ID_MOTOR_3, pasosTensadoAuto);
+    int estadoM4 = tensadoM4.tensaCable(ID_MOTOR_4, pasosTensadoAuto);
 
     if (estadoM1 == 2 && estadoM2 == 2 && estadoM3 == 2 && estadoM4 == 2){
       Serial.println("Tensado terminado");
