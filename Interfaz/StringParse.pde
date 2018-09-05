@@ -64,11 +64,11 @@ void parseTempString(String str){
 void parseAlarmString(String str){
   String list[] = str.split(",");
   for(int i = 0; i < 9; i++){
-    alarmas.estadoAlarma[i] = int(trim(list[i]));
+    alarmas.estadoAlarma[i+1] = int(trim(list[i]));
   }
 }
 void parsePlatformString(String str){
-  String list[] = str.split(","); //<>//
+  String list[] = str.split(",");
   velGiro = float(list[0]);
   state = int(list[1]);
 }

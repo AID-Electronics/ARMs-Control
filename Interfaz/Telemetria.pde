@@ -20,9 +20,9 @@ class Telemetria{
     this.nameColumnWidth = 175;
     this.dataColumnWidth = 85;
     this.unitsColumnWidth = 60;
-    rowHeight = 23;
+    rowHeight = 25;
     margenIzquierdo = 10;
-    distText2upperLimmit = 18;
+    distText2upperLimmit = 19;
     
     name = new StringList();
     data = new StringList();

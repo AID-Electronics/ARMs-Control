@@ -1,6 +1,8 @@
 #ifndef PLATAFORMA_H
 #define PLATAFORMA_H
 
+#include "Alarmas.h"
+
 #define accel_switch 9.5
 #define sensibilidad 0.1
 
@@ -20,6 +22,7 @@ public:
   bool sentido;
   bool eje;
   uint8_t calibState;
+  bool errorRecepcionRF;
 
   Plataforma();
   double getAccel();
@@ -27,7 +30,7 @@ public:
   void setAccel(Vector3D *v);
   void invierteSentido();
   void cambiaEje();
-  bool calibrarPlat();
+  bool calibrarPlat(State& alarmState);
   void giraEje(float grados);
   void sendAccel2Interface();
 };
@@ -41,6 +44,7 @@ Plataforma::Plataforma(){
   sentido = false;
   eje = false;
   calibState = 0;
+  errorRecepcionRF = false;
   
   zrad = 0;
   yrad = 0;
@@ -70,15 +74,27 @@ void Plataforma::cambiaEje(){
   eje = !eje;
 }
 
-bool Plataforma::calibrarPlat(){
+bool Plataforma::calibrarPlat(State& alarmState){
   //Lectura de 10 acceleraciones y filtrado
+  errorRecepcionRF = false;
   int tot = 10;
   Vector3D aux[tot];
-  for(int i=0; i<tot; i++){
+  for(int i=0; i<tot && !errorRecepcionRF; i++){
     bool RF_ok = getOrientRF(&aux[i]);
-    while(RF_ok != 1){
+    uint32_t inicioRecepcion = millis();
+    while(RF_ok != 1 && !errorRecepcionRF){
       RF_ok = getOrientRF(&aux[i]);
+      if (millis() - inicioRecepcion > 1000){
+        errorRecepcionRF = true;
+      }
     }
+  }
+  if (errorRecepcionRF){
+    alarmState = on;
+    return false;
+  }
+  else{
+    alarmState = off;
   }
   Vector3D media = V3D_media(aux,tot);
   setAccel(&media);
@@ -138,12 +154,12 @@ bool Plataforma::calibrarPlat(){
     //plataforma. Segun eso, mover los motores de forma que el gradiente de gravedad 
     //en el eje Z sea ascendente hasta llegar a 10m/s^2
     
-    giraEje(1);
+    giraEje(2);
     
     return false;  
   }
   else if (presentError > sensibilidad){
-    giraEje(1);
+    giraEje(2);
     
     return false;
   }
@@ -193,15 +209,21 @@ void Plataforma::giraEje(float grados){
 
   long maxVel1 = requestMaxVel(ID_MOTOR_1);
   long maxVel2 = requestMaxVel(ID_MOTOR_2);
+  long maxVel3 = requestMaxVel(ID_MOTOR_3);
+  long maxVel4 = requestMaxVel(ID_MOTOR_4);
   Serial.print("Max Velocity 1: ");
   Serial.println(maxVel1);
   Serial.print("Max Velocity 2: ");
   Serial.println(maxVel2);
+  Serial.print("Max Velocity 3: ");
+  Serial.println(maxVel3);
+  Serial.print("Max Velocity 4: ");
+  Serial.println(maxVel4);
 
   moverRelatEspera(pasosMotor1, ID_MOTOR_1); //movimientos relativos con espera
   moverRelatEspera(pasosMotor2, ID_MOTOR_2);
-  //moverRelatEspera(pasosMotor3,ID_MOTOR_3);
-  //moverRelatEspera(pasosMotor4,ID_MOTOR_4);
+  moverRelatEspera(pasosMotor3,ID_MOTOR_3);
+  moverRelatEspera(pasosMotor4,ID_MOTOR_4);
     
 }
 

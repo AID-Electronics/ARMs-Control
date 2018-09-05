@@ -1,5 +1,5 @@
 
-class BarIndicator{
+class BarIndicator_Vertical{
   //Position
   float posX;
   float posY;
@@ -25,7 +25,7 @@ class BarIndicator{
   int limitText_size;
   int value_size;
   
-  BarIndicator(float posx, float posy){
+  BarIndicator_Vertical(float posx, float posy){
     this.posX = posx;
     this.posY = posy;
     this.startPos = posY;
@@ -35,7 +35,7 @@ class BarIndicator{
     limitText_size = 16;
     value_size = 22;
   }
-  BarIndicator(float posx, float posy, float sizex, float sizey){
+  BarIndicator_Vertical(float posx, float posy, float sizex, float sizey){
     this.posX = posx;
     this.posY = posy;
     this.sizeX = sizex;
@@ -45,8 +45,8 @@ class BarIndicator{
     this.green = 100;
     this.blue = 100;
     
-    this.startPos = posX;
-    this.endPos = posX + sizeX;
+    this.startPos = posY;
+    this.endPos = posY + sizeY;
     
     text = createFont("Arial",14,true);
     limitText_size = 16;
@@ -65,9 +65,12 @@ class BarIndicator{
     this.minValue = min;
     this.maxValue = max;
   }
+  void setName(String inString){
+    this.name = inString;
+  }
   
   void draw(float inputValue){
-    value = map(inputValue,minValue,maxValue,startPos,endPos);
+    value = map(-inputValue,minValue,maxValue,startPos,endPos);
     if (value > endPos){
       value = endPos;
     }else if (value < startPos){
@@ -76,28 +79,17 @@ class BarIndicator{
     
     boolean isPositive;
     float reff = map(0,minValue,maxValue,startPos,endPos);
-    if (value < reff){
-      isPositive = false;
-    }
-    else{
-      isPositive = true;
-    }
     
     noStroke();
-    fill(200);
+    fill(150);
     rect(posX,posY,sizeX,sizeY);
     stroke(0);
     strokeWeight(1);
     fill(red,green,blue);
-    if (isPositive){
-      rectMode(CORNERS);
-      rect(reff,posY,value,posY + sizeY);
-      rectMode(CORNER);
-    }else{
-      rectMode(CORNERS);
-      rect(value,posY, reff, posY+sizeY);
-      rectMode(CORNER);
-    }
+    rectMode(CORNERS);
+    rect(posX,reff, posX + sizeX, value);
+    rectMode(CORNER);
+    
     strokeWeight(1.5);
     noFill();
     rect(posX,posY,sizeX,sizeY);
@@ -105,14 +97,20 @@ class BarIndicator{
     
     //Text
     fill(0);
-    textAlign(CENTER,BOTTOM);
+    textAlign(LEFT,CENTER);
     String str = str(minValue);
     textFont(text,limitText_size);
-    text(str, posX, posY);
+    text(str, posX + sizeX + 5, posY + sizeY);
     str = str(maxValue);
-    text(str, posX + sizeX, posY);
-    str = nf(inputValue,0,3);
+    text(str, posX + sizeX + 5, posY);
+    
+    textAlign(RIGHT,CENTER);
+    str = nf(inputValue,0,1);
     textFont(text,value_size);
-    text(str, posX + sizeX/2, posY);
+    text(str, posX - 5, value);
+    
+    textAlign(CENTER,TOP);
+    textFont(text,20);
+    text(name, posX + sizeX/2, posY + sizeY + 10);
   }
 }

@@ -6,12 +6,15 @@
 #define pinAterrizaje A10
 #define bufferSize 100
 
-typedef struct Objetivo{
+class Objetivo{
+public:
   int32_t id;
   float vel;
   float dist;
   float ang;
   float intensidad;
+
+  void reset(){id = 0; vel = 0; dist = 0; ang = 0; intensidad = 0;}
 };
 
 class Comunicacion_MAXI{

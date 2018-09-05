@@ -4,8 +4,10 @@
 
 #define ID_MOTOR_1 0x610
 #define ID_MOTOR_2 0x611
-//#define ID_MOTOR_3 0x612
-//#define ID_MOTOR_4 0x613
+#define ID_MOTOR_3 0x612
+#define ID_MOTOR_4 0x613
+
+#define pasosTensadoAuto -100
 
 //Para calibracion
 #define velCal 5120
@@ -23,12 +25,23 @@
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
 #include "Alarmas.h"
+#include "Tensado.h"
 
 
 IMU IMU_fija;
 Plataforma platform;
 Comunicacion_MAXI com_maxi;
 Alarmas error;
+bool hayErrores = true;
+bool calibracionRealizada = false;
+int vecesTensadoM1 = 0;
+int vecesTensadoM2 = 0;
+int vecesTensadoM3 = 0;
+int vecesTensadoM4 = 0;
+Tensado tensadoM1;
+Tensado tensadoM2;
+Tensado tensadoM3;
+Tensado tensadoM4;
 
 uint8_t globalState;
 uint8_t localState;
@@ -78,6 +91,8 @@ void nextState(uint8_t estado){
   localState = 0;
   state2Interface();
   error.send2Interface();
+  com_maxi.sendData2Interface();
+  platform.sendAccel2Interface();
   entradaEstado = true;
   arrivalState_time = millis();
 }
@@ -97,8 +112,12 @@ void setup(){
   //Alimentacion motores
   pinMode(CONTROLLINO_R0, OUTPUT);
   pinMode(CONTROLLINO_R1, OUTPUT);
+  pinMode(CONTROLLINO_R2, OUTPUT);
+  pinMode(CONTROLLINO_R3, OUTPUT);
   digitalWrite(CONTROLLINO_R0, LOW);
   digitalWrite(CONTROLLINO_R1, LOW);
+  digitalWrite(CONTROLLINO_R2, LOW);
+  digitalWrite(CONTROLLINO_R3, LOW);
   
   //Alimentacion MAXI
   pinMode(CONTROLLINO_R4, OUTPUT);
@@ -126,9 +145,7 @@ void loop(){
 
   //Máquina de estados
   if (globalState == 0){
-    if (serialIn){
-      nextState(1);
-    }
+    //Espera a pulsador Encendido
   }
   else if (globalState == 1){
     bool OK = IMU_fija.setup();
@@ -164,23 +181,35 @@ void loop(){
     //Encendido de motores
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
+    digitalWrite(CONTROLLINO_R2, HIGH);
+    digitalWrite(CONTROLLINO_R3, HIGH);
     delay(1000);
 
     limpiaBuffer();
 
     float tensionM1 = (float)requestVin(ID_MOTOR_1) / 10;
     float tensionM2 = (float)requestVin(ID_MOTOR_2) / 10;
+    float tensionM3 = (float)requestVin(ID_MOTOR_3) / 10;
+    float tensionM4 = (float)requestVin(ID_MOTOR_4) / 10; 
     
     Serial.print("\tTension M1: ");
     Serial.println(tensionM1);
     Serial.print("\tTension M2: ");
     Serial.println(tensionM2);
+    Serial.print("\tTension M3: ");
+    Serial.println(tensionM3);
+    Serial.print("\tTension M4: ");
+    Serial.println(tensionM4);
 
     if (tensionM1 > 47.5 && tensionM1 < 48.5){ //24.5
       if (tensionM2 > 47.5 && tensionM2 < 48.5){
-        Serial.println("\tAlimentacion en rango");
-        error.motoresON = off;
-        nextState(4);
+        if (tensionM3 > 47.5 && tensionM3 < 48.5){
+          if (tensionM4 > 47.5 && tensionM4 < 48.5){
+            Serial.println("\tAlimentacion en rango");
+            error.motoresON = off;
+            nextState(4);
+          }
+        }
       }
     }
     if(globalState != 4){
@@ -194,11 +223,15 @@ void loop(){
     //Setup de motores
     Serial.println("Setup motores");
     Serial.println("\tMotor 1");
-    bool m1 = setupMotor(ID_MOTOR_1,acelCal,decelCal,100,velCal); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
+    bool m1 = setupMotor(ID_MOTOR_1,acelCal,decelCal,100,velCal);
     Serial.println("\tMotor 2");
     bool m2 = setupMotor(ID_MOTOR_2,acelCal,decelCal,100,velCal);
+    Serial.println("\tMotor 2");
+    bool m3 = setupMotor(ID_MOTOR_3,acelCal,decelCal,100,velCal);
+    Serial.println("\tMotor 2");
+    bool m4 = setupMotor(ID_MOTOR_4,acelCal,decelCal,100,velCal);
 
-    if (m1 && m2){
+    if (m1 && m2 && m3 && m4){
       Serial.println("Setup correcto");
       error.motoresSetup = off;
     }
@@ -332,19 +365,20 @@ void loop(){
       errorSolucionado (6);
     }
     else {
-      nextState(8);
+      hayErrores = false;
     }
   }
 
   else if (globalState == 8){
     bool calibState;
-    calibState = platform.calibrarPlat();
+    calibState = platform.calibrarPlat(error.comunicRF);
 
     String serialBuff;
     serialBuff += (String)calibState + " accelX: " + (String)platform.accel.x + " accelY: " + (String)platform.accel.y + " accelZ: " + (String)platform.accel.z ;
     Serial.println(serialBuff);
   
     if(calibState == 1){
+      calibracionRealizada = true;
       nextState(9);
     }
   }
@@ -353,9 +387,13 @@ void loop(){
     //Apaga el motor y vuelve a encenderlo
     digitalWrite(CONTROLLINO_R0, LOW);
     digitalWrite(CONTROLLINO_R1, LOW);
+    digitalWrite(CONTROLLINO_R2, LOW);
+    digitalWrite(CONTROLLINO_R3, LOW);
     delay(500);
     digitalWrite(CONTROLLINO_R0, HIGH);
     digitalWrite(CONTROLLINO_R1, HIGH);
+    digitalWrite(CONTROLLINO_R2, HIGH);
+    digitalWrite(CONTROLLINO_R3, HIGH);
     delay(1000);
 
     limpiaBuffer();
@@ -366,8 +404,12 @@ void loop(){
     bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
     Serial.println("\tMotor 2");
     bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+    Serial.println("\tMotor 2");
+    bool m3 = setupMotor(ID_MOTOR_3,aceleracion,deceleracion,100,velocidad);
+    Serial.println("\tMotor 2");
+    bool m4 = setupMotor(ID_MOTOR_4,aceleracion,deceleracion,100,velocidad);
 
-    if (m1 && m2){
+    if (m1 && m2 && m3 && m4){
       Serial.println("Setup correcto");
       error.motoresSetup = off;
     }
@@ -405,6 +447,11 @@ void loop(){
     }
 
     ahora = millis();
+    
+    if (com_maxi.objAterrizado()){
+      com_maxi.setEstadoParo();
+      nextState(0);
+    }
 
     if (ahora - antesC1 > 20){
       antesC1 = ahora;
@@ -418,10 +465,6 @@ void loop(){
 
       com_maxi.requestData();
       //com_maxi.printData();
-      if (com_maxi.objAterrizado()){
-        com_maxi.setEstadoParo();
-        nextState(0);
-      }
     }
     
     if (serialIn) {
@@ -447,8 +490,14 @@ void loop(){
       bool m1 = setupMotor(ID_MOTOR_1,aceleracion,deceleracion,100,velocidad); //(long ID_motor,uint32_t Acel,uint32_t Decel, int current ,uint32_t MaxVel )
       Serial.println("\tMotor 2");
       bool m2 = setupMotor(ID_MOTOR_2,aceleracion,deceleracion,100,velocidad);
+      Serial.println("\tMotor 2");
+      bool m3 = setupMotor(ID_MOTOR_3,aceleracion,deceleracion,100,velocidad);
+      Serial.println("\tMotor 2");
+      bool m4 = setupMotor(ID_MOTOR_4,aceleracion,deceleracion,100,velocidad);
 
-      if (m1 && m2){
+
+
+      if (m1 && m2 && m3 && m4){
         Serial.println("Setup correcto");
         error.motoresSetup = off;
       }
@@ -464,13 +513,40 @@ void loop(){
     }
   }
 
+  else if (globalState == 100){
+    //Tensado de los cables
+      long pasos = -500;
+      moverAbsInmediato(pasos * vecesTensadoM1, ID_MOTOR_1);
+      moverAbsInmediato(pasos * vecesTensadoM2, ID_MOTOR_2);
+      moverAbsInmediato(pasos * vecesTensadoM3, ID_MOTOR_3);
+      moverAbsInmediato(pasos * vecesTensadoM4, ID_MOTOR_4);
+      Vector3D aux;
+      getOrientRF(&aux);
+      platform.setAccel(&aux);
+  }
+
+  else if (globalState == 101){
+    //Tensado automatico
+    int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasosTensadoAuto);
+    int estadoM2 = tensadoM2.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
+    int estadoM3 = tensadoM3.tensaCable(ID_MOTOR_3, pasosTensadoAuto);
+    int estadoM4 = tensadoM4.tensaCable(ID_MOTOR_4, pasosTensadoAuto);
+
+    if (estadoM1 == 2 && estadoM2 == 2 && estadoM3 == 2 && estadoM4 == 2){
+      Serial.println("Tensado terminado");
+      nextState(7);
+    }
+  }
+
   //En paralelo al proceso principal
   if (serialIn){
-    if (serialToken == '0'){
+    if (serialToken == '1' && globalState == 0){
+      nextState(1);
+    }
+    if (serialToken == '0' && globalState > 7){
       Serial.println("STOP");
-      error.reset();
-      nextState(0);
       com_maxi.setEstadoParo();
+      nextState(7);
     }
     if (serialToken == 'F'){
       Serial.println("Salto a estado 10");
@@ -478,7 +554,71 @@ void loop(){
     }
     if (serialToken == 'R'){
       Serial.println("Reset Controllino");
+      com_maxi.setEstadoParo();
+      com_maxi.dron.reset();
       resetFunc();
+    }
+    if (serialToken == 'A' && globalState == 10){
+      Serial.println("El dron ha objAterrizado");
+      com_maxi.setEstadoParo();
+    }
+    if (serialToken == 'C' && globalState >= 7){
+      Serial.println("Test de sistemas");
+      nextState(1);
+    }
+    if (serialToken == 'S' && globalState == 7){// && !hayErrores){
+      if (calibracionRealizada){
+        Serial.println("Compensacion");
+        nextState(100);//10
+      }
+      else{
+        Serial.println("Calibracion");
+        nextState(100);
+      }
+    }
+    if (serialToken == 'U' && globalState == 100){
+      nextState(101);
+    }
+    if (serialToken == 'T' && globalState == 100){
+      vecesTensadoM1++;
+      vecesTensadoM2++;
+      vecesTensadoM3++;
+      vecesTensadoM4++;
+    }
+    if (serialToken == '6' && globalState == 100){
+      vecesTensadoM1++;
+    }
+    if (serialToken == '7' && globalState == 100){
+      vecesTensadoM2++;
+    }
+    if (serialToken == '8' && globalState == 100){
+      vecesTensadoM3++;
+    }
+    if (serialToken == '9' && globalState == 100){
+      vecesTensadoM4++;
+    }
+    if (serialToken == 'Y' && globalState == 100){
+      vecesTensadoM1--;
+      vecesTensadoM2--;
+      vecesTensadoM3--;
+      vecesTensadoM4--;
+    }
+    if (serialToken == '2' && globalState == 100){
+      vecesTensadoM1--;
+    }
+    if (serialToken == '3' && globalState == 100){
+      vecesTensadoM2--;
+    }
+    if (serialToken == '4' && globalState == 100){
+      vecesTensadoM3--;
+    }
+    if (serialToken == '5' && globalState == 100){
+      vecesTensadoM4--;
+    }
+    
+    if (serialToken == 'E'){
+      Serial.println("Envio al estado 8");
+      nextState(8);
     }
   }
   
@@ -490,7 +630,6 @@ void loop(){
   ahoraC3 = millis();
   if (ahoraC3 - antesC3 >= 500){
     antesC3 = ahoraC3;
-    com_maxi.velGiro += 0.5;
 
     //Datos para interfaz
     if (globalState > 6){
@@ -504,6 +643,10 @@ void loop(){
       Serial.print(requestBoardTemp(ID_MOTOR_1));
       Serial.print(",");
       Serial.print(requestBoardTemp(ID_MOTOR_2));
+      Serial.print(",");
+      Serial.print(requestBoardTemp(ID_MOTOR_3));
+      Serial.print(",");
+      Serial.print(requestBoardTemp(ID_MOTOR_4));
       Serial.println();
       
       //IMU fija
