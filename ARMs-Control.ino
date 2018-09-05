@@ -7,6 +7,8 @@
 #define ID_MOTOR_3 0x612
 #define ID_MOTOR_4 0x613
 
+#define pasosTensadoAuto -100
+
 //Para calibracion
 #define velCal 5120
 #define acelCal 10000
@@ -23,6 +25,7 @@
 #include "Plataforma.h"
 #include "Comunicacion_MAXI.h"
 #include "Alarmas.h"
+#include "Tensado.h"
 
 
 IMU IMU_fija;
@@ -35,6 +38,10 @@ int vecesTensadoM1 = 0;
 int vecesTensadoM2 = 0;
 int vecesTensadoM3 = 0;
 int vecesTensadoM4 = 0;
+Tensado tensadoM1;
+Tensado tensadoM2;
+Tensado tensadoM3;
+Tensado tensadoM4;
 
 uint8_t globalState;
 uint8_t localState;
@@ -518,6 +525,19 @@ void loop(){
       platform.setAccel(&aux);
   }
 
+  else if (globalState == 101){
+    //Tensado automatico
+    int estadoM1 = tensadoM1.tensaCable(ID_MOTOR_1, pasosTensadoAuto);
+    int estadoM2 = tensadoM2.tensaCable(ID_MOTOR_2, pasosTensadoAuto);
+    int estadoM3 = tensadoM3.tensaCable(ID_MOTOR_3, pasosTensadoAuto);
+    int estadoM4 = tensadoM4.tensaCable(ID_MOTOR_4, pasosTensadoAuto);
+
+    if (estadoM1 == 2 && estadoM2 == 2 && estadoM3 == 2 && estadoM4 == 2){
+      Serial.println("Tensado terminado");
+      nextState(7);
+    }
+  }
+
   //En paralelo al proceso principal
   if (serialIn){
     if (serialToken == '1' && globalState == 0){
@@ -555,6 +575,9 @@ void loop(){
         Serial.println("Calibracion");
         nextState(100);
       }
+    }
+    if (serialToken == 'U' && globalState == 100){
+      nextState(101);
     }
     if (serialToken == 'T' && globalState == 100){
       vecesTensadoM1++;
